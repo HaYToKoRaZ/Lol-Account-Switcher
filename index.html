@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lol Account Switcher - Riot & LoL Profil Değiştirici ve Sistem Optimizatörü</title>
+  <meta name="description" content="Safkan .NET 9 ve Win32 API mimarisiyle geliştirilmiş, sıfır harici bağımlılıklı, Riot API istemeyen yerel League of Legends profil değiştirici.">
+  <link rel="icon" href="app.ico">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="https://haytokoraz.github.io/Lol-Account-Switcher/" class="nav-brand">
+      <img src="logo.jpg" alt="Logo" class="nav-logo">
+      <span class="nav-title">Lol Account Switcher</span>
+      <span class="version-badge">v0.2</span>
+    </a>
+    <div class="nav-actions">
+      <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer" class="btn-github" style="border-color: var(--hextech-cyan); color: var(--hextech-cyan);">🌐 HaYTooL Portal</a>
+      <button id="themeToggle" class="theme-toggle-btn">🌓 Tema</button>
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-github">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+        GitHub
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span>⚡</span> Safkan .NET 9 • Direct Win32 API • Sıfır Bağımlılık
+      </div>
+      <h1 class="hero-title">
+        Hesaplarınıza Hükmedin, <span>Sisteminizi Optimize Edin.</span>
+      </h1>
+      <p class="hero-desc">
+        Riot Games API anahtarı olmadan League of Legends hesaplarınızın gerçek profil resmini, seviyesini ve derecesini saliseler içinde görüntüleyin. 144Hz ekran tazeleme ve Nihai Güç moduna tek tıkla geçin.
+      </p>
+      <div class="hero-ctas">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary">İndir (v0.2) ➔</a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-secondary">Kaynak Kodları İncele</a>
+      </div>
+    </div>
+
+    <!-- APP PREVIEW MOCKUP -->
+    <div class="hero-right">
+      <div class="app-mockup">
+        <div class="mock-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="logo.jpg" alt="Logo" style="width: 24px; height: 24px; border-radius: 50%;">
+            <strong style="font-size: 0.9rem;">Lol Account Switcher</strong>
+            <span class="version-badge">v0.2</span>
+          </div>
+          <div style="background: var(--bg-badge); border: 1px solid var(--hextech-cyan); color: var(--hextech-cyan-glow); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">
+            🖥️ 144Hz
+          </div>
+        </div>
+
+        <!-- MOCK ACCOUNT 1 -->
+        <div class="mock-account-card">
+          <div class="mock-avatar">
+            <img src="https://opgg-static.akamaized.net/meta/images/profile_icons/profileIcon6502.jpg" alt="Avatar">
+            <span class="mock-level">644</span>
+          </div>
+          <div class="mock-info">
+            <div class="mock-name-row">
+              <span class="mock-title">EUW Main</span>
+              <span class="mock-server">EUW</span>
+            </div>
+            <div class="mock-rank-row">
+              <span>FevFlash#hhk</span>
+              <span>•</span>
+              <img src="https://opgg-static.akamaized.net/images/medals_new/gold.png" style="width: 16px; height: 16px;">
+              <span class="mock-rank-text">Gold IV • 5 LP</span>
+            </div>
+          </div>
+          <button class="mock-switch-btn">Geçiş Yap ➔</button>
+        </div>
+
+        <!-- MOCK ACCOUNT 2 -->
+        <div class="mock-account-card">
+          <div class="mock-avatar">
+            <img src="https://opgg-static.akamaized.net/meta/images/profile_icons/profileIcon6502.jpg" alt="Avatar">
+            <span class="mock-level">329</span>
+          </div>
+          <div class="mock-info">
+            <div class="mock-name-row">
+              <span class="mock-title">TR Main</span>
+              <span class="mock-server">TR</span>
+            </div>
+            <div class="mock-rank-row">
+              <span>KediSeven#trr</span>
+              <span>•</span>
+              <img src="https://opgg-static.akamaized.net/images/medals_new/gold.png" style="width: 16px; height: 16px;">
+              <span class="mock-rank-text">Gold II • 65 LP</span>
+            </div>
+          </div>
+          <button class="mock-switch-btn">Geçiş Yap ➔</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features-section">
+    <div class="section-header">
+      <h2>Mimarimiz ve İlkelerimiz</h2>
+      <p style="color: var(--text-muted);">Proje Anayasası ile garanti altına alınmış performans standartları.</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Riot API Anahtarsız Veri</h3>
+        <p>Herhangi bir API kota veya başvuru süreci olmadan doğrudan Riot ID ile profil resmi, seviye ve lig amblemlerini çeker.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Direct Win32 API Motoru</h3>
+        <p>Ekran tazeleme hızı (144Hz) ve Windows Güç Planı değişimi üçüncü parti konsol araçları olmadan çekirdek seviyesinde yönetilir.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3>Otomatik Güvenli Yedekleme</h3>
+        <p>7-Zip mx-9 seviyesinde tarih damgalı yedekleme ve anlık config kilitleme ile oyun ayarlarınız asla bozulmaz.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🌓</div>
+        <h3>Hextech & Piltover Temaları</h3>
+        <p>Windows sistem rengini otomatik algılar; anında Koyu Hextech veya Açık Piltover temasına kusursuz kontrastla geçer.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      Yayıncı: <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer"><strong>HaYTooL</strong></a> • 
+      Geliştirici: <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer"><strong>HaYTo</strong></a> • 
+      İletişim: <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
+    </div>
+    <div style="display: flex; gap: 14px;">
+      <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer">HaYTooL Portalı</a>
+      <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer">𝕏 (@HaYTo)</a>
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub Deposu</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
