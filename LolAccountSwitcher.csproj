@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>LolAccountSwitcher</AssemblyName>
+    <RootNamespace>LolAccountSwitcher</RootNamespace>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <Company>HaYTooL</Company>
+    <Authors>HaYTo</Authors>
+    <Product>Lol Account Switcher</Product>
+    <Description>Riot &amp; LoL Profil Değiştirici ve Sistem Optimizatörü</Description>
+    <Copyright>Copyright © 2026 HaYTooL / HaYTo</Copyright>
+    <PackageProjectUrl>https://haytokoraz.github.io/Lol-Account-Switcher/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/HaYToKoRaZ/Lol-Account-Switcher</RepositoryUrl>
+    <Version>0.2.0</Version>
+    <OutputPath>..\build\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="logo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="LolAccountSwitcher.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="sounds\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
