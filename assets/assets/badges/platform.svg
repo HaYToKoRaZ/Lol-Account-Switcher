@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="20" role="img" aria-label="platform: Windows 10 | 11">
+  <linearGradient id="b" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
+  <clipPath id="a"><rect width="168" height="20" rx="3" fill="#fff"/></clipPath>
+  <g clip-path="url(#a)">
+    <rect width="62" height="20" fill="#132740"/>
+    <rect x="62" width="106" height="20" fill="#0AC8B9"/>
+    <rect width="168" height="20" fill="url(#b)"/>
+  </g>
+  <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
+    <text aria-hidden="true" x="320" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="520">platform</text>
+    <text x="320" y="140" transform="scale(.1)" fill="#BAC8D5" textLength="520">platform</text>
+    <text aria-hidden="true" x="1140" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="960">Windows 10 | 11</text>
+    <text x="1140" y="140" transform="scale(.1)" fill="#070C14" font-weight="bold" textLength="960">Windows 10 | 11</text>
+  </g>
+</svg>
