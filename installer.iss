@@ -4,7 +4,7 @@
 ; ==============================================================================
 
 #ifndef AppVersion
-  #define AppVersion "3.7"
+  #define AppVersion "3.8"
 #endif
 
 #define MyAppName "Lol Account Switcher"

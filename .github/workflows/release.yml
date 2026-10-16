@@ -53,6 +53,7 @@ jobs:
           using System.IO;
           using System.Reflection;
           using System.Runtime.InteropServices;
+          using System.Threading;
 
           [assembly: AssemblyTitle("Lol Account Switcher")]
           [assembly: AssemblyDescription("Riot & LoL Profile Switcher and System Optimizer")]
@@ -84,6 +85,15 @@ jobs:
 
               [STAThread]
               static void Main(string[] args) {
+                  // 1. Eger uygulama calisiyorsa (saatin yaninda / tepside olsa bile) sinyal gonder ve one getir
+                  try {
+                      using (var ev = EventWaitHandle.OpenExisting("Local\\LolAccountSwitcher_Wakeup_Event_2026")) {
+                          ev.Set();
+                          return;
+                      }
+                  } catch { }
+
+                  // 2. Fallback: Win32 pencere arama
                   int currentPid = Process.GetCurrentProcess().Id;
                   Process[] existing = Process.GetProcessesByName("LolAccountSwitcher");
                   foreach (var proc in existing) {
@@ -99,6 +109,7 @@ jobs:
                       }
                   }
 
+                  // 3. Hic calisan yoksa hedef exe'yi baslat
                   string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                   string targetExe = Path.Combine(baseDir, "bin", "LolAccountSwitcher.exe");
                   if (File.Exists(targetExe)) {

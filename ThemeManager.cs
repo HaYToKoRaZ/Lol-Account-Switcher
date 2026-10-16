@@ -102,36 +102,36 @@ namespace LolAccountSwitcher
             else
             {
                 // ==========================================
-                // AÇIK PILTOVER / GÜMÜŞ TEMASI (Light Piltover)
+                // AÇIK PILTOVER / GÜMÜŞ TEMASI (Light Piltover - Refined Hextech)
                 // ==========================================
-                SetBrush(res, "BrushBgDeep", "#F3F6F9");
+                SetBrush(res, "BrushBgDeep", "#F4F6F9");
                 SetBrush(res, "BrushBgCard", "#FFFFFF");
-                SetBrush(res, "BrushBgBadge", "#E2E8F0");
-                SetBrush(res, "BrushBgAvatar", "#E5EBF2");
-                SetBrush(res, "BrushBorderSubtle", "#CBD5E1");
-                SetBrush(res, "BrushBorderHover", "#A1701A");
-                SetBrush(res, "BrushTextPrimary", "#0F172A");
-                SetBrush(res, "BrushTextMuted", "#475569");
-                SetBrush(res, "BrushHextechGold", "#A1701A");
-                SetBrush(res, "BrushHextechGoldBright", "#784B06");
-                SetBrush(res, "BrushHextechCyan", "#0D9488");
-                SetBrush(res, "BrushHextechCyanGlow", "#047857");
-                SetBrush(res, "BrushToolBtnBg", "#E2E8F0");
-                SetBrush(res, "BrushToolBtnHover", "#CBD5E1");
-                SetBrush(res, "BrushSwitchBtnBg", "#E0F2FE");
-                SetBrush(res, "BrushSwitchBtnHover", "#BAE6FD");
-                SetBrush(res, "BrushSwitchBtnText", "#0369A1");
-                SetBrush(res, "BrushSwitchBtnBorder", "#0284C7");
-                SetBrush(res, "BrushBackupBtnBg", "#FEF9C3");
-                SetBrush(res, "BrushBackupBtnHover", "#FEF08A");
-                SetBrush(res, "BrushBackupBtnText", "#854D0E");
-                SetBrush(res, "BrushBackupBtnBorder", "#CA8A04");
-                SetBrush(res, "BrushDanger", "#DC2626");
-                SetBrush(res, "BrushDangerBg", "#FEE2E2");
-                SetBrush(res, "BrushDangerHover", "#FECACA");
-                SetBrush(res, "BrushDangerText", "#991B1B");
+                SetBrush(res, "BrushBgBadge", "#E9EFF6");
+                SetBrush(res, "BrushBgAvatar", "#DFE7F0");
+                SetBrush(res, "BrushBorderSubtle", "#CBD7E6");
+                SetBrush(res, "BrushBorderHover", "#A67C37");
+                SetBrush(res, "BrushTextPrimary", "#0B1626");
+                SetBrush(res, "BrushTextMuted", "#4F637A");
+                SetBrush(res, "BrushHextechGold", "#A67C37");
+                SetBrush(res, "BrushHextechGoldBright", "#7A5416");
+                SetBrush(res, "BrushHextechCyan", "#02848A");
+                SetBrush(res, "BrushHextechCyanGlow", "#016368");
+                SetBrush(res, "BrushToolBtnBg", "#E9EFF6");
+                SetBrush(res, "BrushToolBtnHover", "#DCE5F0");
+                SetBrush(res, "BrushSwitchBtnBg", "#E0F4F5");
+                SetBrush(res, "BrushSwitchBtnHover", "#CCEFF1");
+                SetBrush(res, "BrushSwitchBtnText", "#01565A");
+                SetBrush(res, "BrushSwitchBtnBorder", "#02848A");
+                SetBrush(res, "BrushBackupBtnBg", "#FBF3E3");
+                SetBrush(res, "BrushBackupBtnHover", "#F5E7CA");
+                SetBrush(res, "BrushBackupBtnText", "#6E4F18");
+                SetBrush(res, "BrushBackupBtnBorder", "#A67C37");
+                SetBrush(res, "BrushDanger", "#D12A45");
+                SetBrush(res, "BrushDangerBg", "#FEECEE");
+                SetBrush(res, "BrushDangerHover", "#FCD4D8");
+                SetBrush(res, "BrushDangerText", "#9E152B");
                 SetBrush(res, "BrushInputBg", "#FFFFFF");
-                SetBrush(res, "BrushInputText", "#0F172A");
+                SetBrush(res, "BrushInputText", "#0B1626");
             }
 
             // Sistem tepsisi sağ tık menüsünün temasını ve renklerini anında güncelle

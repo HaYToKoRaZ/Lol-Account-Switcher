@@ -182,6 +182,9 @@ namespace LolAccountSwitcher
                 {
                     _mainWindow.WindowState = WindowState.Normal;
                 }
+                _mainWindow.ShowInTaskbar = true;
+                _mainWindow.Topmost = true;
+                _mainWindow.Topmost = false;
                 _mainWindow.Activate();
                 _mainWindow.Focus();
             });

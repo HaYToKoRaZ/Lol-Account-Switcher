@@ -17,10 +17,10 @@
     <Copyright>Copyright © 2026 HaYTooL / HaYTo</Copyright>
     <PackageProjectUrl>https://haytokoraz.github.io/Lol-Account-Switcher/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HaYToKoRaZ/Lol-Account-Switcher</RepositoryUrl>
-    <Version>3.7</Version>
-    <AssemblyVersion>3.7.0.0</AssemblyVersion>
-    <FileVersion>3.7.0.0</FileVersion>
-    <InformationalVersion>3.7</InformationalVersion>
+    <Version>3.8</Version>
+    <AssemblyVersion>3.8.0.0</AssemblyVersion>
+    <FileVersion>3.8.0.0</FileVersion>
+    <InformationalVersion>3.8</InformationalVersion>
     <Trademark>HaYTooL</Trademark>
     <OutputPath>..\build\bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

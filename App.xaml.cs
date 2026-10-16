@@ -10,6 +10,10 @@ namespace LolAccountSwitcher
     public partial class App : System.Windows.Application
     {
         private static Mutex? _singleInstanceMutex;
+        private static EventWaitHandle? _wakeupEvent;
+        private static volatile bool _keepListening = true;
+        private const string MutexName = "Local\\LolAccountSwitcher_SingleInstance_Mutex_2026";
+        private const string EventName = "Local\\LolAccountSwitcher_Wakeup_Event_2026";
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -27,8 +31,7 @@ namespace LolAccountSwitcher
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            const string mutexName = "Local\\LolAccountSwitcher_SingleInstance_Mutex_2026";
-            _singleInstanceMutex = new Mutex(true, mutexName, out bool isNewInstance);
+            _singleInstanceMutex = new Mutex(true, MutexName, out bool isNewInstance);
 
             if (!isNewInstance)
             {
@@ -36,6 +39,34 @@ namespace LolAccountSwitcher
                 Shutdown();
                 return;
             }
+
+            try
+            {
+                _wakeupEvent = new EventWaitHandle(false, EventResetMode.AutoReset, EventName);
+                var listenerThread = new Thread(() =>
+                {
+                    while (_keepListening)
+                    {
+                        try
+                        {
+                            if (_wakeupEvent.WaitOne())
+                            {
+                                if (!_keepListening) break;
+                                Current?.Dispatcher?.Invoke(() =>
+                                {
+                                    TrayService.ShowMainWindow();
+                                });
+                            }
+                        }
+                        catch { break; }
+                    }
+                })
+                {
+                    IsBackground = true
+                };
+                listenerThread.Start();
+            }
+            catch { }
 
             try
             {
@@ -59,6 +90,14 @@ namespace LolAccountSwitcher
 
         private static void BringExistingInstanceToFront()
         {
+            try
+            {
+                using var ev = EventWaitHandle.OpenExisting(EventName);
+                ev.Set();
+                return;
+            }
+            catch { }
+
             try
             {
                 int currentPid = Process.GetCurrentProcess().Id;
@@ -88,6 +127,9 @@ namespace LolAccountSwitcher
         {
             try
             {
+                _keepListening = false;
+                _wakeupEvent?.Set();
+                _wakeupEvent?.Dispose();
                 _singleInstanceMutex?.ReleaseMutex();
                 _singleInstanceMutex?.Dispose();
             }
