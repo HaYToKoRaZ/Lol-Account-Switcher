@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lol Account Switcher • Riot & LoL Profil Değiştirici ve Sistem Optimizatörü</title>
-  <meta name="description" content="League of Legends ve Riot Games hesapları arasında saliseler içinde geçiş yapın. Doğrudan Win32 API ile 144Hz ekran tazeleme ve Nihai Güç planını otomatik aktifleştirin. API kotasız, %100 yerel ve güvenli.">
-  <meta name="keywords" content="Lol Account Switcher, League of Legends hesap değiştirici, Riot profil yöneticisi, LoL 144Hz optimizasyonu, Riot çoklu hesap, HaYTooL">
-  <meta name="author" content="HaYTooL / HaYTo">
+  <title>Lol Account Switcher - Hızlı LoL Profil Değiştirici</title>
+  <meta name="description" content="League of Legends ve Riot Games hesapları arasında anında geçiş yapın. 144Hz ekran ve güç planı optimizasyonu. Ücretsiz, açık kaynak ve %100 yerel.">
+  <meta name="author" content="HaYTo">
+  <meta name="publisher" content="HaYTooL">
   <meta name="robots" content="index, follow">
 
   <!-- Canonical & Alternate Language URLs -->
@@ -18,19 +18,23 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://haytokoraz.github.io/Lol-Account-Switcher/tr/">
-  <meta property="og:title" content="Lol Account Switcher • Riot & LoL Profil Değiştirici">
-  <meta property="og:description" content="Riot & LoL hesapları arasında saliseler içinde geçiş yapın. 144Hz ekran tazeleme ve Nihai Güç planı desteği. Ücretsiz, açık kaynak ve güvenli.">
+  <meta property="og:title" content="Lol Account Switcher - Hızlı LoL Profil Değiştirici">
+  <meta property="og:description" content="League of Legends ve Riot Games hesapları arasında anında geçiş yapın. 144Hz ekran ve güç planı optimizasyonu. Ücretsiz, açık kaynak ve %100 yerel.">
   <meta property="og:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
 
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@HaYTo">
-  <meta name="twitter:title" content="Lol Account Switcher • Riot & LoL Profil Değiştirici">
-  <meta name="twitter:description" content="Safkan C# .NET 10 ve doğrudan Win32 API'leri ile geliştirilmiş yüksek performanslı LoL profil değiştirici.">
+  <meta name="twitter:title" content="Lol Account Switcher - Hızlı LoL Profil Değiştirici">
+  <meta name="twitter:description" content="League of Legends ve Riot Games hesapları arasında anında geçiş yapın. 144Hz ekran ve güç planı optimizasyonu. Ücretsiz, açık kaynak ve %100 yerel.">
   <meta name="twitter:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
 
-  <!-- Favicon -->
-  <link rel="icon" href="../app.ico">
+  <!-- Favicon, Apple Touch Icon & Web Manifest -->
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="icon" type="image/x-icon" href="../app.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="manifest" href="../site.webmanifest">
+  <meta name="theme-color" content="#070C14">
   <link rel="stylesheet" href="../style.css">
 
   <!-- Schema.org SoftwareApplication JSON-LD -->
@@ -75,13 +79,36 @@
         <a href="#features">Özellikler</a>
         <a href="#controls">Kontrol Rehberi</a>
         <a href="#architecture">Mimari</a>
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="#feedback">Geri Bildirim</a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="nofollow noopener noreferrer">GitHub</a>
       </div>
 
       <div class="nav-actions">
-        <!-- Dil Seçimi: TR Aktif, EN Bağlantısı -->
-        <a href="./" id="langTR" class="pill-btn lang-btn active" title="Mevcut Dil: Türkçe">🇹🇷 TR</a>
-        <a href="../" id="langEN" class="pill-btn lang-btn" title="Switch to English">🇬🇧 EN</a>
+        <!-- Birleşik Dil Seçimi: TR Aktif, EN Bağlantısı (Vektörel Bayraklar) -->
+        <div class="lang-switch-group" role="group" aria-label="Dil Seçimi">
+          <a href="./" id="langTR" class="lang-btn active" title="Mevcut Dil: Türkçe">
+            <svg class="flag-icon" viewBox="0 0 30 20" aria-hidden="true">
+              <rect width="30" height="20" fill="#E30A17" rx="2"/>
+              <circle cx="11.5" cy="10" r="5" fill="#FFFFFF"/>
+              <circle cx="12.5" cy="10" r="4" fill="#E30A17"/>
+              <polygon points="17,10 15.5,10.8 16.1,9.2 14.8,8.2 16.4,8.2 17,6.8 17.6,8.2 19.2,8.2 17.9,9.2 18.5,10.8" fill="#FFFFFF"/>
+            </svg>
+            <span>TR</span>
+          </a>
+          <a href="../" id="langEN" class="lang-btn" title="Switch to English">
+            <svg class="flag-icon" viewBox="0 0 30 20" aria-hidden="true">
+              <clipPath id="ukClipTr"><rect width="30" height="20" rx="2"/></clipPath>
+              <g clip-path="url(#ukClipTr)">
+                <rect width="30" height="20" fill="#012169"/>
+                <path d="M0,0 L30,20 M30,0 L0,20" stroke="#FFFFFF" stroke-width="3.5"/>
+                <path d="M0,0 L30,20 M30,0 L0,20" stroke="#C8102E" stroke-width="1.8"/>
+                <path d="M15,0 L15,20 M0,10 L30,10" stroke="#FFFFFF" stroke-width="5.5"/>
+                <path d="M15,0 L15,20 M0,10 L30,10" stroke="#C8102E" stroke-width="3"/>
+              </g>
+            </svg>
+            <span>EN</span>
+          </a>
+        </div>
 
         <!-- Dinamik Tema Seçici -->
         <button id="themeToggle" class="pill-btn theme-toggle-btn" aria-label="Temayı Değiştir" title="Koyu / Açık Tema">🌓</button>
@@ -104,13 +131,13 @@
         </p>
 
         <div class="hero-ctas">
-          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary" id="downloadBtn">
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" target="_blank" rel="nofollow noopener noreferrer" class="btn-primary" id="downloadBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
             </svg>
             Kurulumu İndir (.exe)
           </a>
-          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-secondary">
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" target="_blank" rel="nofollow noopener noreferrer" class="btn-secondary">
             📦 Taşınabilir Sürüm (.zip)
           </a>
         </div>
@@ -450,7 +477,7 @@
           <div class="spec-item">
             <div class="spec-dot"></div>
             <div class="spec-content">
-              <h4>Yerel Windows Mimarisi</h4>
+              <h3>Yerel Windows Mimarisi</h3>
               <p>Electron veya Chromium ağırlığı yoktur; doğrudan safkan .NET 10 WPF ve Win32 API'leri ile çalışır.</p>
             </div>
           </div>
@@ -458,7 +485,7 @@
           <div class="spec-item">
             <div class="spec-dot"></div>
             <div class="spec-content">
-              <h4>Yerel Medya & Çevrimdışı Kullanım</h4>
+              <h3>Yerel Medya &amp; Çevrimdışı Kullanım</h3>
               <p>Tüm 11 lig madalyası ve ses efektleri yerel medya klasöründe saklanır; internet olmasa dahi anında yüklenir.</p>
             </div>
           </div>
@@ -466,7 +493,7 @@
           <div class="spec-item">
             <div class="spec-dot"></div>
             <div class="spec-content">
-              <h4>AES-256 & DPAPI Kriptografi</h4>
+              <h3>AES-256 &amp; DPAPI Kriptografi</h3>
               <p>Hesap verileriniz Windows Veri Koruma API'si (DPAPI) ve AES-256 ile yerel olarak şifrelenir, dışarıya sızdırılamaz.</p>
             </div>
           </div>
@@ -486,6 +513,43 @@
       </div>
     </section>
 
+    <!-- FEEDBACK & COMMUNITY -->
+    <section id="feedback" class="feedback-section">
+      <div class="section-tag">Topluluk & Geri Bildirim</div>
+      <h2 class="section-title">Lol Account Switcher'ı Birlikte Geliştirelim</h2>
+      <p class="section-subtitle">
+        Bir hata mı fark ettiniz, yeni bir özellik mi öneriyorsunuz veya geri bildiriminiz mi var? Deneyimi mükemmelleştirmek için her önerinizi dinliyoruz.
+      </p>
+
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <div>
+            <div class="feedback-icon-box">🐛</div>
+            <h3>Hata Bildirimi & Özellik Talebi</h3>
+            <p>
+              GitHub üzerinde bir issue (talep) açarak karşılaştığınız sorunları bildirebilir veya yeni sürüm önerilerinizi iletebilirsiniz.
+            </p>
+          </div>
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/issues" target="_blank" rel="nofollow noopener noreferrer" class="feedback-btn feedback-btn-primary">
+            GitHub Talebi Aç ↗
+          </a>
+        </div>
+
+        <div class="feedback-card">
+          <div>
+            <div class="feedback-icon-box">💬</div>
+            <h3>Doğrudan İletişim & Öneriler</h3>
+            <p>
+              Bireysel sorularınız, iş birliği veya doğrudan geliştiriciye iletmek istediğiniz düşünceleriniz için e-posta gönderebilirsiniz.
+            </p>
+          </div>
+          <a href="mailto:korazhayto@gmail.com?subject=Lol%20Account%20Switcher%20Geri%20Bildirim" class="feedback-btn feedback-btn-secondary">
+            E-Posta Gönder ✉
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- DOWNLOAD CTA -->
     <section class="cta-banner">
       <h2 style="font-size: 2.2rem; margin-bottom: 12px;">LoL Deneyiminizi Bir Üst Seviyeye Taşıyın</h2>
@@ -494,10 +558,10 @@
       </p>
 
       <div class="cta-buttons">
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" target="_blank" rel="nofollow noopener noreferrer" class="btn-primary">
           Kurulumu İndir (.exe)
         </a>
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="nofollow noopener noreferrer" class="btn-secondary">
           GitHub'da İncele ★
         </a>
       </div>
@@ -508,14 +572,15 @@
   <footer>
     <div>
       Yayıncı: <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer"><strong>HaYTooL</strong></a> • 
-      Geliştirici: <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer"><strong>HaYTo</strong></a> • 
+      Geliştirici: <a href="https://x.com/HaYTo" target="_blank" rel="nofollow noopener noreferrer"><strong>HaYTo</strong></a> • 
       İletişim: <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
     </div>
 
     <div class="footer-links">
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/issues" target="_blank" rel="nofollow noopener noreferrer">💬 Geri Bildirim</a>
       <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer">🌐 HaYTooL Portalı</a>
-      <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer">𝕏 (@HaYTo)</a>
-      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub Deposu</a>
+      <a href="https://x.com/HaYTo" target="_blank" rel="nofollow noopener noreferrer">𝕏 (@HaYTo)</a>
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="nofollow noopener noreferrer">GitHub Deposu</a>
     </div>
   </footer>
 

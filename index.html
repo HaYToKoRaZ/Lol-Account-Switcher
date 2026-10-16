@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lol Account Switcher • Riot & LoL Profile Switcher and System Optimizer</title>
-  <meta name="description" content="Seamless Riot Games and League of Legends account switcher with direct Win32 API display refresh rate (144Hz) and ultimate power plan optimization. Zero API keys, 100% offline.">
-  <meta name="keywords" content="Lol Account Switcher, League of Legends account switcher, Riot profile manager, LoL 144Hz optimizer, Riot Games multi account, HaYTooL">
-  <meta name="author" content="HaYTooL / HaYTo">
+  <title>Lol Account Switcher - Fast LoL Profile Switcher</title>
+  <meta name="description" content="Seamless Riot &amp; League of Legends profile switcher with direct Win32 144Hz display and power plan optimization. Free, open-source, and 100% offline.">
+  <meta name="author" content="HaYTo">
+  <meta name="publisher" content="HaYTooL">
   <meta name="robots" content="index, follow">
 
   <!-- Canonical & Alternate Language URLs -->
@@ -18,19 +18,23 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://haytokoraz.github.io/Lol-Account-Switcher/">
-  <meta property="og:title" content="Lol Account Switcher • Riot & LoL Profile Switcher">
-  <meta property="og:description" content="Switch Riot & LoL accounts in milliseconds with automatic 144Hz display and power plan optimization. Free, open-source, and secure.">
+  <meta property="og:title" content="Lol Account Switcher - Fast LoL Profile Switcher">
+  <meta property="og:description" content="Seamless Riot &amp; League of Legends profile switcher with direct Win32 144Hz display and power plan optimization. Free, open-source, and 100% offline.">
   <meta property="og:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
 
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@HaYTo">
-  <meta name="twitter:title" content="Lol Account Switcher • Riot & LoL Profile Switcher">
-  <meta name="twitter:description" content="Switch League of Legends accounts in milliseconds. Native C# .NET 10, direct Win32 APIs, zero lag.">
+  <meta name="twitter:title" content="Lol Account Switcher - Fast LoL Profile Switcher">
+  <meta name="twitter:description" content="Seamless Riot &amp; League of Legends profile switcher with direct Win32 144Hz display and power plan optimization. Free, open-source, and 100% offline.">
   <meta name="twitter:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
 
-  <!-- Favicon -->
-  <link rel="icon" href="app.ico">
+  <!-- Favicon, Apple Touch Icon & Web Manifest -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/x-icon" href="app.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#070C14">
   <link rel="stylesheet" href="style.css">
 
   <!-- Schema.org SoftwareApplication JSON-LD -->
@@ -75,13 +79,36 @@
         <a href="#features">Features</a>
         <a href="#controls">Controls Guide</a>
         <a href="#architecture">Architecture</a>
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="#feedback">Feedback</a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="nofollow noopener noreferrer">GitHub</a>
       </div>
 
       <div class="nav-actions">
-        <!-- Language Switcher: Active EN, Link to TR -->
-        <a href="tr/" id="langTR" class="pill-btn lang-btn" title="Türkçe Sayfaya Geç">🇹🇷 TR</a>
-        <a href="./" id="langEN" class="pill-btn lang-btn active" title="Current: English">🇬🇧 EN</a>
+        <!-- Unified Language Switcher: Active EN, Link to TR with Vector Flags -->
+        <div class="lang-switch-group" role="group" aria-label="Language Selector">
+          <a href="tr/" id="langTR" class="lang-btn" title="Türkçe">
+            <svg class="flag-icon" viewBox="0 0 30 20" aria-hidden="true">
+              <rect width="30" height="20" fill="#E30A17" rx="2"/>
+              <circle cx="11.5" cy="10" r="5" fill="#FFFFFF"/>
+              <circle cx="12.5" cy="10" r="4" fill="#E30A17"/>
+              <polygon points="17,10 15.5,10.8 16.1,9.2 14.8,8.2 16.4,8.2 17,6.8 17.6,8.2 19.2,8.2 17.9,9.2 18.5,10.8" fill="#FFFFFF"/>
+            </svg>
+            <span>TR</span>
+          </a>
+          <a href="./" id="langEN" class="lang-btn active" title="English">
+            <svg class="flag-icon" viewBox="0 0 30 20" aria-hidden="true">
+              <clipPath id="ukClip"><rect width="30" height="20" rx="2"/></clipPath>
+              <g clip-path="url(#ukClip)">
+                <rect width="30" height="20" fill="#012169"/>
+                <path d="M0,0 L30,20 M30,0 L0,20" stroke="#FFFFFF" stroke-width="3.5"/>
+                <path d="M0,0 L30,20 M30,0 L0,20" stroke="#C8102E" stroke-width="1.8"/>
+                <path d="M15,0 L15,20 M0,10 L30,10" stroke="#FFFFFF" stroke-width="5.5"/>
+                <path d="M15,0 L15,20 M0,10 L30,10" stroke="#C8102E" stroke-width="3"/>
+              </g>
+            </svg>
+            <span>EN</span>
+          </a>
+        </div>
 
         <!-- Dynamic Theme Switcher -->
         <button id="themeToggle" class="pill-btn theme-toggle-btn" aria-label="Toggle Dark and Light theme" title="Toggle Theme">🌓</button>
@@ -104,13 +131,13 @@
         </p>
 
         <div class="hero-ctas">
-          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary" id="downloadBtn">
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" target="_blank" rel="nofollow noopener noreferrer" class="btn-primary" id="downloadBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
             </svg>
             Download Setup (.exe)
           </a>
-          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-secondary">
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" target="_blank" rel="nofollow noopener noreferrer" class="btn-secondary">
             📦 Portable Package (.zip)
           </a>
         </div>
@@ -450,7 +477,7 @@
           <div class="spec-item">
             <div class="spec-dot"></div>
             <div class="spec-content">
-              <h4>Native WinExe Architecture</h4>
+              <h3>Native WinExe Architecture</h3>
               <p>Pure C# compiled with .NET 10. No Electron, no Chromium overhead, and no web wrappers.</p>
             </div>
           </div>
@@ -458,7 +485,7 @@
           <div class="spec-item">
             <div class="spec-dot"></div>
             <div class="spec-content">
-              <h4>Local Media & Offline Readiness</h4>
+              <h3>Local Media &amp; Offline Readiness</h3>
               <p>All 11 tier emblems (Unranked to Challenger) and audio chimes are bundled locally for instant offline rendering.</p>
             </div>
           </div>
@@ -466,7 +493,7 @@
           <div class="spec-item">
             <div class="spec-dot"></div>
             <div class="spec-content">
-              <h4>AES-256 & DPAPI Security</h4>
+              <h3>AES-256 &amp; DPAPI Security</h3>
               <p>User profile credentials are encrypted locally using Windows Data Protection API (DPAPI) and format-proof AES-256.</p>
             </div>
           </div>
@@ -486,6 +513,43 @@
       </div>
     </section>
 
+    <!-- FEEDBACK & COMMUNITY -->
+    <section id="feedback" class="feedback-section">
+      <div class="section-tag">Community & Feedback</div>
+      <h2 class="section-title">Shape the Future of Lol Account Switcher</h2>
+      <p class="section-subtitle">
+        Found a bug, have a feature request, or want to suggest improvements? We listen to every piece of feedback to make this the ultimate LoL tool.
+      </p>
+
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <div>
+            <div class="feedback-icon-box">🐛</div>
+            <h3>Bug Reports & Feature Requests</h3>
+            <p>
+              Open an issue on GitHub to report crashes, request new features, or suggest enhancements for future releases.
+            </p>
+          </div>
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/issues" target="_blank" rel="nofollow noopener noreferrer" class="feedback-btn feedback-btn-primary">
+            Open GitHub Issues ↗
+          </a>
+        </div>
+
+        <div class="feedback-card">
+          <div>
+            <div class="feedback-icon-box">💬</div>
+            <h3>Direct Feedback & Inquiries</h3>
+            <p>
+              Have a private question, partnership inquiry, or direct feedback? Contact the developer directly via email.
+            </p>
+          </div>
+          <a href="mailto:korazhayto@gmail.com?subject=Lol%20Account%20Switcher%20Feedback" class="feedback-btn feedback-btn-secondary">
+            Send an Email ✉
+          </a>
+        </div>
+      </div>
+    </section>
+
     <!-- DOWNLOAD CTA -->
     <section class="cta-banner">
       <h2 style="font-size: 2.2rem; margin-bottom: 12px;">Ready To Elevate Your League Workflow?</h2>
@@ -494,10 +558,10 @@
       </p>
 
       <div class="cta-buttons">
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" target="_blank" rel="nofollow noopener noreferrer" class="btn-primary">
           Download Installer (.exe)
         </a>
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="nofollow noopener noreferrer" class="btn-secondary">
           View on GitHub ★
         </a>
       </div>
@@ -508,14 +572,15 @@
   <footer>
     <div>
       Publisher: <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer"><strong>HaYTooL</strong></a> • 
-      Developer: <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer"><strong>HaYTo</strong></a> • 
+      Developer: <a href="https://x.com/HaYTo" target="_blank" rel="nofollow noopener noreferrer"><strong>HaYTo</strong></a> • 
       Contact: <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
     </div>
 
     <div class="footer-links">
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/issues" target="_blank" rel="nofollow noopener noreferrer">💬 Feedback</a>
       <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer">🌐 HaYTooL Portal</a>
-      <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer">𝕏 (@HaYTo)</a>
-      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
+      <a href="https://x.com/HaYTo" target="_blank" rel="nofollow noopener noreferrer">𝕏 (@HaYTo)</a>
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="nofollow noopener noreferrer">GitHub Repository</a>
     </div>
   </footer>
 
