@@ -30,7 +30,7 @@
                     <TextBlock Text="⚙️" FontSize="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
                     <TextBlock x:Name="TxtSettingsHeader" Text="Ayarlar &amp; Tercihler" Foreground="{DynamicResource BrushTextPrimary}" FontSize="17" FontWeight="Bold" VerticalAlignment="Center"/>
                     <Border Background="{DynamicResource BrushBgBadge}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Margin="10,0,0,0" Padding="6,2" VerticalAlignment="Center">
-                        <TextBlock Text="v3.6" Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" FontWeight="SemiBold"/>
+                        <TextBlock Text="v3.7" Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" FontWeight="SemiBold"/>
                     </Border>
                 </StackPanel>
                 <Button Content="✕" HorizontalAlignment="Right" Style="{StaticResource HexDangerBtnStyle}" Width="28" Height="26" Padding="0" Click="BtnClose_Click"/>

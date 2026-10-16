@@ -17,10 +17,10 @@
     <Copyright>Copyright © 2026 HaYTooL / HaYTo</Copyright>
     <PackageProjectUrl>https://haytokoraz.github.io/Lol-Account-Switcher/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HaYToKoRaZ/Lol-Account-Switcher</RepositoryUrl>
-    <Version>3.6</Version>
-    <AssemblyVersion>3.6.0.0</AssemblyVersion>
-    <FileVersion>3.6.0.0</FileVersion>
-    <InformationalVersion>3.6</InformationalVersion>
+    <Version>3.7</Version>
+    <AssemblyVersion>3.7.0.0</AssemblyVersion>
+    <FileVersion>3.7.0.0</FileVersion>
+    <InformationalVersion>3.7</InformationalVersion>
     <Trademark>HaYTooL</Trademark>
     <OutputPath>..\build\bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -39,17 +39,11 @@
     <Resource Include="logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="logo.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
   <ItemGroup>
     <None Include="LolAccountSwitcher.ini">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-    <None Include="sounds\**\*.*">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

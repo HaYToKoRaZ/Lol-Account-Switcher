@@ -66,7 +66,7 @@
                     </Border>
                     <TextBlock x:Name="TxtAppTitle" Text="Lol Account Switcher" Foreground="{DynamicResource BrushTextPrimary}" FontSize="15.5" FontWeight="Bold" VerticalAlignment="Center"/>
                     <Border Background="{DynamicResource BrushBgBadge}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Margin="8,0,0,0" Padding="5,2" VerticalAlignment="Center">
-                        <TextBlock Text="v3.6" Foreground="{DynamicResource BrushTextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                        <TextBlock Text="v3.7" Foreground="{DynamicResource BrushTextMuted}" FontSize="10" FontWeight="SemiBold"/>
                     </Border>
                 </StackPanel>
 
