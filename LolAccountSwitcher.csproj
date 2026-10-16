@@ -6,24 +6,37 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>LolAccountSwitcher</AssemblyName>
     <RootNamespace>LolAccountSwitcher</RootNamespace>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <Company>HaYTooL</Company>
     <Authors>HaYTo</Authors>
     <Product>Lol Account Switcher</Product>
-    <Description>Riot &amp; LoL Profil Değiştirici ve Sistem Optimizatörü</Description>
+    <Description>Riot &amp; LoL Profile Switcher and System Optimizer</Description>
     <Copyright>Copyright © 2026 HaYTooL / HaYTo</Copyright>
     <PackageProjectUrl>https://haytokoraz.github.io/Lol-Account-Switcher/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HaYToKoRaZ/Lol-Account-Switcher</RepositoryUrl>
-    <Version>0.2.0</Version>
-    <OutputPath>..\build\</OutputPath>
+    <Version>3.6</Version>
+    <AssemblyVersion>3.6.0.0</AssemblyVersion>
+    <FileVersion>3.6.0.0</FileVersion>
+    <InformationalVersion>3.6</InformationalVersion>
+    <Trademark>HaYTooL</Trademark>
+    <OutputPath>..\build\bin\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="app.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="logo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="logo.jpg">
@@ -33,7 +46,7 @@
 
   <ItemGroup>
     <None Include="LolAccountSwitcher.ini">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Include="sounds\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

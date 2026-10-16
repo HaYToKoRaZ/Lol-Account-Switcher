@@ -1,0 +1,92 @@
+<Window x:Class="LolAccountSwitcher.AccountEditWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Hesap Bilgilerini Düzenle"
+        Width="460"
+        SizeToContent="Height"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        FontFamily="Segoe UI"
+        ShowInTaskbar="False"
+        MouseDown="Window_MouseDown">
+
+    <Border Background="{DynamicResource BrushBgDeep}" 
+            BorderBrush="{DynamicResource BrushHextechGold}" 
+            BorderThickness="1.5" 
+            CornerRadius="10">
+        <Border.Effect>
+            <DropShadowEffect Color="#C8AA6E" BlurRadius="22" ShadowDepth="0" Opacity="0.5"/>
+        </Border.Effect>
+
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <!-- 0: Header -->
+                <RowDefinition Height="Auto"/>
+                <!-- 1: Inputs -->
+                <RowDefinition Height="Auto"/>
+                <!-- 2: Actions / Buttons -->
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ÜST BAŞLIK -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock x:Name="TxtTitle" Text="Hesap Bilgilerini Düzenle" Foreground="{DynamicResource BrushHextechGold}" FontSize="15" FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtAccountHeader" Text="Sihirdar Adı • Sunucu" Foreground="{DynamicResource BrushTextMuted}" FontSize="11.5" Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <!-- Kapat (✕) -->
+                <Button Grid.Column="1" Content="✕" Style="{StaticResource HexDangerBtnStyle}" Width="26" Height="26" Padding="0" VerticalAlignment="Top" Click="BtnCancel_Click"/>
+            </Grid>
+
+            <!-- FORM GİRDİ ALANLARI -->
+            <StackPanel Grid.Row="1">
+                <!-- 1. BAĞLI E-POSTA / İPUCU & SANSÜRLE SEÇENEĞİ -->
+                <Grid Margin="0,0,0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" x:Name="TxtEmailLabel" Text="Bağlı E-Posta / Mail İpucu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    
+                    <CheckBox Grid.Column="1" x:Name="ChkMaskEmail" Content="E-postayı Sansürle (*)" Foreground="{DynamicResource BrushHextechGold}" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" Cursor="Hand"/>
+                </Grid>
+                <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="5" Margin="0,0,0,4">
+                    <Grid>
+                        <TextBox x:Name="TxtEmail" Background="Transparent" Foreground="{DynamicResource BrushTextPrimary}" 
+                                 BorderThickness="0" Padding="8,6" FontSize="12" 
+                                 CaretBrush="{DynamicResource BrushHextechGold}"/>
+                    </Grid>
+                </Border>
+                <TextBlock x:Name="TxtEmailSub" Text="Şifre sıfırlama veya hesap hatırlatma için kullanılır (Örn: koraz@gmail.com veya Eski Hotmail)" 
+                           Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" TextWrapping="Wrap" Margin="0,0,0,14"/>
+
+                <!-- 2. HESAP NOTU -->
+                <TextBlock x:Name="TxtNoteLabel" Text="Hesap Notu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="5" Margin="0,0,0,4">
+                    <Grid>
+                        <TextBox x:Name="TxtNote" Background="Transparent" Foreground="{DynamicResource BrushTextPrimary}" 
+                                 BorderThickness="0" Padding="8,6" FontSize="12" 
+                                 CaretBrush="{DynamicResource BrushHextechGold}"/>
+                    </Grid>
+                </Border>
+                <TextBlock x:Name="TxtNoteSub" Text="Hesabın amacı veya durumu (Örn: Main Mid, Smurf, Clash takımı, 3. iade hakkı duruyor...)" 
+                           Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" TextWrapping="Wrap" Margin="0,0,0,16"/>
+            </StackPanel>
+
+            <!-- ALT BUTONLAR -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,4,0,0">
+                <Button x:Name="BtnCancel" Content="İptal" Style="{StaticResource HexToolBtnStyle}" Padding="16,6" FontSize="12" Margin="0,0,8,0" Click="BtnCancel_Click"/>
+                <Button x:Name="BtnSave" Content="Kaydet ✓" Style="{StaticResource HexAutoAddBtnStyle}" Padding="18,6" FontSize="12" FontWeight="Bold" Click="BtnSave_Click"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

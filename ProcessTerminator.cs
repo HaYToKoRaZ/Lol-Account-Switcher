@@ -34,7 +34,12 @@ namespace LolAccountSwitcher
                     var procs = Process.GetProcessesByName(procName);
                     foreach (var p in procs)
                     {
-                        try { p.Kill(); } catch { }
+                        try 
+                        { 
+                            p.Kill(); 
+                            p.WaitForExit(1000); 
+                        } 
+                        catch { }
                     }
                 }
                 catch { }
@@ -66,7 +71,12 @@ namespace LolAccountSwitcher
                             if (!string.IsNullOrEmpty(filePath) &&
                                 filePath.StartsWith(riotPath, StringComparison.OrdinalIgnoreCase))
                             {
-                                try { p.Kill(); } catch { }
+                                try 
+                                { 
+                                    p.Kill(); 
+                                    p.WaitForExit(1000); 
+                                } 
+                                catch { }
                             }
                         }
                         catch { }
@@ -75,8 +85,8 @@ namespace LolAccountSwitcher
                 catch { }
             }
 
-            // 3. Dosya kilitlerinin Windows kernel tarafından bırakılması için asenkron bekleme
-            await Task.Delay(350);
+            // 3. Dosya kilitlerinin Windows kernel tarafından tamamen bırakılması için kısa bekleme
+            await Task.Delay(400);
         }
     }
 }

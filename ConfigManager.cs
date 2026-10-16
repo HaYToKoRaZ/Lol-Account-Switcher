@@ -6,8 +6,28 @@ namespace LolAccountSwitcher
 {
     public static class ConfigManager
     {
-        public static readonly string IniPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LolAccountSwitcher.ini");
+        public static readonly string IniPath = ResolveConfigPath();
         private static readonly Dictionary<string, Dictionary<string, string>> Data = new(StringComparer.OrdinalIgnoreCase);
+
+        private static string ResolveConfigPath()
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\', '/');
+            string parentDir = Directory.GetParent(baseDir)?.FullName ?? "";
+
+            // Eğer "bin" klasörü içinden çalışıyorsa (modüler mimari), daima kök dizindeki (parentDir) INI'yi kullan
+            if (Path.GetFileName(baseDir).Equals("bin", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(parentDir))
+            {
+                return Path.Combine(parentDir, "LolAccountSwitcher.ini");
+            }
+
+            string localPath = Path.Combine(baseDir, "LolAccountSwitcher.ini");
+            if (File.Exists(localPath)) return localPath;
+
+            string parentPath = Path.Combine(parentDir, "LolAccountSwitcher.ini");
+            if (File.Exists(parentPath)) return parentPath;
+
+            return localPath;
+        }
 
         static ConfigManager()
         {
@@ -69,6 +89,12 @@ namespace LolAccountSwitcher
             return defaultValue;
         }
 
+        public static bool GetBool(string section, string key, bool defaultValue)
+        {
+            string val = Get(section, key, defaultValue ? "true" : "false");
+            return bool.TryParse(val, out bool result) ? result : defaultValue;
+        }
+
         public static void Set(string section, string key, string value)
         {
             if (!Data.ContainsKey(section))
@@ -104,8 +130,8 @@ namespace LolAccountSwitcher
                 string companionAppPath = Get("General", "CompanionAppPath", Get("General", "BlitzPath", ""));
                 string switchPowerPlanGuid = Get("General", "SwitchPowerPlanGuid", "");
                 string killLeaguePowerPlanGuid = Get("General", "KillLeaguePowerPlanGuid", "");
-                string switchRefreshRate = Get("General", "SwitchRefreshRate", "144");
-                string killLeagueRefreshRate = Get("General", "KillLeagueRefreshRate", "60");
+                string switchRefreshRate = Get("General", "SwitchRefreshRate", "0");
+                string killLeagueRefreshRate = Get("General", "KillLeagueRefreshRate", "0");
                 string riotGamesPath = Get("General", "RiotGamesPath", "");
                 string riotProfilePath = Get("General", "RiotProfilePath", "");
 
@@ -164,6 +190,32 @@ namespace LolAccountSwitcher
                 writer.WriteLine(";      Options: true (Enabled), false (Disabled)");
                 writer.WriteLine(";      Default Value: true");
                 writer.WriteLine($"PlayStartupSound={playStartupSoundVal}");
+                writer.WriteLine();
+
+                string minimizeToTrayVal = Get("General", "MinimizeToTray", "true");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; MinimizeToTray / Sistem Tepsisine (Saat Yanına) Küçültme");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Pencere kapatıldığında veya simge durumuna alındığında saat yanına küçültür.");
+                writer.WriteLine(";      Seçenekler: true (Açık), false (Kapalı)");
+                writer.WriteLine(";      Varsayılan Değer: true");
+                writer.WriteLine("; [EN] Minimizes/hides the window to system notification tray when closed or minimized.");
+                writer.WriteLine(";      Options: true (Enabled), false (Disabled)");
+                writer.WriteLine(";      Default Value: true");
+                writer.WriteLine($"MinimizeToTray={minimizeToTrayVal}");
+                writer.WriteLine();
+
+                string maskEmailInUiVal = Get("General", "MaskEmailInUI", "true");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; MaskEmailInUI / Arayüzde E-Postayı Sansürleme (*)");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Kartlar üzerindeki e-posta adreslerini sansürlü (*) olarak gösterir.");
+                writer.WriteLine(";      Seçenekler: true (Açık, örn: ko***z@gmail.com), false (Kapalı, tam adres)");
+                writer.WriteLine(";      Varsayılan Değer: true");
+                writer.WriteLine("; [EN] Displays email addresses on account cards masked with (*).");
+                writer.WriteLine(";      Options: true (Enabled, e.g. ko***z@gmail.com), false (Disabled, full address)");
+                writer.WriteLine(";      Default Value: true");
+                writer.WriteLine($"MaskEmailInUI={maskEmailInUiVal}");
                 writer.WriteLine();
 
                 writer.WriteLine("; ------------------------------------------------------------------------------");
@@ -277,6 +329,55 @@ namespace LolAccountSwitcher
                 writer.WriteLine("; [EN] Riot Client and profile data directory in AppData Local.");
                 writer.WriteLine($"RiotProfilePath={riotProfilePath}");
                 writer.WriteLine();
+
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; ToolbarButtonsVisibility / Arayüz Buton & Rozet Görünürlüğü");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Ana ekran üst ve alt çubuklarındaki butonların görünürlüğünü belirler.");
+                writer.WriteLine(";      Değerler: true (Göster), false (Gizle)");
+                writer.WriteLine("; [EN] Controls visibility of buttons and badges on top and bottom toolbars.");
+                writer.WriteLine(";      Values: true (Show), false (Hide)");
+                writer.WriteLine($"ShowHzBadge={Get("General", "ShowHzBadge", "true")}");
+                writer.WriteLine($"ShowLangToggle={Get("General", "ShowLangToggle", "true")}");
+                writer.WriteLine($"ShowThemeToggle={Get("General", "ShowThemeToggle", "true")}");
+                writer.WriteLine($"ShowRefreshStats={Get("General", "ShowRefreshStats", "true")}");
+                writer.WriteLine($"ShowWiki={Get("General", "ShowWiki", "true")}");
+                writer.WriteLine($"ShowPatchNotes={Get("General", "ShowPatchNotes", "true")}");
+                writer.WriteLine($"ShowAppData={Get("General", "ShowAppData", "false")}");
+                writer.WriteLine();
+
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; CustomScripts / Özel Komut ve Harici Betik Çalıştırma (.exe, .bat, .cmd, .ps1)");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Hesap geçişi veya LoL Kapatma sırasında arka planda tetiklenecek harici komutlar.");
+                writer.WriteLine(";      Değişkenler: {TITLE}, {SUMMONER}, {SERVER}, {ID}");
+                writer.WriteLine("; [EN] External commands executed in background on profile switch or kill events.");
+                writer.WriteLine(";      Variables: {TITLE}, {SUMMONER}, {SERVER}, {ID}");
+                writer.WriteLine($"PreSwitchCommand={Get("General", "PreSwitchCommand", "")}");
+                writer.WriteLine($"PostSwitchCommand={Get("General", "PostSwitchCommand", "")}");
+                writer.WriteLine($"KillLeagueCommand={Get("General", "KillLeagueCommand", "")}");
+                writer.WriteLine();
+
+                string activeAccId = Get("General", "ActiveAccountId", "");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; ActiveAccount / Son Aktif Profil Kimliği (ID)");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] En son geçiş yapılan ve şu an aktif olan hesabın benzersiz kimliği.");
+                writer.WriteLine("; [EN] Unique ID of the currently active / last switched account profile.");
+                writer.WriteLine($"ActiveAccountId={activeAccId}");
+                writer.WriteLine();
+
+                string windowLeft = Get("General", "WindowLeft", "");
+                string windowTop = Get("General", "WindowTop", "");
+                if (!string.IsNullOrEmpty(windowLeft) || !string.IsNullOrEmpty(windowTop))
+                {
+                    writer.WriteLine("; ------------------------------------------------------------------------------");
+                    writer.WriteLine("; WindowPosition / Pencere Konumu Hatırlama (Left, Top)");
+                    writer.WriteLine("; ------------------------------------------------------------------------------");
+                    if (!string.IsNullOrEmpty(windowLeft)) writer.WriteLine($"WindowLeft={windowLeft}");
+                    if (!string.IsNullOrEmpty(windowTop)) writer.WriteLine($"WindowTop={windowTop}");
+                    writer.WriteLine();
+                }
             }
             catch { }
         }
@@ -287,6 +388,8 @@ namespace LolAccountSwitcher
             Set("General", "Theme", "system");
             Set("General", "AutoRefreshStats", "true");
             Set("General", "PlayStartupSound", "true");
+            Set("General", "MinimizeToTray", "true");
+            Set("General", "MaskEmailInUI", "true");
             Set("General", "CloseLeagueOnSwitch", "true");
             Set("General", "AutoLaunchGameOnSwitch", "true");
             Set("General", "LaunchCompanionAppOnSwitch", "false");
@@ -295,10 +398,21 @@ namespace LolAccountSwitcher
             Set("General", "BlitzPath", "");
             Set("General", "SwitchPowerPlanGuid", "");
             Set("General", "KillLeaguePowerPlanGuid", "");
-            Set("General", "SwitchRefreshRate", "144");
-            Set("General", "KillLeagueRefreshRate", "60");
+            Set("General", "SwitchRefreshRate", "0");
+            Set("General", "KillLeagueRefreshRate", "0");
             Set("General", "RiotGamesPath", "");
             Set("General", "RiotProfilePath", "");
+            Set("General", "ShowHzBadge", "true");
+            Set("General", "ShowLangToggle", "true");
+            Set("General", "ShowThemeToggle", "true");
+            Set("General", "ShowRefreshStats", "true");
+            Set("General", "ShowWiki", "true");
+            Set("General", "ShowPatchNotes", "true");
+            Set("General", "ShowAppData", "false");
+            Set("General", "PreSwitchCommand", "");
+            Set("General", "PostSwitchCommand", "");
+            Set("General", "KillLeagueCommand", "");
+            Set("General", "ActiveAccountId", "");
             Save();
         }
     }

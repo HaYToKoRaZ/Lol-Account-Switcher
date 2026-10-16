@@ -14,6 +14,7 @@ namespace LolAccountSwitcher
         public string Tier { get; set; } = "UNRANKED";
         public string? ProfileImageUrl { get; set; }
         public string? TierImageUrl { get; set; }
+        public string? InGameName { get; set; }
         public string ProfileUrl { get; set; } = "";
         public string LiveUrl { get; set; } = "";
     }
@@ -64,6 +65,7 @@ namespace LolAccountSwitcher
                 string tagLine = first.TryGetProperty("tagline", out var tl) ? (tl.GetString() ?? "") : "";
                 int level = first.TryGetProperty("level", out var lv) && lv.TryGetInt32(out int parsedLv) ? parsedLv : 0;
                 string? profileImageUrl = first.TryGetProperty("profile_image_url", out var pi) ? pi.GetString() : null;
+                string? inGameName = first.TryGetProperty("name", out var nProp) ? nProp.GetString() : null;
 
                 string rank = "Unranked";
                 string tier = "UNRANKED";
@@ -95,6 +97,7 @@ namespace LolAccountSwitcher
                     Tier = tier,
                     ProfileImageUrl = profileImageUrl,
                     TierImageUrl = tierImageUrl,
+                    InGameName = inGameName,
                     ProfileUrl = logUrl,
                     LiveUrl = poroUrl
                 };

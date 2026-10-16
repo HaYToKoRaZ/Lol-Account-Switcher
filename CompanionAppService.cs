@@ -123,5 +123,59 @@ namespace LolAccountSwitcher
 
             return false;
         }
+
+        /// <summary>
+        /// Belirtilen veya sistemde açık olan tüm League yardımcı uygulamalarını (Blitz, Porofessor, Mobalytics, OP.GG vb.) güvenle kapatır.
+        /// </summary>
+        public static void TerminateCompanionApp(string? customPath = null)
+        {
+            var targetProcesses = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "Blitz",
+                "Blitz App",
+                "Porofessor",
+                "Overwolf",
+                "OverwolfLauncher",
+                "OverwolfBrowser",
+                "Mobalytics",
+                "MobalyticsDesktop",
+                "OP.GG",
+                "opgg",
+                "opgg-electron-app",
+                "Zar",
+                "SenpAI"
+            };
+
+            if (!string.IsNullOrEmpty(customPath))
+            {
+                try
+                {
+                    string customName = Path.GetFileNameWithoutExtension(customPath);
+                    if (!string.IsNullOrEmpty(customName))
+                    {
+                        targetProcesses.Add(customName);
+                    }
+                }
+                catch { }
+            }
+
+            foreach (var procName in targetProcesses)
+            {
+                try
+                {
+                    var processes = Process.GetProcessesByName(procName);
+                    foreach (var p in processes)
+                    {
+                        try
+                        {
+                            p.Kill();
+                            p.WaitForExit(800);
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+            }
+        }
     }
 }

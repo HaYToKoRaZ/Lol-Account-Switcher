@@ -9,6 +9,7 @@ namespace LolAccountSwitcher
     {
         public static bool IsDarkMode { get; private set; } = true;
         public static string CurrentThemeSetting { get; private set; } = "system";
+        public static event Action? OnThemeChanged;
 
         public static void InitializeTheme()
         {
@@ -132,6 +133,14 @@ namespace LolAccountSwitcher
                 SetBrush(res, "BrushInputBg", "#FFFFFF");
                 SetBrush(res, "BrushInputText", "#0F172A");
             }
+
+            // Sistem tepsisi sağ tık menüsünün temasını ve renklerini anında güncelle
+            try
+            {
+                OnThemeChanged?.Invoke();
+                TrayService.RebuildMenu();
+            }
+            catch { }
         }
 
         private static void SetBrush(ResourceDictionary res, string key, string hexColor)

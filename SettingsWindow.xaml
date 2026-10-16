@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Settings - Lol Account Switcher" 
         Icon="app.ico"
-        Width="540"
-        MinWidth="500"
-        MaxWidth="650"
+        Width="1260"
+        MinWidth="1000"
         SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
         WindowStyle="None"
@@ -18,262 +17,462 @@
             BorderBrush="{DynamicResource BrushHextechGold}" 
             BorderThickness="1.5" 
             CornerRadius="10">
-        <Grid Margin="20">
+        <Grid Margin="18,14,18,14">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Üst Başlık & Kapat -->
-            <Grid Grid.Row="0" Margin="0,0,0,16">
+            <!-- 1. SABİT ÜST BAŞLIK & KAPAT -->
+            <Grid Grid.Row="0" Margin="0,0,0,10">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="⚙️" FontSize="18" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="TxtSettingsHeader" Text="Settings &amp; Accounts" Foreground="{DynamicResource BrushTextPrimary}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <TextBlock Text="⚙️" FontSize="20" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="TxtSettingsHeader" Text="Ayarlar &amp; Tercihler" Foreground="{DynamicResource BrushTextPrimary}" FontSize="17" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <Border Background="{DynamicResource BrushBgBadge}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Margin="10,0,0,0" Padding="6,2" VerticalAlignment="Center">
+                        <TextBlock Text="v3.6" Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" FontWeight="SemiBold"/>
+                    </Border>
                 </StackPanel>
                 <Button Content="✕" HorizontalAlignment="Right" Style="{StaticResource HexDangerBtnStyle}" Width="28" Height="26" Padding="0" Click="BtnClose_Click"/>
             </Grid>
 
-            <!-- Form Alanı -->
-            <StackPanel Grid.Row="1" VerticalAlignment="Top">
-                <!-- Tema ve Dil Seçenekleri Paneli -->
-                <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="7" Padding="14,12" Margin="0,0,0,16">
-                    <StackPanel>
-                        <!-- Tema Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock x:Name="TxtThemeHeader" Text="Görünüm Teması:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="TxtCurrentTheme" Text=" [Koyu / Dark]" Foreground="{DynamicResource BrushTextMuted}" FontSize="12" VerticalAlignment="Center" Margin="6,0,0,0"/>
-                            </StackPanel>
-                            <Button x:Name="BtnToggleTheme" HorizontalAlignment="Right" Content="Tema Değiştir 🌓" Style="{StaticResource HexToolBtnStyle}" Padding="10,4" FontSize="11.5" Click="BtnToggleTheme_Click"/>
-                        </Grid>
+            <!-- 2. ÜÇ KOLONLU DASHBOARD İÇERİK ALANI (Otomatik Yükseklik / Kaydırmasız) -->
+            <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <!-- Sol Kolon: Görünüm & Otomasyon -->
+                        <ColumnDefinition Width="1.05*"/>
+                        <!-- Orta Kolon: Arayüz Buton Görünürlüğü -->
+                        <ColumnDefinition Width="1.0*"/>
+                        <!-- Sağ Kolon: Donanım, Dizinler & Komutlar -->
+                        <ColumnDefinition Width="1.3*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- Dil Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock x:Name="TxtLangHeader" Text="Uygulama Dili:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                                <TextBlock x:Name="TxtCurrentLang" Text=" [TR / Türkçe]" Foreground="{DynamicResource BrushHextechCyan}" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" Margin="6,0,0,0"/>
-                            </StackPanel>
-                            <Button x:Name="BtnToggleLang" HorizontalAlignment="Right" Content="Dili Değiştir 🌐" Style="{StaticResource HexToolBtnStyle}" Padding="10,4" FontSize="11.5" Click="BtnToggleLang_Click"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- LoL & Riot Otomatik Kapatma Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,10,0">
-                                <TextBlock x:Name="TxtCloseLeagueHeader" Text="Hesap Geçişinde LoL/Riot Kapat:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="TxtCloseLeagueSub" Text="Profil değişirken istemcileri otomatik kapat" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" LineHeight="15"/>
-                            </StackPanel>
-                            <CheckBox x:Name="ChkCloseLeague" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkCloseLeague_Changed" Unchecked="ChkCloseLeague_Changed"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- LoL & Riot Otomatik Başlatma Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,10,0">
-                                <TextBlock x:Name="TxtAutoLaunchHeader" Text="Hesap Geçişinde LoL'ü Otomatik Başlat:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="TxtAutoLaunchSub" Text="Profil yüklendiğinde League of Legends'ı otomatik açar" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" LineHeight="15"/>
-                            </StackPanel>
-                            <CheckBox x:Name="ChkAutoLaunchGame" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkAutoLaunchGame_Changed" Unchecked="ChkAutoLaunchGame_Changed"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- Açılışta Rank & Profil Güncelleme Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,10,0">
-                                <TextBlock x:Name="TxtAutoRefreshStatsHeader" Text="Açılışta Rank &amp; Profilleri Güncelle:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="TxtAutoRefreshStatsSub" Text="Uygulama açıldığında tüm hesapların dereceli ve seviye verilerini otomatik yeniler" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" LineHeight="15"/>
-                            </StackPanel>
-                            <CheckBox x:Name="ChkAutoRefreshStats" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkAutoRefreshStats_Changed" Unchecked="ChkAutoRefreshStats_Changed"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- Açılışta Hoş Geldin Sesi Çalma Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,10,0">
-                                <TextBlock x:Name="TxtPlayStartupSoundHeader" Text="Uygulama Açılışında Hoş Geldin Sesini Çal:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="TxtPlayStartupSoundSub" Text="Uygulama başladığında yumuşak bir açılış sesi (sounds/startup.mp3) çalar" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" LineHeight="15"/>
-                            </StackPanel>
-                            <CheckBox x:Name="ChkPlayStartupSound" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkPlayStartupSound_Changed" Unchecked="ChkPlayStartupSound_Changed"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- Yardımcı Uygulama (Companion App) Otomatik Başlatma Ayarı -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,10,0">
-                                <TextBlock x:Name="TxtLaunchCompanionAppHeader" Text="Hesap Geçişinde Yardımcı Uygulamayı Başlat:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="13" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="TxtLaunchCompanionAppSub" Text="Profil değiştiğinde Blitz, Porofessor, Mobalytics vb. yardımcı uygulamanızı otomatik açar" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,3,0,0" LineHeight="15"/>
-                            </StackPanel>
-                            <CheckBox x:Name="ChkLaunchCompanionApp" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="False" Checked="ChkLaunchCompanionApp_Changed" Unchecked="ChkLaunchCompanionApp_Changed"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- Hesap Değişiminde Geçilecek Güç Planı -->
-                        <Grid Margin="0,0,0,8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtSwitchPowerPlan" Grid.Row="0" Text="Hesap Geçişi Güç Planı:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <ComboBox x:Name="CmbSwitchPowerPlan" Grid.Row="1" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="8,5" FontSize="12" SelectionChanged="CmbSwitchPowerPlan_SelectionChanged"/>
-                        </Grid>
-
-                        <!-- LoL Kapatıldığında Geçilecek Güç Planı -->
-                        <Grid Margin="0,4,0,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtKillLeaguePowerPlan" Grid.Row="0" Text="LoL Kapat Güç Planı:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <ComboBox x:Name="CmbKillLeaguePowerPlan" Grid.Row="1" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="8,5" FontSize="12" SelectionChanged="CmbKillLeaguePowerPlan_SelectionChanged"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- Hesap Geçişi Monitör Tazeleme Hızı (Hz) -->
-                        <Grid Margin="0,0,0,8">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtSwitchRefreshRate" Grid.Row="0" Text="Hesap Geçişi Ekran Hızı (Hz):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <ComboBox x:Name="CmbSwitchRefreshRate" Grid.Row="1" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="8,5" FontSize="12" SelectionChanged="CmbSwitchRefreshRate_SelectionChanged"/>
-                        </Grid>
-
-                        <!-- LoL Kapat Monitör Tazeleme Hızı (Hz) -->
-                        <Grid Margin="0,4,0,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtKillLeagueRefreshRate" Grid.Row="0" Text="LoL Kapat Ekran Hızı (Hz):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <ComboBox x:Name="CmbKillLeagueRefreshRate" Grid.Row="1" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="8,5" FontSize="12" SelectionChanged="CmbKillLeagueRefreshRate_SelectionChanged"/>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,2,0,10"/>
-
-                        <!-- 1. Riot Games Ana Kurulum Klasörü -->
-                        <Grid Margin="0,0,0,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtRiotGamesPathLabel" Grid.Row="0" Text="Riot Games Kurulum Klasörü:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox x:Name="TxtRiotGamesPath" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="8,5" FontSize="11.5" Margin="0,0,6,0" TextChanged="TxtRiotGamesPath_TextChanged"/>
-                                <Button x:Name="BtnDetectRiotPath" Grid.Column="1" Content="🎯 Algıla" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11.5" Margin="0,0,4,0" Click="BtnDetectRiotPath_Click"/>
-                                <Button x:Name="BtnBrowseRiotPath" Grid.Column="2" Content="📁 Seç" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11.5" Click="BtnBrowseRiotPath_Click"/>
-                            </Grid>
-                        </Grid>
-
-                        <!-- 2. Riot İstemci & Profil Veri Klasörü (AppData) -->
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtRiotProfilePathLabel" Grid.Row="0" Text="Riot İstemci &amp; Profil Veri Klasörü (AppData):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox x:Name="TxtRiotProfilePath" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="8,5" FontSize="11.5" Margin="0,0,6,0" TextChanged="TxtRiotProfilePath_TextChanged"/>
-                                <Button x:Name="BtnDetectProfilePath" Grid.Column="1" Content="🎯 Algıla" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11.5" Margin="0,0,4,0" Click="BtnDetectProfilePath_Click"/>
-                                <Button x:Name="BtnBrowseProfilePath" Grid.Column="2" Content="📁 Seç" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11.5" Click="BtnBrowseProfilePath_Click"/>
-                            </Grid>
-                        </Grid>
-
-                        <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,10,0,10"/>
-
-                        <!-- 3. Yardımcı Uygulama (.exe) Dosya Yolu (Blitz, Porofessor, Mobalytics vb.) -->
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock x:Name="TxtCompanionAppPathLabel" Grid.Row="0" Text="Yardımcı Uygulama Yolu (Blitz, Porofessor vb.):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12.5" FontWeight="SemiBold" Margin="0,0,0,4"/>
-                            <Grid Grid.Row="1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox x:Name="TxtCompanionAppPath" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="8,5" FontSize="11.5" Margin="0,0,6,0" TextChanged="TxtCompanionAppPath_TextChanged"/>
-                                <Button x:Name="BtnDetectCompanionAppPath" Grid.Column="1" Content="🎯 Algıla" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11.5" Margin="0,0,4,0" Click="BtnDetectCompanionAppPath_Click"/>
-                                <Button x:Name="BtnBrowseCompanionAppPath" Grid.Column="2" Content="📁 Seç" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11.5" Click="BtnBrowseCompanionAppPath_Click"/>
-                            </Grid>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
-                <!-- Hakkında & Yayıncı / Geliştirici Kartı -->
-                <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="7" Padding="12,10" Margin="0,14,0,0">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        
-                        <TextBlock Text="Hakkında &amp; İletişim" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="12" Margin="0,0,0,6"/>
-                        
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
+                <!-- ============================================== -->
+                <!-- SOL KOLON: GÖRÜNÜM, DİL & OTOMASYON -->
+                <!-- ============================================== -->
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <!-- KART 1: GÖRÜNÜM, DİL & SİSTEM TEPSİSİ -->
+                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,11" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtCardHeaderAppearance" Text="🎨 Görünüm, Dil &amp; Sistem Tepsisi" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,8"/>
                             
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
-                                <TextBlock Text="Yayıncı: HaYTooL • Dev: HaYTo" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11" FontWeight="SemiBold"/>
-                                <TextBlock Text="E-Posta: korazhayto@gmail.com" Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" Margin="0,2,0,0"/>
-                            </StackPanel>
-                            
-                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                                <Button Content="🌐 Portal" ToolTip="HaYTooL Portalı (https://haytokoraz.github.io/)" Style="{StaticResource HexToolBtnStyle}" Padding="6,3" FontSize="10" Margin="0,0,4,0" Tag="https://haytokoraz.github.io/" Click="BtnOpenUrl_Click"/>
-                                <Button Content="🌐 Web" ToolTip="Uygulama Web Sitesi" Style="{StaticResource HexToolBtnStyle}" Padding="6,3" FontSize="10" Margin="0,0,4,0" Tag="https://haytokoraz.github.io/Lol-Account-Switcher/" Click="BtnOpenUrl_Click"/>
-                                <Button Content="𝕏 HaYTo" ToolTip="Developer X Profili (@HaYTo)" Style="{StaticResource HexToolBtnStyle}" Padding="6,3" FontSize="10" Tag="https://x.com/HaYTo" Click="BtnOpenUrl_Click"/>
-                            </StackPanel>
-                        </Grid>
-                    </Grid>
-                </Border>
-            </StackPanel>
+                            <!-- Tema Ayarı -->
+                            <Grid Margin="0,0,0,7">
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TxtThemeHeader" Text="Görünüm Teması:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="TxtCurrentTheme" Text=" [Koyu]" Foreground="{DynamicResource BrushTextMuted}" FontSize="11.5" VerticalAlignment="Center" Margin="5,0,0,0"/>
+                                </StackPanel>
+                                <Button x:Name="BtnToggleTheme" HorizontalAlignment="Right" Content="Tema 🌓" Style="{StaticResource HexToolBtnStyle}" Padding="10,3" FontSize="11" Click="BtnToggleTheme_Click"/>
+                            </Grid>
 
-            <!-- Alt Kapat -->
-            <Button x:Name="BtnCloseBottom" Grid.Row="2" Content="Kapat" Style="{StaticResource HexToolBtnStyle}" HorizontalAlignment="Right" Margin="0,12,0,0" Padding="16,5" FontSize="12" Click="BtnClose_Click"/>
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- Dil Ayarı (Ülke Bayrakları) -->
+                            <Grid Margin="0,0,0,7">
+                                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock x:Name="TxtLangHeader" Text="Uygulama Dili:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="TxtCurrentLang" Text="Türkçe seçili" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <Button x:Name="BtnSettingsLangTR" ToolTip="Türkçe" Style="{StaticResource HexToolBtnStyle}" Padding="7,3" Margin="0,0,5,0" BorderThickness="1.5" Click="BtnSettingsLangTR_Click">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <ContentControl Template="{StaticResource FlagTurkeyTemplate}" IsHitTestVisible="False" VerticalAlignment="Center"/>
+                                            <TextBlock Text="TR" FontSize="11" FontWeight="SemiBold" Margin="4,0,2,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="BtnSettingsLangEN" ToolTip="English" Style="{StaticResource HexToolBtnStyle}" Padding="7,3" BorderThickness="1.5" Click="BtnSettingsLangEN_Click">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <ContentControl Template="{StaticResource FlagUKTemplate}" IsHitTestVisible="False" VerticalAlignment="Center"/>
+                                            <TextBlock Text="EN" FontSize="11" FontWeight="SemiBold" Margin="4,0,2,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- Açılışta Hoş Geldin Sesi -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtPlayStartupSoundHeader" Text="Açılış Hoş Geldin Sesi:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtPlayStartupSoundSub" Text="Uygulama açıldığında hoş geldin sesini çalar" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkPlayStartupSound" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkPlayStartupSound_Changed" Unchecked="ChkPlayStartupSound_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- Saat Yanına Küçült (Sistem Tepsisi / NotifyIcon) -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtMinimizeToTrayHeader" Text="Saat Yanına Küçült (Tepsi):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtMinimizeToTraySub" Text="Kapatıldığında sistem tepsisine gizler" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkMinimizeToTray" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkMinimizeToTray_Changed" Unchecked="ChkMinimizeToTray_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- Arayüzde E-Postayı Sansürleme (*) -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtMaskEmailHeader" Text="E-Postayı Sansürleme (*):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtMaskEmailSub" Text="Kartlar üzerindeki e-posta adreslerini sansürlü (*) gösterir" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkMaskEmailInUI" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkMaskEmailInUI_Changed" Unchecked="ChkMaskEmailInUI_Changed"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- KART 2: OYUN & GEÇİŞ OTOMASYONU -->
+                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,11">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtCardHeaderAutomation" Text="⚔️ Oyun &amp; Oturum Otomasyonu" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,8"/>
+
+                            <!-- LoL & Riot Otomatik Kapatma -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtCloseLeagueHeader" Text="Geçişte LoL/Riot Kapat:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtCloseLeagueSub" Text="Profil değişirken istemcileri otomatik kapat" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkCloseLeague" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkCloseLeague_Changed" Unchecked="ChkCloseLeague_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- LoL Otomatik Başlatma -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtAutoLaunchHeader" Text="Geçişte Oyunu Başlat:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtAutoLaunchSub" Text="Profil yüklendiğinde LoL'ü otomatik açar" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkAutoLaunchGame" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkAutoLaunchGame_Changed" Unchecked="ChkAutoLaunchGame_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- Açılışta Rank & Profil Güncelleme -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtAutoRefreshStatsHeader" Text="Açılışta Rankları Güncelle:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtAutoRefreshStatsSub" Text="Kayıtlı hesapların rank ve seviyelerini yeniler" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkAutoRefreshStats" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkAutoRefreshStats_Changed" Unchecked="ChkAutoRefreshStats_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- Yardımcı Uygulama Başlatma -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtLaunchCompanionAppHeader" Text="Yardımcı Uygulamayı Yeniden Başlat:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtLaunchCompanionAppSub" Text="Blitz, Porofessor vb. geçişte kapatıp açar" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkLaunchCompanionApp" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="False" Checked="ChkLaunchCompanionApp_Changed" Unchecked="ChkLaunchCompanionApp_Changed"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ============================================== -->
+                <!-- ORTA KOLON: ARAYÜZ BUTON & ROZET GÖRÜNÜRLÜĞÜ -->
+                <!-- ============================================== -->
+                <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                    <!-- KART 3: ARAYÜZ BUTON & ROZET GÖRÜNÜRLÜĞÜ -->
+                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,11">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtCardHeaderVisibility" Text="🎛️ Arayüz Buton &amp; Rozet Görünürlüğü" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,8"/>
+
+                            <!-- 1. Üst Bar Monitör Hz Rozeti -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowHzBadgeHeader" Text="Monitör Hz Rozeti:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowHzBadgeSub" Text="Üst çubukta ekran tazeleme hızı rozeti" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowHzBadge" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkShowHzBadge_Changed" Unchecked="ChkShowHzBadge_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- 2. Üst Bar Dil Değiştir Butonu -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowLangToggleHeader" Text="Dil Değiştirme Butonu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowLangToggleSub" Text="Üst çubukta Türkçe/İngilizce dil menüsü" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowLangToggle" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkShowLangToggle_Changed" Unchecked="ChkShowLangToggle_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- 3. Üst Bar Tema Değiştir Butonu -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowThemeToggleHeader" Text="Tema Değiştirme Butonu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowThemeToggleSub" Text="Üst çubukta Koyu/Açık tema geçişi" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowThemeToggle" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkShowThemeToggle_Changed" Unchecked="ChkShowThemeToggle_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- 4. Üst Bar Rank & Profil Güncelleme -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowRefreshStatsHeader" Text="Rank &amp; Profil Yenile Butonu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowRefreshStatsSub" Text="Tüm hesapları güncelleyen '🔄' butonu" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowRefreshStats" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkShowRefreshStats_Changed" Unchecked="ChkShowRefreshStats_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- 5. Alt Araç Çubuğunda LoL Wiki Butonu -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowWikiHeader" Text="LoL Wiki Butonu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowWikiSub" Text="Alt çubukta '📖 Wiki' butonu" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowWiki" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkShowWiki_Changed" Unchecked="ChkShowWiki_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- 6. Alt Araç Çubuğunda Yama Notları Butonu -->
+                            <Grid Margin="0,0,0,7">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowPatchNotesHeader" Text="Yama Notları Butonu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowPatchNotesSub" Text="Alt çubukta '📜 Yama Notları' butonu" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowPatchNotes" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="True" Checked="ChkShowPatchNotes_Changed" Unchecked="ChkShowPatchNotes_Changed"/>
+                            </Grid>
+
+                            <Border Height="1" Background="{DynamicResource BrushBorderSubtle}" Margin="0,0,0,7"/>
+
+                            <!-- 7. Alt Araç Çubuğunda AppData Butonu -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" Margin="0,0,8,0">
+                                    <TextBlock x:Name="TxtShowAppDataHeader" Text="AppData Butonu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="12" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="TxtShowAppDataSub" Text="Alt çubukta '📁 AppData' butonu" Foreground="{DynamicResource BrushTextMuted}" FontSize="11" TextWrapping="Wrap" Margin="0,1,0,0"/>
+                                </StackPanel>
+                                <CheckBox x:Name="ChkShowAppData" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="False" Checked="ChkShowAppData_Changed" Unchecked="ChkShowAppData_Changed"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- ============================================== -->
+                <!-- SAĞ KOLON: DONANIM, GÜÇ, DİZİNLER & KOMUTLAR -->
+                <!-- ============================================== -->
+                <StackPanel Grid.Column="2" Margin="10,0,0,0">
+                    <!-- KART 4: EKRAN YENİLEME HIZI & GÜÇ YÖNETİMİ -->
+                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,11" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtCardHeaderHardware" Text="⚡ Ekran &amp; Donanım Güç Optimizasyonu" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,8"/>
+
+                            <Grid Margin="0,0,0,6">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!-- Hesap Geçişi Monitör Hz -->
+                                <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                                    <TextBlock x:Name="TxtSwitchRefreshRate" Text="Geçiş Ekran Hızı (Hz):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                                    <ComboBox x:Name="CmbSwitchRefreshRate" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="5,3" FontSize="11" SelectionChanged="CmbSwitchRefreshRate_SelectionChanged"/>
+                                </StackPanel>
+                                <!-- LoL Kapat Monitör Hz -->
+                                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                                    <TextBlock x:Name="TxtKillLeagueRefreshRate" Text="Kapat Ekran Hızı (Hz):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                                    <ComboBox x:Name="CmbKillLeagueRefreshRate" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="5,3" FontSize="11" SelectionChanged="CmbKillLeagueRefreshRate_SelectionChanged"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!-- Hesap Geçişi Güç Planı -->
+                                <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                                    <TextBlock x:Name="TxtSwitchPowerPlan" Text="Geçiş Güç Planı:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                                    <ComboBox x:Name="CmbSwitchPowerPlan" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="5,3" FontSize="11" SelectionChanged="CmbSwitchPowerPlan_SelectionChanged"/>
+                                </StackPanel>
+                                <!-- LoL Kapat Güç Planı -->
+                                <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                                    <TextBlock x:Name="TxtKillLeaguePowerPlan" Text="Kapat Güç Planı:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                                    <ComboBox x:Name="CmbKillLeaguePowerPlan" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" Padding="5,3" FontSize="11" SelectionChanged="CmbKillLeaguePowerPlan_SelectionChanged"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- KART 5: DİZİN VE KLASÖR YOLLARI -->
+                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,10" Margin="0,0,0,10">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtCardHeaderPaths" Text="📁 Dizin ve Dosya Yapılandırması" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,7"/>
+
+                            <!-- Riot Games Ana Kurulum -->
+                            <TextBlock x:Name="TxtRiotGamesPathLabel" Text="Riot Games Kurulum Klasörü:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtRiotGamesPath" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtRiotGamesPath_TextChanged"/>
+                                <Button x:Name="BtnDetectRiotPath" Grid.Column="1" Content="🎯 Algıla" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnDetectRiotPath_Click"/>
+                                <Button x:Name="BtnBrowseRiotPath" Grid.Column="2" Content="📁 Seç" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnBrowseRiotPath_Click"/>
+                            </Grid>
+
+                            <!-- Riot AppData Klasörü -->
+                            <TextBlock x:Name="TxtRiotProfilePathLabel" Text="Riot Profil Veri Klasörü (AppData):" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtRiotProfilePath" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtRiotProfilePath_TextChanged"/>
+                                <Button x:Name="BtnDetectProfilePath" Grid.Column="1" Content="🎯 Algıla" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnDetectProfilePath_Click"/>
+                                <Button x:Name="BtnBrowseProfilePath" Grid.Column="2" Content="📁 Seç" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnBrowseProfilePath_Click"/>
+                            </Grid>
+
+                            <!-- Yardımcı Uygulama Yolu -->
+                            <TextBlock x:Name="TxtCompanionAppPathLabel" Text="Yardımcı Uygulama (.exe) Yolu:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtCompanionAppPath" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtCompanionAppPath_TextChanged"/>
+                                <Button x:Name="BtnDetectCompanionAppPath" Grid.Column="1" Content="🎯 Algıla" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnDetectCompanionAppPath_Click"/>
+                                <Button x:Name="BtnBrowseCompanionAppPath" Grid.Column="2" Content="📁 Seç" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnBrowseCompanionAppPath_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- KART 6: ÖZEL KOMUT & BETİK OTOMASYONU (CLI / CMD / EXE) -->
+                    <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,10">
+                        <StackPanel>
+                            <TextBlock x:Name="TxtCustomScriptHeader" Text="💻 Özel Komut &amp; Betik Çalıştırma" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,7"/>
+
+                            <!-- 1. Hesap Geçişi Öncesi Komut -->
+                            <TextBlock x:Name="TxtPreSwitchCommandLabel" Text="Hesap Geçişi Öncesi Komut / .exe:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtPreSwitchCommand" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtPreSwitchCommand_TextChanged"/>
+                                <Button x:Name="BtnBrowsePreSwitch" Grid.Column="1" Content="📁 Seç" ToolTip="Dosya veya Betik Seç (.exe, .bat, .cmd, .ps1)" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnBrowsePreSwitch_Click"/>
+                                <Button x:Name="BtnTestPreSwitch" Grid.Column="2" Content="▶ Test" ToolTip="Komutu Arka Planda Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnTestPreSwitch_Click"/>
+                            </Grid>
+
+                            <!-- 2. Hesap Geçişi Sonrası Komut -->
+                            <TextBlock x:Name="TxtPostSwitchCommandLabel" Text="Hesap Geçişi Sonrası Komut / .exe:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtPostSwitchCommand" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtPostSwitchCommand_TextChanged"/>
+                                <Button x:Name="BtnBrowsePostSwitch" Grid.Column="1" Content="📁 Seç" ToolTip="Dosya veya Betik Seç (.exe, .bat, .cmd, .ps1)" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnBrowsePostSwitch_Click"/>
+                                <Button x:Name="BtnTestPostSwitch" Grid.Column="2" Content="▶ Test" ToolTip="Komutu Arka Planda Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnTestPostSwitch_Click"/>
+                            </Grid>
+
+                            <!-- 3. LoL Kapat Komutu -->
+                            <TextBlock x:Name="TxtKillLeagueCommandLabel" Text="LoL Kapat Komutu / .exe:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtKillLeagueCommand" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtKillLeagueCommand_TextChanged"/>
+                                <Button x:Name="BtnBrowseKillLeagueCommand" Grid.Column="1" Content="📁 Seç" ToolTip="Dosya veya Betik Seç (.exe, .bat, .cmd, .ps1)" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnBrowseKillLeagueCommand_Click"/>
+                                <Button x:Name="BtnTestKillLeagueCommand" Grid.Column="2" Content="▶ Test" ToolTip="Komutu Arka Planda Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnTestKillLeagueCommand_Click"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <!-- 3. SABİT ALT BUTON BARI (Temiz Düzen) -->
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Sol / Orta: Portal, Web & Twitter Bağlantıları -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnFooterPortal" Content="🌐 Portal" ToolTip="HaYTooL Portalı" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11" Margin="0,0,6,0" Tag="https://haytokoraz.github.io/" Click="BtnOpenUrl_Click"/>
+                    <Button x:Name="BtnFooterWeb" Content="🌐 Web" ToolTip="Uygulama Sitesi" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11" Margin="0,0,6,0" Tag="https://haytokoraz.github.io/Lol-Account-Switcher/" Click="BtnOpenUrl_Click"/>
+                    <Button x:Name="BtnFooterTwitter" Content="𝕏 @HaYTo" ToolTip="Twitter / X" Style="{StaticResource HexToolBtnStyle}" Padding="8,4" FontSize="11" Tag="https://x.com/HaYTo" Click="BtnOpenUrl_Click"/>
+                </StackPanel>
+
+                <!-- Sağ: Kapat Butonu -->
+                <Button x:Name="BtnCloseBottom" Grid.Column="1" Content="Kapat" Style="{StaticResource HexToolBtnStyle}" Padding="22,6" FontSize="12" FontWeight="SemiBold" Click="BtnClose_Click"/>
+            </Grid>
         </Grid>
     </Border>
 </Window>

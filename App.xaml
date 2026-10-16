@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         <!-- SEMANTİK DİNAMİK FIRÇALAR (ThemeManager Üzerinden Anlık Değiştirilir) -->
         <SolidColorBrush x:Key="BrushBgDeep" Color="#070C14" />
         <SolidColorBrush x:Key="BrushBgCard" Color="#0E1B2C" />
@@ -38,6 +39,34 @@
         <SolidColorBrush x:Key="BrushInputText" Color="#F0E6D2" />
 
         <!-- ======================================================== -->
+        <!-- VEKTÖREL ÜLKE BAYRAKLARI (Direct WPF Geometry - Sıfır Font Bağımlılığı) -->
+        <!-- ======================================================== -->
+        <!-- TÜRKİYE BAYRAĞI -->
+        <ControlTemplate x:Key="FlagTurkeyTemplate">
+            <Viewbox Width="20" Height="13" Stretch="Uniform">
+                <Canvas Width="30" Height="20" ClipToBounds="True">
+                    <Rectangle Width="30" Height="20" Fill="#E30A17" RadiusX="2" RadiusY="2"/>
+                    <Ellipse Width="10" Height="10" Canvas.Left="6.5" Canvas.Top="5" Fill="White"/>
+                    <Ellipse Width="8" Height="8" Canvas.Left="8.5" Canvas.Top="6" Fill="#E30A17"/>
+                    <Path Fill="White" Data="M 17,10 L 15.5,10.8 L 16.1,9.2 L 14.8,8.2 L 16.4,8.2 L 17,6.8 L 17.6,8.2 L 19.2,8.2 L 17.9,9.2 L 18.5,10.8 Z"/>
+                </Canvas>
+            </Viewbox>
+        </ControlTemplate>
+
+        <!-- UK / GLOBAL İNGİLTERE BAYRAĞI -->
+        <ControlTemplate x:Key="FlagUKTemplate">
+            <Viewbox Width="20" Height="13" Stretch="Uniform">
+                <Canvas Width="30" Height="20" ClipToBounds="True">
+                    <Rectangle Width="30" Height="20" Fill="#012169" RadiusX="2" RadiusY="2"/>
+                    <Path Stroke="White" StrokeThickness="3.5" Data="M 0,0 L 30,20 M 30,0 L 0,20"/>
+                    <Path Stroke="#C8102E" StrokeThickness="1.8" Data="M 0,0 L 30,20 M 30,0 L 0,20"/>
+                    <Path Stroke="White" StrokeThickness="5.5" Data="M 15,0 L 15,20 M 0,10 L 30,10"/>
+                    <Path Stroke="#C8102E" StrokeThickness="3" Data="M 15,0 L 15,20 M 0,10 L 30,10"/>
+                </Canvas>
+            </Viewbox>
+        </ControlTemplate>
+
+        <!-- ======================================================== -->
         <!-- DİNAMİK BUTON VE KONTROL STİLLERİ -->
         <!-- ======================================================== -->
         <!-- GEÇİŞ YAP BUTONU -->
@@ -59,6 +88,54 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="{DynamicResource BrushSwitchBtnHover}" />
                                 <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource BrushHextechCyanGlow}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ÖZEL HEXTECH OTOMATİK HESAP EKLE BUTONU (KESKİN VE TEMİZ VEKTÖREL HEXTECH STİLİ) -->
+        <Style x:Key="HexAutoAddBtnStyle" TargetType="Button">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="UseLayoutRounding" Value="True"/>
+            <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+            <Setter Property="TextOptions.TextRenderingMode" Value="ClearType"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#2A1E0E" Offset="0.0"/>
+                        <GradientStop Color="#0E1B2C" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="{DynamicResource BrushHextechGoldBright}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BrushHextechGold}" />
+            <Setter Property="BorderThickness" Value="1.2" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Padding" Value="10,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="5" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}" SnapsToDevicePixels="True" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#3D2B14" Offset="0.0"/>
+                                            <GradientStop Color="#142940" Offset="1.0"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource BrushHextechCyanGlow}" />
+                                <Setter Property="Foreground" Value="#FFFFFF" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1A1208" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -169,6 +246,23 @@
                                 <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource BrushHextechGold}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- HEX DİL AÇILIR MENÜ STİLİ -->
+        <Style x:Key="HexContextMenuStyle" TargetType="ContextMenu">
+            <Setter Property="Background" Value="{DynamicResource BrushBgCard}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource BrushHextechGold}" />
+            <Setter Property="BorderThickness" Value="1.2" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                            <ItemsPresenter SnapsToDevicePixels="True" />
+                        </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>

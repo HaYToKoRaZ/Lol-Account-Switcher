@@ -74,17 +74,6 @@ namespace LolAccountSwitcher
                     return (false, null, $"Config klasörü bulunamadı:\n{configDir}");
                 }
 
-                // Otomatik Yedek Al (Config_Backup_yyyyMMdd-HHmm)
-                string timestamp = DateTime.Now.ToString("yyyyMMdd-HHmm");
-                string parentDir = Directory.GetParent(configDir)?.FullName ?? configDir;
-                string backupDir = Path.Combine(parentDir, $"Config_Backup_{timestamp}");
-
-                try
-                {
-                    CopyDirectory(configDir, backupDir);
-                }
-                catch { }
-
                 bool currentlyReadOnly = IsConfigReadOnly(customRiotGamesPath);
                 bool targetReadOnly = !currentlyReadOnly;
 
@@ -107,7 +96,7 @@ namespace LolAccountSwitcher
                     catch { }
                 }
 
-                return (targetReadOnly, backupDir, null);
+                return (targetReadOnly, null, null);
             }
             catch (Exception ex)
             {

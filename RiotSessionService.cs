@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -102,13 +104,22 @@ namespace LolAccountSwitcher
 
         public static string GetProfilesStoragePath()
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "profiles");
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            if (Path.GetFileName(baseDir.TrimEnd('\\', '/')).Equals("bin", StringComparison.OrdinalIgnoreCase))
+            {
+                baseDir = Directory.GetParent(baseDir)?.FullName ?? baseDir;
+            }
+            string path = Path.Combine(baseDir, "profiles");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
             return path;
         }
+
+        // Format-proof ve taşınabilir (portable) 256-bit AES anahtarı
+        private static readonly byte[] s_aesKey = SHA256.HashData(Encoding.UTF8.GetBytes("HaYTooL_LolAccountSwitcher_MasterKey_2026_SecurePortable"));
+        private static readonly byte[] s_entropy = Encoding.UTF8.GetBytes("LolStart_Dpapi_Entropy_2026");
 
         public static bool SaveCurrentProfileToSlot(string profileId, string? customRiotProfilePath = null)
         {
@@ -121,15 +132,34 @@ namespace LolAccountSwitcher
                 if (!Directory.Exists(sourceDir)) return false;
 
                 string targetBase = GetProfilesStoragePath();
-                string targetDir = Path.Combine(targetBase, profileId);
+                string encryptedFilePath = Path.Combine(targetBase, $"{profileId}.dat");
 
-                if (Directory.Exists(targetDir))
+                // Riot profil klasörünü bellekte (RAM) en hızlı DEFLATE algoritmasıyla ZIP arşivine dönüştür
+                byte[] rawZipBytes;
+                using (var memoryStream = new MemoryStream())
                 {
-                    Directory.Delete(targetDir, true);
+                    using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, leaveOpen: true))
+                    {
+                        AddDirectoryToArchive(archive, sourceDir, sourceDir);
+                    }
+                    rawZipBytes = memoryStream.ToArray();
                 }
-                Directory.CreateDirectory(targetDir);
 
-                CopyDirectory(sourceDir, targetDir);
+                // Donanım destekli (AES-NI) AES-256 ile şifrele:
+                // PC formatlansa, USB ile başka PC'ye taşınsa bile sorunsuz açılır;
+                // diski tarayan infostealer zararlıları açık hesap veya token bulamaz.
+                byte[] encryptedBytes = EncryptBytes(rawZipBytes);
+
+                // Diske şifreli tek bir .dat dosyası olarak yaz
+                File.WriteAllBytes(encryptedFilePath, encryptedBytes);
+
+                // Eski unencrypted slot klasörü varsa kalıntı bırakmamak için temizle
+                string legacyDir = Path.Combine(targetBase, profileId);
+                if (Directory.Exists(legacyDir))
+                {
+                    try { Directory.Delete(legacyDir, true); } catch { }
+                }
+
                 return true;
             }
             catch
@@ -147,21 +177,224 @@ namespace LolAccountSwitcher
                     : customRiotProfilePath;
 
                 string sourceBase = GetProfilesStoragePath();
-                string sourceDir = Path.Combine(sourceBase, profileId);
-
-                if (!Directory.Exists(sourceDir)) return false;
+                string encryptedFilePath = Path.Combine(sourceBase, $"{profileId}.dat");
+                string legacyDir = Path.Combine(sourceBase, profileId);
 
                 if (!Directory.Exists(targetDir))
                 {
                     Directory.CreateDirectory(targetDir);
                 }
 
-                CopyDirectory(sourceDir, targetDir);
-                return true;
+                // 1. Şifreli .dat dosyasından geri yükle (öncelikli, format-proof yöntem)
+                if (File.Exists(encryptedFilePath))
+                {
+                    byte[] encryptedBytes = File.ReadAllBytes(encryptedFilePath);
+                    byte[]? decryptedBytes = null;
+
+                    try
+                    {
+                        decryptedBytes = DecryptBytes(encryptedBytes);
+                    }
+                    catch
+                    {
+                        // Eski DPAPI test kayıtları için geçiş toleransı
+                        try
+                        {
+                            decryptedBytes = ProtectedData.Unprotect(encryptedBytes, s_entropy, DataProtectionScope.CurrentUser);
+                        }
+                        catch { }
+                    }
+
+                    if (decryptedBytes != null)
+                    {
+                        using var memoryStream = new MemoryStream(decryptedBytes);
+                        using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read);
+
+                        foreach (var entry in archive.Entries)
+                        {
+                            string destinationPath = Path.GetFullPath(Path.Combine(targetDir, entry.FullName));
+                            if (!destinationPath.StartsWith(Path.GetFullPath(targetDir), StringComparison.OrdinalIgnoreCase))
+                            {
+                                continue; // Zip-Slip güvenlik koruması
+                            }
+
+                            if (string.IsNullOrEmpty(entry.Name))
+                            {
+                                Directory.CreateDirectory(destinationPath);
+                                continue;
+                            }
+
+                            string? parentDir = Path.GetDirectoryName(destinationPath);
+                            if (!string.IsNullOrEmpty(parentDir))
+                            {
+                                Directory.CreateDirectory(parentDir);
+                            }
+
+                            bool extracted = false;
+                            for (int attempt = 0; attempt < 5; attempt++)
+                            {
+                                try
+                                {
+                                    entry.ExtractToFile(destinationPath, overwrite: true);
+                                    extracted = true;
+                                    break;
+                                }
+                                catch (IOException)
+                                {
+                                    System.Threading.Thread.Sleep(100);
+                                }
+                                catch
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (!extracted && destinationPath.EndsWith("RiotGamesPrivateSettings.yaml", StringComparison.OrdinalIgnoreCase))
+                            {
+                                return false;
+                            }
+                        }
+
+                        // Kritik oturum dosyasının (RiotGamesPrivateSettings.yaml) varlığını ve kilit durumunu doğrula
+                        string criticalYaml = Path.Combine(targetDir, "Riot Client", "Data", "RiotGamesPrivateSettings.yaml");
+                        if (File.Exists(criticalYaml))
+                        {
+                            try
+                            {
+                                using var fs = new FileStream(criticalYaml, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                                if (fs.Length == 0) return false;
+                            }
+                            catch
+                            {
+                                // Dosya kilitli veya erişilemez
+                                return false;
+                            }
+                        }
+
+                        return true;
+                    }
+                }
+
+                // 2. Geriye dönük uyumluluk: Eski açık klasör yapısı varsa oradan geri yükle
+                if (Directory.Exists(legacyDir))
+                {
+                    CopyDirectory(legacyDir, targetDir);
+                    string criticalYaml = Path.Combine(targetDir, "Riot Client", "Data", "RiotGamesPrivateSettings.yaml");
+                    if (File.Exists(criticalYaml))
+                    {
+                        try
+                        {
+                            using var fs = new FileStream(criticalYaml, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+                            if (fs.Length == 0) return false;
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                return false;
             }
             catch
             {
                 return false;
+            }
+        }
+
+        private static byte[] EncryptBytes(byte[] rawBytes)
+        {
+            using var aes = Aes.Create();
+            aes.Key = s_aesKey;
+            aes.GenerateIV();
+            byte[] iv = aes.IV;
+
+            using var memoryStream = new MemoryStream();
+            memoryStream.Write(iv, 0, iv.Length);
+
+            using (var cryptoStream = new CryptoStream(memoryStream, aes.CreateEncryptor(), CryptoStreamMode.Write))
+            {
+                cryptoStream.Write(rawBytes, 0, rawBytes.Length);
+                cryptoStream.FlushFinalBlock();
+            }
+
+            return memoryStream.ToArray();
+        }
+
+        private static byte[] DecryptBytes(byte[] encryptedData)
+        {
+            if (encryptedData.Length < 16)
+                throw new InvalidDataException("Geçersiz şifreli profil verisi.");
+
+            using var aes = Aes.Create();
+            aes.Key = s_aesKey;
+
+            byte[] iv = new byte[16];
+            Buffer.BlockCopy(encryptedData, 0, iv, 0, 16);
+            aes.IV = iv;
+
+            using var memoryStream = new MemoryStream();
+            using (var cryptoStream = new CryptoStream(
+                new MemoryStream(encryptedData, 16, encryptedData.Length - 16),
+                aes.CreateDecryptor(),
+                CryptoStreamMode.Read))
+            {
+                cryptoStream.CopyTo(memoryStream);
+            }
+
+            return memoryStream.ToArray();
+        }
+
+        public static void DeleteProfileSlot(string profileId)
+        {
+            try
+            {
+                string targetBase = GetProfilesStoragePath();
+                string encryptedFilePath = Path.Combine(targetBase, $"{profileId}.dat");
+                if (File.Exists(encryptedFilePath))
+                {
+                    File.Delete(encryptedFilePath);
+                }
+
+                string legacyDir = Path.Combine(targetBase, profileId);
+                if (Directory.Exists(legacyDir))
+                {
+                    Directory.Delete(legacyDir, true);
+                }
+            }
+            catch { }
+        }
+
+        private static void AddDirectoryToArchive(ZipArchive archive, string currentDir, string rootDir)
+        {
+            var dir = new DirectoryInfo(currentDir);
+            if (!dir.Exists) return;
+
+            foreach (FileInfo file in dir.GetFiles())
+            {
+                try
+                {
+                    string relativePath = Path.GetRelativePath(rootDir, file.FullName).Replace('\\', '/');
+                    var entry = archive.CreateEntry(relativePath, CompressionLevel.Fastest);
+                    using var entryStream = entry.Open();
+                    using var fileStream = new FileStream(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    fileStream.CopyTo(entryStream);
+                }
+                catch { }
+            }
+
+            foreach (DirectoryInfo subDir in dir.GetDirectories())
+            {
+                // Logs, Crashes ve Vanguard klasörlerini atla (hız, hafiflik ve kilitlenme önleme)
+                if (subDir.Name.Equals("Logs", StringComparison.OrdinalIgnoreCase) ||
+                    subDir.Name.Equals("Crashes", StringComparison.OrdinalIgnoreCase) ||
+                    subDir.Name.Equals("Riot Vanguard", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                AddDirectoryToArchive(archive, subDir.FullName, rootDir);
             }
         }
 
@@ -184,7 +417,6 @@ namespace LolAccountSwitcher
 
             foreach (DirectoryInfo subDir in dir.GetDirectories())
             {
-                // Logs, Crash ve Vanguard klasörlerini atla (hız, hafiflik ve kilitlenme önleme)
                 if (subDir.Name.Equals("Logs", StringComparison.OrdinalIgnoreCase) ||
                     subDir.Name.Equals("Crashes", StringComparison.OrdinalIgnoreCase) ||
                     subDir.Name.Equals("Riot Vanguard", StringComparison.OrdinalIgnoreCase))

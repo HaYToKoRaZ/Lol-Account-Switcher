@@ -1,6 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LolAccountSwitcher
 {
@@ -20,6 +21,16 @@ namespace LolAccountSwitcher
 
             LocalizationManager.OnLanguageChanged += UpdateLocalization;
             UpdateLocalization();
+
+            Loaded += (s, e) =>
+            {
+                double maxAvail = SystemParameters.WorkArea.Height - 30;
+                if (Height > maxAvail)
+                {
+                    Height = maxAvail;
+                    Top = Math.Max(0, (SystemParameters.WorkArea.Height - Height) / 2);
+                }
+            };
         }
 
         private void LoadSettingsAndPowerPlans()
@@ -42,6 +53,42 @@ namespace LolAccountSwitcher
                 // PlayStartupSound
                 string playStartupSoundVal = ConfigManager.Get("General", "PlayStartupSound", "true");
                 ChkPlayStartupSound.IsChecked = !string.Equals(playStartupSoundVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // MinimizeToTray
+                string trayVal = ConfigManager.Get("General", "MinimizeToTray", "true");
+                ChkMinimizeToTray.IsChecked = !string.Equals(trayVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // MaskEmailInUI
+                string maskVal = ConfigManager.Get("General", "MaskEmailInUI", "true");
+                ChkMaskEmailInUI.IsChecked = !string.Equals(maskVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // ShowAppDataButton
+                string showAppDataVal = ConfigManager.Get("General", "ShowAppDataButton", "false");
+                ChkShowAppData.IsChecked = string.Equals(showAppDataVal, "true", StringComparison.OrdinalIgnoreCase);
+
+                // ShowHzBadge (default: true)
+                string showHzVal = ConfigManager.Get("General", "ShowHzBadge", "true");
+                ChkShowHzBadge.IsChecked = !string.Equals(showHzVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // ShowLanguageToggle (default: true)
+                string showLangVal = ConfigManager.Get("General", "ShowLanguageToggle", "true");
+                ChkShowLangToggle.IsChecked = !string.Equals(showLangVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // ShowThemeToggle (default: true)
+                string showThemeVal = ConfigManager.Get("General", "ShowThemeToggle", "true");
+                ChkShowThemeToggle.IsChecked = !string.Equals(showThemeVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // ShowRefreshStatsButton (default: true)
+                string showRefreshVal = ConfigManager.Get("General", "ShowRefreshStatsButton", "true");
+                ChkShowRefreshStats.IsChecked = !string.Equals(showRefreshVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // ShowWikiButton (default: true)
+                string showWikiVal = ConfigManager.Get("General", "ShowWikiButton", "true");
+                ChkShowWiki.IsChecked = !string.Equals(showWikiVal, "false", StringComparison.OrdinalIgnoreCase);
+
+                // ShowPatchNotesButton (default: true)
+                string showPatchNotesVal = ConfigManager.Get("General", "ShowPatchNotesButton", "true");
+                ChkShowPatchNotes.IsChecked = !string.Equals(showPatchNotesVal, "false", StringComparison.OrdinalIgnoreCase);
 
                 // LaunchCompanionAppOnSwitch (fallback to LaunchBlitzOnSwitch)
                 string launchCompanionVal = ConfigManager.Get("General", "LaunchCompanionAppOnSwitch", ConfigManager.Get("General", "LaunchBlitzOnSwitch", "false"));
@@ -80,18 +127,10 @@ namespace LolAccountSwitcher
                     {
                         switchSelectIdx = currentIdx;
                     }
-                    else if (string.IsNullOrEmpty(savedSwitchGuid) && (plan.Name.Contains("Yüksek", StringComparison.OrdinalIgnoreCase) || plan.Name.Contains("High", StringComparison.OrdinalIgnoreCase) || plan.Name.Contains("Ultimate", StringComparison.OrdinalIgnoreCase) || plan.Name.Contains("Nihai", StringComparison.OrdinalIgnoreCase)))
-                    {
-                        if (switchSelectIdx == 0) switchSelectIdx = currentIdx;
-                    }
 
                     if (!string.IsNullOrEmpty(savedKillGuid) && string.Equals(savedKillGuid, guidStr, StringComparison.OrdinalIgnoreCase))
                     {
                         killSelectIdx = currentIdx;
-                    }
-                    else if (string.IsNullOrEmpty(savedKillGuid) && (plan.Name.Contains("Dengeli", StringComparison.OrdinalIgnoreCase) || plan.Name.Contains("Balanced", StringComparison.OrdinalIgnoreCase)))
-                    {
-                        if (killSelectIdx == 0) killSelectIdx = currentIdx;
                     }
 
                     currentIdx++;
@@ -105,8 +144,8 @@ namespace LolAccountSwitcher
                 CmbKillLeagueRefreshRate.Items.Clear();
 
                 var rates = DisplayManager.GetSupportedRefreshRates();
-                string savedSwitchHz = ConfigManager.Get("General", "SwitchRefreshRate", "144").Trim();
-                string savedKillHz = ConfigManager.Get("General", "KillLeagueRefreshRate", "60").Trim();
+                string savedSwitchHz = ConfigManager.Get("General", "SwitchRefreshRate", "0").Trim();
+                string savedKillHz = ConfigManager.Get("General", "KillLeagueRefreshRate", "0").Trim();
 
                 var defaultSwitchItem = new ComboBoxItem { Content = LocalizationManager.Get("RefreshRateAuto"), Tag = "0" };
                 var defaultKillItem = new ComboBoxItem { Content = LocalizationManager.Get("RefreshRateAuto"), Tag = "0" };
@@ -129,22 +168,6 @@ namespace LolAccountSwitcher
                     if (savedKillHz == hzStr) killHzIdx = hzCounter;
 
                     hzCounter++;
-                }
-
-                if (switchHzIdx == 0 && savedSwitchHz != "0" && !string.IsNullOrEmpty(savedSwitchHz) && rates.Count > 0)
-                {
-                    switchHzIdx = rates.Count;
-                }
-                if (killHzIdx == 0 && savedKillHz != "0" && !string.IsNullOrEmpty(savedKillHz))
-                {
-                    for (int i = 0; i < CmbKillLeagueRefreshRate.Items.Count; i++)
-                    {
-                        if ((CmbKillLeagueRefreshRate.Items[i] as ComboBoxItem)?.Tag as string == "60")
-                        {
-                            killHzIdx = i;
-                            break;
-                        }
-                    }
                 }
 
                 CmbSwitchRefreshRate.SelectedIndex = switchHzIdx >= 0 && switchHzIdx < CmbSwitchRefreshRate.Items.Count ? switchHzIdx : 0;
@@ -187,6 +210,11 @@ namespace LolAccountSwitcher
                     }
                 }
                 TxtCompanionAppPath.Text = savedCompanionPath;
+
+                // 4. Özel Komut & Betik Çalıştırma (CLI / CMD / Exe)
+                TxtPreSwitchCommand.Text = ConfigManager.Get("General", "PreSwitchCommand", "").Trim();
+                TxtPostSwitchCommand.Text = ConfigManager.Get("General", "PostSwitchCommand", "").Trim();
+                TxtKillLeagueCommand.Text = ConfigManager.Get("General", "KillLeagueCommand", "").Trim();
             }
             finally
             {
@@ -216,6 +244,74 @@ namespace LolAccountSwitcher
         {
             if (_isLoadingConfig) return;
             ConfigManager.Set("General", "PlayStartupSound", ChkPlayStartupSound.IsChecked == true ? "true" : "false");
+        }
+
+        private void ChkMinimizeToTray_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "MinimizeToTray", ChkMinimizeToTray.IsChecked == true ? "true" : "false");
+        }
+
+        private void ChkMaskEmailInUI_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "MaskEmailInUI", ChkMaskEmailInUI.IsChecked == true ? "true" : "false");
+            if (_main?.Accounts != null)
+            {
+                foreach (var acc in _main.Accounts)
+                {
+                    acc.RefreshLocalization();
+                }
+            }
+        }
+
+        private void ChkShowAppData_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowAppDataButton", ChkShowAppData.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
+        }
+
+        private void ChkShowHzBadge_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowHzBadge", ChkShowHzBadge.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
+        }
+
+        private void ChkShowLangToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowLanguageToggle", ChkShowLangToggle.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
+        }
+
+        private void ChkShowThemeToggle_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowThemeToggle", ChkShowThemeToggle.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
+        }
+
+        private void ChkShowRefreshStats_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowRefreshStatsButton", ChkShowRefreshStats.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
+        }
+
+        private void ChkShowWiki_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowWikiButton", ChkShowWiki.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
+        }
+
+        private void ChkShowPatchNotes_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "ShowPatchNotesButton", ChkShowPatchNotes.IsChecked == true ? "true" : "false");
+            _main?.UpdateToolbarsVisibility();
         }
 
         private void ChkLaunchCompanionApp_Changed(object sender, RoutedEventArgs e)
@@ -371,11 +467,35 @@ namespace LolAccountSwitcher
         private void UpdateLocalization()
         {
             TxtSettingsHeader.Text = LocalizationManager.Get("SettingsTitle");
+            if (TxtCardHeaderAppearance != null) TxtCardHeaderAppearance.Text = LocalizationManager.Get("CardHeaderAppearance");
+            if (TxtCardHeaderAutomation != null) TxtCardHeaderAutomation.Text = LocalizationManager.Get("CardHeaderAutomation");
+            if (TxtCardHeaderVisibility != null) TxtCardHeaderVisibility.Text = LocalizationManager.Get("CardHeaderVisibility");
+            if (TxtCardHeaderHardware != null) TxtCardHeaderHardware.Text = LocalizationManager.Get("CardHeaderHardware");
+            if (TxtCardHeaderPaths != null) TxtCardHeaderPaths.Text = LocalizationManager.Get("CardHeaderPaths");
+
+            if (BtnFooterPortal != null) BtnFooterPortal.ToolTip = LocalizationManager.Get("PortalTooltip");
+            if (BtnFooterWeb != null) BtnFooterWeb.ToolTip = LocalizationManager.Get("WebTooltip");
+            if (BtnFooterTwitter != null) BtnFooterTwitter.ToolTip = LocalizationManager.Get("TwitterTooltip");
+
             TxtThemeHeader.Text = LocalizationManager.Get("ThemeLabel");
             BtnToggleTheme.Content = LocalizationManager.Get("ToggleThemeBtn");
             TxtLangHeader.Text = LocalizationManager.Get("LanguageLabel");
-            BtnToggleLang.Content = LocalizationManager.Get("ToggleLanguageBtn");
-            TxtCurrentLang.Text = LocalizationManager.CurrentLanguage == "tr" ? " [TR / Türkçe]" : " [EN / English]";
+            if (LocalizationManager.CurrentLanguage == "tr")
+            {
+                BtnSettingsLangTR.Opacity = 1.0;
+                BtnSettingsLangTR.BorderBrush = (Brush)FindResource("BrushHextechGold");
+                BtnSettingsLangEN.Opacity = 0.55;
+                BtnSettingsLangEN.BorderBrush = (Brush)FindResource("BrushBorderSubtle");
+                TxtCurrentLang.Text = LocalizationManager.Get("SelectedLangTR");
+            }
+            else
+            {
+                BtnSettingsLangEN.Opacity = 1.0;
+                BtnSettingsLangEN.BorderBrush = (Brush)FindResource("BrushHextechCyanGlow");
+                BtnSettingsLangTR.Opacity = 0.55;
+                BtnSettingsLangTR.BorderBrush = (Brush)FindResource("BrushBorderSubtle");
+                TxtCurrentLang.Text = LocalizationManager.Get("SelectedLangEN");
+            }
 
             TxtCloseLeagueHeader.Text = LocalizationManager.Get("CloseLeagueOption");
             TxtCloseLeagueSub.Text = LocalizationManager.Get("CloseLeagueOptionDesc");
@@ -385,6 +505,32 @@ namespace LolAccountSwitcher
             TxtAutoRefreshStatsSub.Text = LocalizationManager.Get("AutoRefreshStatsOptionDesc");
             TxtPlayStartupSoundHeader.Text = LocalizationManager.Get("PlayStartupSoundOption");
             TxtPlayStartupSoundSub.Text = LocalizationManager.Get("PlayStartupSoundOptionDesc");
+            TxtMinimizeToTrayHeader.Text = LocalizationManager.Get("MinimizeToTrayOption");
+            TxtMinimizeToTraySub.Text = LocalizationManager.Get("MinimizeToTrayOptionDesc");
+            if (TxtMaskEmailHeader != null) TxtMaskEmailHeader.Text = LocalizationManager.Get("MaskEmailOption");
+            if (TxtMaskEmailSub != null) TxtMaskEmailSub.Text = LocalizationManager.Get("MaskEmailOptionDesc");
+
+            if (TxtShowHzBadgeHeader != null) TxtShowHzBadgeHeader.Text = LocalizationManager.Get("ShowHzBadgeOption");
+            if (TxtShowHzBadgeSub != null) TxtShowHzBadgeSub.Text = LocalizationManager.Get("ShowHzBadgeOptionDesc");
+
+            if (TxtShowLangToggleHeader != null) TxtShowLangToggleHeader.Text = LocalizationManager.Get("ShowLanguageToggleOption");
+            if (TxtShowLangToggleSub != null) TxtShowLangToggleSub.Text = LocalizationManager.Get("ShowLanguageToggleOptionDesc");
+
+            if (TxtShowThemeToggleHeader != null) TxtShowThemeToggleHeader.Text = LocalizationManager.Get("ShowThemeToggleOption");
+            if (TxtShowThemeToggleSub != null) TxtShowThemeToggleSub.Text = LocalizationManager.Get("ShowThemeToggleOptionDesc");
+
+            if (TxtShowRefreshStatsHeader != null) TxtShowRefreshStatsHeader.Text = LocalizationManager.Get("ShowRefreshStatsOption");
+            if (TxtShowRefreshStatsSub != null) TxtShowRefreshStatsSub.Text = LocalizationManager.Get("ShowRefreshStatsOptionDesc");
+
+            if (TxtShowWikiHeader != null) TxtShowWikiHeader.Text = LocalizationManager.Get("ShowWikiOption");
+            if (TxtShowWikiSub != null) TxtShowWikiSub.Text = LocalizationManager.Get("ShowWikiOptionDesc");
+
+            if (TxtShowPatchNotesHeader != null) TxtShowPatchNotesHeader.Text = LocalizationManager.Get("ShowPatchNotesOption");
+            if (TxtShowPatchNotesSub != null) TxtShowPatchNotesSub.Text = LocalizationManager.Get("ShowPatchNotesOptionDesc");
+
+            if (TxtShowAppDataHeader != null) TxtShowAppDataHeader.Text = LocalizationManager.Get("ShowAppDataOption");
+            if (TxtShowAppDataSub != null) TxtShowAppDataSub.Text = LocalizationManager.Get("ShowAppDataOptionDesc");
+
             TxtLaunchCompanionAppHeader.Text = LocalizationManager.Get("LaunchCompanionAppOption");
             TxtLaunchCompanionAppSub.Text = LocalizationManager.Get("LaunchCompanionAppOptionDesc");
             TxtSwitchPowerPlan.Text = LocalizationManager.Get("SwitchPowerPlanLabel");
@@ -403,6 +549,14 @@ namespace LolAccountSwitcher
             TxtCompanionAppPathLabel.Text = LocalizationManager.Get("CompanionAppPathLabel");
             BtnDetectCompanionAppPath.Content = LocalizationManager.Get("DetectPathBtn");
             BtnBrowseCompanionAppPath.Content = LocalizationManager.Get("BrowsePathBtn");
+
+            TxtCustomScriptHeader.Text = LocalizationManager.Get("CustomScriptHeader");
+            TxtPreSwitchCommandLabel.Text = LocalizationManager.Get("PreSwitchCommandLabel");
+            TxtPreSwitchCommand.ToolTip = LocalizationManager.Get("PreSwitchCommandTooltip");
+            TxtPostSwitchCommandLabel.Text = LocalizationManager.Get("PostSwitchCommandLabel");
+            TxtPostSwitchCommand.ToolTip = LocalizationManager.Get("PostSwitchCommandTooltip");
+            TxtKillLeagueCommandLabel.Text = LocalizationManager.Get("KillLeagueCommandLabel");
+            TxtKillLeagueCommand.ToolTip = LocalizationManager.Get("KillLeagueCommandTooltip");
 
             if (CmbSwitchPowerPlan.Items.Count > 0 && CmbSwitchPowerPlan.Items[0] is ComboBoxItem firstSwitch)
             {
@@ -449,9 +603,14 @@ namespace LolAccountSwitcher
             UpdateThemeLabel();
         }
 
-        private void BtnToggleLang_Click(object sender, RoutedEventArgs e)
+        private void BtnSettingsLangTR_Click(object sender, RoutedEventArgs e)
         {
-            LocalizationManager.ToggleLanguage();
+            LocalizationManager.SetLanguage("tr");
+        }
+
+        private void BtnSettingsLangEN_Click(object sender, RoutedEventArgs e)
+        {
+            LocalizationManager.SetLanguage("en");
         }
 
         private void BtnOpenUrl_Click(object sender, RoutedEventArgs e)
@@ -464,6 +623,79 @@ namespace LolAccountSwitcher
                 }
                 catch { }
             }
+        }
+
+        private void TxtPreSwitchCommand_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "PreSwitchCommand", TxtPreSwitchCommand.Text.Trim());
+        }
+
+        private void TxtPostSwitchCommand_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "PostSwitchCommand", TxtPostSwitchCommand.Text.Trim());
+        }
+
+        private void TxtKillLeagueCommand_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "KillLeagueCommand", TxtKillLeagueCommand.Text.Trim());
+        }
+
+        private void BtnBrowsePreSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            BrowseCommandFile(TxtPreSwitchCommand);
+        }
+
+        private void BtnBrowsePostSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            BrowseCommandFile(TxtPostSwitchCommand);
+        }
+
+        private void BtnBrowseKillLeagueCommand_Click(object sender, RoutedEventArgs e)
+        {
+            BrowseCommandFile(TxtKillLeagueCommand);
+        }
+
+        private void BrowseCommandFile(TextBox targetBox)
+        {
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Çalıştırılacak Dosya veya Betiği Seçin",
+                Filter = "Çalıştırılabilir Dosyalar (*.exe;*.bat;*.cmd;*.ps1)|*.exe;*.bat;*.cmd;*.ps1|Tüm Dosyalar (*.*)|*.*"
+            };
+
+            if (dialog.ShowDialog() == true && !string.IsNullOrEmpty(dialog.FileName))
+            {
+                targetBox.Text = dialog.FileName;
+            }
+        }
+
+        private async void BtnTestPreSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            await TestCommandAsync(TxtPreSwitchCommand.Text);
+        }
+
+        private async void BtnTestPostSwitch_Click(object sender, RoutedEventArgs e)
+        {
+            await TestCommandAsync(TxtPostSwitchCommand.Text);
+        }
+
+        private async void BtnTestKillLeagueCommand_Click(object sender, RoutedEventArgs e)
+        {
+            await TestCommandAsync(TxtKillLeagueCommand.Text);
+        }
+
+        private async Task TestCommandAsync(string cmd)
+        {
+            if (string.IsNullOrWhiteSpace(cmd))
+            {
+                MessageBox.Show(LocalizationManager.Get("CommandTestEmpty"), LocalizationManager.Get("AppTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            await CustomScriptService.ExecuteCommandAsync(cmd);
+            TrayService.ShowBalloonNotification(LocalizationManager.Get("AppTitle"), LocalizationManager.Get("CommandTestSuccess"));
         }
     }
 }
