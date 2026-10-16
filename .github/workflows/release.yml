@@ -1,0 +1,159 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build, Package & Publish Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Setup Inno Setup
+        run: choco install innosetup --no-progress -y
+
+      - name: Extract Version
+        id: get_version
+        shell: pwsh
+        run: |
+          [xml]$csproj = Get-Content "LolAccountSwitcher.csproj"
+          $ver = $csproj.Project.PropertyGroup.Version
+          if (-not $ver) { $ver = "3.7" }
+          Write-Host "Detected Version: $ver"
+          "VERSION=$ver" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Build Application
+        shell: pwsh
+        run: |
+          # 1. build/bin calisma dizini hazirlanir
+          New-Item -ItemType Directory -Path "build\bin" -Force | Out-Null
+
+          # 2. .NET 10 Cozumu Derlenir
+          dotnet build "LolAccountSwitcher.csproj" -c Release -o "build\bin" --nologo
+
+          # 3. Kok Baslatici (Launcher EXE) CSC ile derlenir
+          $cscPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+          $launcherCode = @"
+          using System;
+          using System.Diagnostics;
+          using System.IO;
+          using System.Reflection;
+          using System.Runtime.InteropServices;
+
+          [assembly: AssemblyTitle("Lol Account Switcher")]
+          [assembly: AssemblyDescription("Riot & LoL Profile Switcher and System Optimizer")]
+          [assembly: AssemblyConfiguration("")]
+          [assembly: AssemblyCompany("HaYTooL")]
+          [assembly: AssemblyProduct("Lol Account Switcher")]
+          [assembly: AssemblyCopyright("Copyright (C) 2026 HaYTooL / HaYTo")]
+          [assembly: AssemblyTrademark("HaYTooL")]
+          [assembly: AssemblyCulture("")]
+          [assembly: ComVisible(false)]
+          [assembly: AssemblyVersion("$($env:VERSION).0.0")]
+          [assembly: AssemblyFileVersion("$($env:VERSION).0.0")]
+          [assembly: AssemblyInformationalVersion("$($env:VERSION)")]
+
+          internal static class Program {
+              [DllImport("user32.dll")]
+              [return: MarshalAs(UnmanagedType.Bool)]
+              private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+              [DllImport("user32.dll")]
+              private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+
+              [DllImport("user32.dll")]
+              [return: MarshalAs(UnmanagedType.Bool)]
+              private static extern bool IsIconic(IntPtr hWnd);
+
+              private const int SW_RESTORE = 9;
+              private const int SW_SHOW = 5;
+
+              [STAThread]
+              static void Main(string[] args) {
+                  int currentPid = Process.GetCurrentProcess().Id;
+                  Process[] existing = Process.GetProcessesByName("LolAccountSwitcher");
+                  foreach (var proc in existing) {
+                      if (proc.Id != currentPid && proc.MainWindowHandle != IntPtr.Zero) {
+                          IntPtr hWnd = proc.MainWindowHandle;
+                          if (IsIconic(hWnd)) {
+                              ShowWindowAsync(hWnd, SW_RESTORE);
+                          } else {
+                              ShowWindowAsync(hWnd, SW_SHOW);
+                          }
+                          SetForegroundWindow(hWnd);
+                          return;
+                      }
+                  }
+
+                  string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                  string targetExe = Path.Combine(baseDir, "bin", "LolAccountSwitcher.exe");
+                  if (File.Exists(targetExe)) {
+                      var psi = new ProcessStartInfo(targetExe);
+                      psi.WorkingDirectory = baseDir;
+                      psi.UseShellExecute = false;
+                      if (args != null && args.Length > 0) {
+                          psi.Arguments = string.Join(" ", args);
+                      }
+                      Process.Start(psi);
+                  }
+              }
+          }
+          "@
+
+          Set-Content -Path "temp_launcher.cs" -Value $launcherCode -Encoding UTF8
+          & $cscPath /nologo /target:winexe "/win32icon:app.ico" "/out:build\LolAccountSwitcher.exe" temp_launcher.cs
+          Remove-Item "temp_launcher.cs" -Force
+
+          # 4. INI, app.ico ve media/ kopyalanir
+          Copy-Item -Path "LolAccountSwitcher.ini" -Destination "build\LolAccountSwitcher.ini" -Force
+          Copy-Item -Path "app.ico" -Destination "build\app.ico" -Force
+          if (Test-Path "media") {
+              Copy-Item -Path "media" -Destination "build\media" -Recurse -Force
+          }
+
+          # 5. build/bin altindaki mukerrer dosyalari temizle
+          Remove-Item -Path "build\bin\LolAccountSwitcher.ini" -Force -ErrorAction SilentlyContinue
+          Remove-Item -Path "build\bin\accounts.json" -Force -ErrorAction SilentlyContinue
+
+      - name: Package Portable ZIP
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path "dist" -Force | Out-Null
+          $zipName = "dist/LolAccountSwitcher-v$($env:VERSION)-Portable.zip"
+          Compress-Archive -Path "build\*" -DestinationPath $zipName -Force
+          Write-Host "Portable Zip Created: $zipName"
+
+      - name: Build Setup Installer
+        shell: pwsh
+        run: |
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\iscc.exe"
+          & $iscc "/DAppVersion=$($env:VERSION)" "installer.iss"
+          Write-Host "Setup Installer Created: dist/LolAccountSwitcher-v$($env:VERSION)-Setup.exe"
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ env.VERSION }}"
+          name: "Lol Account Switcher v${{ env.VERSION }}"
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            dist/LolAccountSwitcher-v${{ env.VERSION }}-Setup.exe
+            dist/LolAccountSwitcher-v${{ env.VERSION }}-Portable.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
