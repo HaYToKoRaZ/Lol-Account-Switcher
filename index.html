@@ -1,156 +1,521 @@
 <!DOCTYPE html>
-<html lang="tr" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lol Account Switcher - Riot & LoL Profil Değiştirici ve Sistem Optimizatörü</title>
-  <meta name="description" content="Safkan .NET 9 ve Win32 API mimarisiyle geliştirilmiş, sıfır harici bağımlılıklı, Riot API istemeyen yerel League of Legends profil değiştirici.">
+  <title>Lol Account Switcher • Riot & LoL Profile Switcher and System Optimizer</title>
+  <meta name="description" content="Seamless Riot Games and League of Legends account switcher with direct Win32 API display refresh rate (144Hz) and ultimate power plan optimization. Zero API keys, 100% offline.">
+  <meta name="keywords" content="Lol Account Switcher, League of Legends account switcher, Riot profile manager, LoL 144Hz optimizer, Riot Games multi account, HaYTooL">
+  <meta name="author" content="HaYTooL / HaYTo">
+  <meta name="robots" content="index, follow">
+
+  <!-- Canonical & Alternate Language URLs -->
+  <link rel="canonical" href="https://haytokoraz.github.io/Lol-Account-Switcher/">
+  <link rel="alternate" hreflang="en" href="https://haytokoraz.github.io/Lol-Account-Switcher/">
+  <link rel="alternate" hreflang="tr" href="https://haytokoraz.github.io/Lol-Account-Switcher/tr/">
+  <link rel="alternate" hreflang="x-default" href="https://haytokoraz.github.io/Lol-Account-Switcher/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://haytokoraz.github.io/Lol-Account-Switcher/">
+  <meta property="og:title" content="Lol Account Switcher • Riot & LoL Profile Switcher">
+  <meta property="og:description" content="Switch Riot & LoL accounts in milliseconds with automatic 144Hz display and power plan optimization. Free, open-source, and secure.">
+  <meta property="og:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@HaYTo">
+  <meta name="twitter:title" content="Lol Account Switcher • Riot & LoL Profile Switcher">
+  <meta name="twitter:description" content="Switch League of Legends accounts in milliseconds. Native C# .NET 10, direct Win32 APIs, zero lag.">
+  <meta name="twitter:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
+
+  <!-- Favicon -->
   <link rel="icon" href="app.ico">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Schema.org SoftwareApplication JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Lol Account Switcher",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "GameApplication, UtilitiesApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "HaYTooL",
+      "url": "https://haytokoraz.github.io/"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "HaYTo",
+      "url": "https://x.com/HaYTo"
+    },
+    "downloadUrl": "https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases",
+    "description": "Riot & LoL Profile Switcher and System Optimizer built with native C# and direct Win32 APIs."
+  }
+  </script>
 </head>
 <body>
 
   <!-- NAVBAR -->
-  <nav class="navbar">
-    <a href="https://haytokoraz.github.io/Lol-Account-Switcher/" class="nav-brand">
-      <img src="logo.png" alt="Logo" class="nav-logo">
-      <span class="nav-title">Lol Account Switcher</span>
-      <span class="version-badge">v3.7</span>
-    </a>
-    <div class="nav-actions">
-      <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer" class="btn-github" style="border-color: var(--hextech-cyan); color: var(--hextech-cyan-glow);">🌐 HaYTooL Portal</a>
-      <button id="themeToggle" class="theme-toggle-btn">🌓 Tema</button>
-      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-github">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        GitHub
+  <header>
+    <nav class="navbar" aria-label="Main Navigation">
+      <a href="./" class="nav-brand">
+        <img src="logo.png" alt="Lol Account Switcher Logo" class="nav-logo" width="38" height="38">
+        <span class="nav-title">Lol Account Switcher</span>
       </a>
-    </div>
-  </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-left">
-      <div class="hero-tag">
-        <span>⚡</span> Safkan .NET 9 • Direct Win32 API • Sıfır Bağımlılık
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#controls">Controls Guide</a>
+        <a href="#architecture">Architecture</a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
-      <h1 class="hero-title">
-        Hesaplarınıza Hükmedin, <span>Sisteminizi Optimize Edin.</span>
-      </h1>
-      <p class="hero-desc">
-        Riot Games API anahtarı olmadan League of Legends hesaplarınızın gerçek profil resmini, seviyesini ve derecesini saliseler içinde görüntüleyin. 144Hz ekran tazeleme ve Nihai Güç moduna tek tıkla geçin.
+
+      <div class="nav-actions">
+        <!-- Language Switcher: Active EN, Link to TR -->
+        <a href="tr/" id="langTR" class="pill-btn lang-btn" title="Türkçe Sayfaya Geç">🇹🇷 TR</a>
+        <a href="./" id="langEN" class="pill-btn lang-btn active" title="Current: English">🇬🇧 EN</a>
+
+        <!-- Dynamic Theme Switcher -->
+        <button id="themeToggle" class="pill-btn theme-toggle-btn" aria-label="Toggle Dark and Light theme" title="Toggle Theme">🌓</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-tag">
+          <span>⚡</span> Native C# • Direct Win32 API • Zero API Keys
+        </div>
+        <h1 class="hero-title">
+          Master Your Accounts, <span>Optimize Your System.</span>
+        </h1>
+        <p class="hero-desc">
+          Switch between multiple League of Legends accounts in milliseconds. Automatically activate 144Hz+ display refresh rates and Windows Ultimate Performance power plans with zero third-party bloat.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary" id="downloadBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+            Download Setup (.exe)
+          </a>
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-secondary">
+            📦 Portable Package (.zip)
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <span>🛡️ Open Source</span>
+          <span>⚡ Windows 10 / 11 Compatible</span>
+          <span>🔒 AES-256 Encrypted</span>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE APP MOCKUP -->
+      <div class="hero-right">
+        <div class="app-mockup" role="region" aria-label="Interactive Application Preview">
+          <div class="mock-header">
+            <div class="mock-brand">
+              <img src="logo.png" alt="App Logo" class="mock-logo">
+              <span class="mock-title">Lol Account Switcher</span>
+            </div>
+            <div class="mock-hz-pill">
+              🖥️ 144Hz Active
+            </div>
+          </div>
+
+          <!-- MOCK ACCOUNT 1 (PRO GENERIC: FAKER) -->
+          <div class="mock-card-list">
+            <div class="mock-card active" data-id="1">
+              <div class="mock-avatar-wrap">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/profileicon/6542.png" alt="Faker Avatar" class="mock-avatar">
+                <span class="mock-lvl-badge">785</span>
+              </div>
+              <div class="mock-info">
+                <div class="mock-row-1">
+                  <span class="mock-acc-name">T1 Faker (Main)</span>
+                  <span class="mock-server-badge">KR</span>
+                </div>
+                <div class="mock-row-2">
+                  <span>Hide on bush#KR1</span>
+                  <span>•</span>
+                  <img src="ranks/challenger.png" alt="Challenger Medal" class="mock-rank-medal">
+                  <span class="mock-rank-text">Challenger • 1,240 LP</span>
+                </div>
+              </div>
+              <button class="mock-switch-btn" aria-label="Switch to Faker profile">Active ✓</button>
+            </div>
+
+            <!-- MOCK ACCOUNT 2 (PRO GENERIC: CAPS) -->
+            <div class="mock-card" data-id="2">
+              <div class="mock-avatar-wrap">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/profileicon/588.png" alt="Caps Avatar" class="mock-avatar">
+                <span class="mock-lvl-badge">412</span>
+              </div>
+              <div class="mock-info">
+                <div class="mock-row-1">
+                  <span class="mock-acc-name">Caps (Smurf)</span>
+                  <span class="mock-server-badge">EUW</span>
+                </div>
+                <div class="mock-row-2">
+                  <span>TheShackledOne#EUW</span>
+                  <span>•</span>
+                  <img src="ranks/grandmaster.png" alt="Grandmaster Medal" class="mock-rank-medal">
+                  <span class="mock-rank-text">Grandmaster • 680 LP</span>
+                </div>
+              </div>
+              <button class="mock-switch-btn" aria-label="Switch to Caps profile">Switch ➔</button>
+            </div>
+
+            <!-- MOCK ACCOUNT 3 (LORE GENERIC: HEXTECH MASTER) -->
+            <div class="mock-card" data-id="3">
+              <div class="mock-avatar-wrap">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/profileicon/5012.png" alt="Hextech Avatar" class="mock-avatar">
+                <span class="mock-lvl-badge">256</span>
+              </div>
+              <div class="mock-info">
+                <div class="mock-row-1">
+                  <span class="mock-acc-name">Hextech Master</span>
+                  <span class="mock-server-badge">TR</span>
+                </div>
+                <div class="mock-row-2">
+                  <span>PiltoverEnforcer#TR1</span>
+                  <span>•</span>
+                  <img src="ranks/master.png" alt="Master Medal" class="mock-rank-medal">
+                  <span class="mock-rank-text">Master • 215 LP</span>
+                </div>
+              </div>
+              <button class="mock-switch-btn" aria-label="Switch to Hextech Master profile">Switch ➔</button>
+            </div>
+          </div>
+
+          <!-- Interactive Toast Simulator -->
+          <div id="mockToast" class="mock-toast" role="status">
+            ⚡ Profile Switched!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="features-section">
+      <div class="section-header">
+        <div class="section-tag">High Performance Architecture</div>
+        <h2 class="section-title">Engineered For Competitive Gamers</h2>
+        <p class="section-subtitle">
+          Guaranteed speed and security backed by the repository's strict performance standards.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrap">⚡</div>
+          <h3 class="feature-title">Millisecond Profile Switching</h3>
+          <p class="feature-desc">
+            Direct token and session restoration allows instant switching without re-entering two-factor codes or typing passwords repeatedly.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🖥️</div>
+          <h3 class="feature-title">Native Win32 Hz & Power Engine</h3>
+          <p class="feature-desc">
+            Utilizes Windows <code style="color: var(--hextech-cyan);">ChangeDisplaySettingsEx</code> and <code style="color: var(--hextech-cyan);">PowerSetActiveScheme</code> APIs. No command-line lag, no flickering, zero external tools.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🛡️</div>
+          <h3 class="feature-title">Zero API Keys Required</h3>
+          <p class="feature-desc">
+            Fetches live summoner levels, profile icons, and genuine rank emblems automatically via Riot ID without requiring Riot Games Developer API keys.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">📁</div>
+          <h3 class="feature-title">7-Zip Ultra Backup & Config Lock</h3>
+          <p class="feature-desc">
+            Atomic configuration file write-protection prevents League from resetting your custom keybindings and settings during client updates.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🌓</div>
+          <h3 class="feature-title">Hextech & Piltover Themes</h3>
+          <p class="feature-desc">
+            Automatically aligns with Windows system dark/light preference, featuring curated Dark Hextech and Light Piltover color palettes.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🔔</div>
+          <h3 class="feature-title">Silent System Tray Integration</h3>
+          <p class="feature-desc">
+            Minimizes to the Windows taskbar notification area with instant restore via desktop shortcut or background EventWaitHandle IPC wakeup.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLICATION CONTROLS & SETTINGS GUIDE (DISCOVERY SECTION) -->
+    <section id="controls" class="controls-section">
+      <div class="section-header">
+        <div class="section-tag">Interactive Controls Guide</div>
+        <h2 class="section-title">Discover Built-in Tools & Features</h2>
+        <p class="section-subtitle">
+          Every button and toggle in the application is engineered for maximum workflow efficiency.
+        </p>
+      </div>
+
+      <!-- GROUP 1: MAIN TOOLBAR CONTROLS -->
+      <div class="controls-group">
+        <div class="controls-group-header">
+          <span class="controls-group-icon">🎛️</span>
+          <h3 class="controls-group-title">Main Screen Toolbar & Actions</h3>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">+</span>
+              <span class="control-item-name">Auto Account Add</span>
+            </div>
+            <p class="control-item-desc">
+              When Riot Client is logged in, clicking the plus button automatically detects the active summoner name, level, server, and rank badge without typing.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">144Hz</span>
+              <span class="control-item-name">Live Hz & Power Switcher</span>
+            </div>
+            <p class="control-item-desc">
+              Instantly toggles your monitor's display refresh rate (e.g. 144Hz/240Hz for gaming, 60Hz for desktop) and Windows Power Plan via direct Win32 APIs.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🔒</span>
+              <span class="control-item-name">CfgLock (Keybind Protector)</span>
+            </div>
+            <p class="control-item-desc">
+              Locks <code style="color: var(--hextech-cyan);">game.cfg</code> and <code style="color: var(--hextech-cyan);">PersistedSettings.json</code> as read-only. Prevents League updates from wiping custom keybinds.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🛑</span>
+              <span class="control-item-name">Kill League (Panic Button)</span>
+            </div>
+            <p class="control-item-desc">
+              Cleanly terminates League of Legends, Riot Client, Vanguard tray services, and companion overlay apps in one swift operation.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🎮</span>
+              <span class="control-item-name">Quick LoL Launcher</span>
+            </div>
+            <p class="control-item-desc">
+              Directly launches Riot Client Services with dedicated League flags, bypassing slow splash screens and desktop clutter.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">↕️</span>
+              <span class="control-item-name">Account Reordering</span>
+            </div>
+            <p class="control-item-desc">
+              Move profile cards up or down using the arrow buttons to arrange your most-played accounts right at the top.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">📋</span>
+              <span class="control-item-name">Click-to-Copy Riot ID</span>
+            </div>
+            <p class="control-item-desc">
+              Clicking any account's summoner name or tagline instantly copies it to the Windows clipboard with a smooth toast confirmation.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🔍</span>
+              <span class="control-item-name">Porofessor Match History</span>
+            </div>
+            <p class="control-item-desc">
+              Clicking an account's avatar or rank medal directly opens their Porofessor & League of Graphs match stats in your default browser.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROUP 2: SETTINGS DASHBOARD CONTROLS -->
+      <div class="controls-group">
+        <div class="controls-group-header">
+          <span class="controls-group-icon">⚙️</span>
+          <h3 class="controls-group-title">Settings & Preferences Dashboard</h3>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🚀</span>
+              <span class="control-item-name">Switch Automation</span>
+            </div>
+            <p class="control-item-desc">
+              Choose whether to terminate old clients, auto-launch the game, or restart companion apps (Blitz, Porofessor) automatically upon account switch.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🖥️</span>
+              <span class="control-item-name">Custom Refresh Rates</span>
+            </div>
+            <p class="control-item-desc">
+              Configure independent refresh rates (60, 75, 120, 144, 165, 240, 360 Hz) for gaming on switch and for desktop return when League is closed.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">⚡</span>
+              <span class="control-item-name">Power Plan Profiles</span>
+            </div>
+            <p class="control-item-desc">
+              Select specific Windows Power Plan GUIDs (Ultimate Performance, High Performance, Balanced) to switch CPU throttling profiles automatically.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">📜</span>
+              <span class="control-item-name">Pre/Post Switch Commands</span>
+            </div>
+            <p class="control-item-desc">
+              Execute custom PowerShell, CLI, or batch scripts before and after switching profiles or when terminating League.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🔒</span>
+              <span class="control-item-name">Email Privacy Masking</span>
+            </div>
+            <p class="control-item-desc">
+              Mask registered account emails with asterisks (<code style="color: var(--hextech-cyan);">k****@domain.com</code>) to prevent accidental exposure while streaming.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">👁️</span>
+              <span class="control-item-name">Toolbar Button Customizer</span>
+            </div>
+            <p class="control-item-desc">
+              Toggle the visibility of header buttons (Wiki, Patch Notes, CfgLock, Kill League) to maintain a minimal, clutter-free title bar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE & PROTOCOL -->
+    <section id="architecture" class="arch-section">
+      <div class="arch-container">
+        <div class="arch-specs">
+          <div class="section-tag">Under the Hood</div>
+          <h2 class="section-title" style="text-align: left;">Zero-Bloat C# .NET 10</h2>
+          
+          <div class="spec-item">
+            <div class="spec-dot"></div>
+            <div class="spec-content">
+              <h4>Native WinExe Architecture</h4>
+              <p>Pure C# compiled with .NET 10. No Electron, no Chromium overhead, and no web wrappers.</p>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-dot"></div>
+            <div class="spec-content">
+              <h4>Local Media & Offline Readiness</h4>
+              <p>All 11 tier emblems (Unranked to Challenger) and audio chimes are bundled locally for instant offline rendering.</p>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-dot"></div>
+            <div class="spec-content">
+              <h4>AES-256 & DPAPI Security</h4>
+              <p>User profile credentials are encrypted locally using Windows Data Protection API (DPAPI) and format-proof AES-256.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-code-box">
+          <span class="code-comment">// LolAccountSwitcher - Direct Win32 Optimization</span><br>
+          <span class="code-keyword">var</span> display = <span class="code-keyword">new</span> DisplayManager();<br>
+          display.SetRefreshRate(<span class="code-gold">144</span>); <span class="code-comment">// Direct Win32 API</span><br>
+          <br>
+          <span class="code-keyword">var</span> power = <span class="code-keyword">new</span> PowerManager();<br>
+          power.ApplyScheme(<span class="code-gold">"UltimatePerformance"</span>);<br>
+          <br>
+          <span class="code-keyword">var</span> session = <span class="code-keyword">await</span> RiotSession.RestoreAsync(targetProfile);<br>
+          <span class="code-comment">// Elapsed: 42ms • Zero Lag</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOAD CTA -->
+    <section class="cta-banner">
+      <h2 style="font-size: 2.2rem; margin-bottom: 12px;">Ready To Elevate Your League Workflow?</h2>
+      <p style="color: var(--text-secondary); max-width: 650px; margin: 0 auto;">
+        Free, open-source, and guaranteed bloat-free. Download Lol Account Switcher now for Windows.
       </p>
-      <div class="hero-ctas">
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary">İndir (v3.7) ➔</a>
-        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-secondary">Kaynak Kodları İncele</a>
+
+      <div class="cta-buttons">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary">
+          Download Installer (.exe)
+        </a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          View on GitHub ★
+        </a>
       </div>
-    </div>
-
-    <!-- APP PREVIEW MOCKUP -->
-    <div class="hero-right">
-      <div class="app-mockup">
-        <div class="mock-header">
-          <div style="display: flex; align-items: center; gap: 8px;">
-            <img src="logo.png" alt="Logo" style="width: 24px; height: 24px;">
-            <strong style="font-size: 0.9rem;">Lol Account Switcher</strong>
-            <span class="version-badge">v3.7</span>
-          </div>
-          <div style="background: var(--bg-badge); border: 1px solid var(--hextech-cyan); color: var(--hextech-cyan-glow); padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;">
-            🖥️ 144Hz
-          </div>
-        </div>
-
-        <!-- MOCK ACCOUNT 1 -->
-        <div class="mock-account-card">
-          <div class="mock-avatar">
-            <img src="https://opgg-static.akamaized.net/meta/images/profile_icons/profileIcon6502.jpg" alt="Avatar">
-            <span class="mock-level">644</span>
-          </div>
-          <div class="mock-info">
-            <div class="mock-name-row">
-              <span class="mock-title">EUW Main</span>
-              <span class="mock-server">EUW</span>
-            </div>
-            <div class="mock-rank-row">
-              <span>FevFlash#hhk</span>
-              <span>•</span>
-              <img src="https://opgg-static.akamaized.net/images/medals_new/gold.png" style="width: 16px; height: 16px;">
-              <span class="mock-rank-text">Gold IV • 5 LP</span>
-            </div>
-          </div>
-          <button class="mock-switch-btn">Geçiş Yap ➔</button>
-        </div>
-
-        <!-- MOCK ACCOUNT 2 -->
-        <div class="mock-account-card">
-          <div class="mock-avatar">
-            <img src="https://opgg-static.akamaized.net/meta/images/profile_icons/profileIcon6502.jpg" alt="Avatar">
-            <span class="mock-level">329</span>
-          </div>
-          <div class="mock-info">
-            <div class="mock-name-row">
-              <span class="mock-title">TR Main</span>
-              <span class="mock-server">TR</span>
-            </div>
-            <div class="mock-rank-row">
-              <span>KediSeven#trr</span>
-              <span>•</span>
-              <img src="https://opgg-static.akamaized.net/images/medals_new/gold.png" style="width: 16px; height: 16px;">
-              <span class="mock-rank-text">Gold II • 65 LP</span>
-            </div>
-          </div>
-          <button class="mock-switch-btn">Geçiş Yap ➔</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section class="features-section">
-    <div class="section-header">
-      <h2>Mimarimiz ve İlkelerimiz</h2>
-      <p style="color: var(--text-muted);">Proje Anayasası ile garanti altına alınmış performans standartları.</p>
-    </div>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🛡️</div>
-        <h3>Riot API Anahtarsız Veri</h3>
-        <p>Herhangi bir API kota veya başvuru süreci olmadan doğrudan Riot ID ile profil resmi, seviye ve lig amblemlerini çeker.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Direct Win32 API Motoru</h3>
-        <p>Ekran tazeleme hızı (144Hz) ve Windows Güç Planı değişimi üçüncü parti konsol araçları olmadan çekirdek seviyesinde yönetilir.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">📁</div>
-        <h3>Otomatik Güvenli Yedekleme</h3>
-        <p>7-Zip mx-9 seviyesinde tarih damgalı yedekleme ve anlık config kilitleme ile oyun ayarlarınız asla bozulmaz.</p>
-      </div>
-
-      <div class="feature-card">
-        <div class="feature-icon">🌓</div>
-        <h3>Hextech & Piltover Temaları</h3>
-        <p>Windows sistem rengini otomatik algılar; anında Koyu Hextech veya Açık Piltover temasına kusursuz kontrastla geçer.</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- FOOTER -->
   <footer>
     <div>
-      Yayıncı: <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer"><strong>HaYTooL</strong></a> • 
-      Geliştirici: <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer"><strong>HaYTo</strong></a> • 
-      İletişim: <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
+      Publisher: <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer"><strong>HaYTooL</strong></a> • 
+      Developer: <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer"><strong>HaYTo</strong></a> • 
+      Contact: <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
     </div>
-    <div style="display: flex; gap: 14px;">
-      <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer">HaYTooL Portalı</a>
+
+    <div class="footer-links">
+      <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer">🌐 HaYTooL Portal</a>
       <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer">𝕏 (@HaYTo)</a>
-      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub Deposu</a>
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub Repository</a>
     </div>
   </footer>
 

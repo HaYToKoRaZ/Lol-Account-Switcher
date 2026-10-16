@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lol Account Switcher • Riot & LoL Profil Değiştirici ve Sistem Optimizatörü</title>
+  <meta name="description" content="League of Legends ve Riot Games hesapları arasında saliseler içinde geçiş yapın. Doğrudan Win32 API ile 144Hz ekran tazeleme ve Nihai Güç planını otomatik aktifleştirin. API kotasız, %100 yerel ve güvenli.">
+  <meta name="keywords" content="Lol Account Switcher, League of Legends hesap değiştirici, Riot profil yöneticisi, LoL 144Hz optimizasyonu, Riot çoklu hesap, HaYTooL">
+  <meta name="author" content="HaYTooL / HaYTo">
+  <meta name="robots" content="index, follow">
+
+  <!-- Canonical & Alternate Language URLs -->
+  <link rel="canonical" href="https://haytokoraz.github.io/Lol-Account-Switcher/tr/">
+  <link rel="alternate" hreflang="tr" href="https://haytokoraz.github.io/Lol-Account-Switcher/tr/">
+  <link rel="alternate" hreflang="en" href="https://haytokoraz.github.io/Lol-Account-Switcher/">
+  <link rel="alternate" hreflang="x-default" href="https://haytokoraz.github.io/Lol-Account-Switcher/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://haytokoraz.github.io/Lol-Account-Switcher/tr/">
+  <meta property="og:title" content="Lol Account Switcher • Riot & LoL Profil Değiştirici">
+  <meta property="og:description" content="Riot & LoL hesapları arasında saliseler içinde geçiş yapın. 144Hz ekran tazeleme ve Nihai Güç planı desteği. Ücretsiz, açık kaynak ve güvenli.">
+  <meta property="og:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@HaYTo">
+  <meta name="twitter:title" content="Lol Account Switcher • Riot & LoL Profil Değiştirici">
+  <meta name="twitter:description" content="Safkan C# .NET 10 ve doğrudan Win32 API'leri ile geliştirilmiş yüksek performanslı LoL profil değiştirici.">
+  <meta name="twitter:image" content="https://haytokoraz.github.io/Lol-Account-Switcher/logo.png">
+
+  <!-- Favicon -->
+  <link rel="icon" href="../app.ico">
+  <link rel="stylesheet" href="../style.css">
+
+  <!-- Schema.org SoftwareApplication JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Lol Account Switcher",
+    "operatingSystem": "Windows 10, Windows 11",
+    "applicationCategory": "GameApplication, UtilitiesApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "TRY"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "HaYTooL",
+      "url": "https://haytokoraz.github.io/"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "HaYTo",
+      "url": "https://x.com/HaYTo"
+    },
+    "downloadUrl": "https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases",
+    "description": "Safkan C# ve doğrudan Win32 API'leri ile geliştirilmiş Riot ve LoL Profil Değiştirici & Sistem Optimizatörü."
+  }
+  </script>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <nav class="navbar" aria-label="Ana Menü">
+      <a href="./" class="nav-brand">
+        <img src="../logo.png" alt="Lol Account Switcher Logo" class="nav-logo" width="38" height="38">
+        <span class="nav-title">Lol Account Switcher</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Özellikler</a>
+        <a href="#controls">Kontrol Rehberi</a>
+        <a href="#architecture">Mimari</a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+
+      <div class="nav-actions">
+        <!-- Dil Seçimi: TR Aktif, EN Bağlantısı -->
+        <a href="./" id="langTR" class="pill-btn lang-btn active" title="Mevcut Dil: Türkçe">🇹🇷 TR</a>
+        <a href="../" id="langEN" class="pill-btn lang-btn" title="Switch to English">🇬🇧 EN</a>
+
+        <!-- Dinamik Tema Seçici -->
+        <button id="themeToggle" class="pill-btn theme-toggle-btn" aria-label="Temayı Değiştir" title="Koyu / Açık Tema">🌓</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-left">
+        <div class="hero-tag">
+          <span>⚡</span> Safkan C# • Doğrudan Win32 API • Sıfır API Anahtarı
+        </div>
+        <h1 class="hero-title">
+          Hesaplarınıza Hükmedin, <span>Sisteminizi Optimize Edin.</span>
+        </h1>
+        <p class="hero-desc">
+          Riot Games ve League of Legends hesaplarınız arasında saliseler içinde geçiş yapın. 144Hz+ ekran tazeleme ve Windows Nihai Performans güç planını harici araç gerekmeksizin otomatik devreye alın.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary" id="downloadBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+            </svg>
+            Kurulumu İndir (.exe)
+          </a>
+          <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-secondary">
+            📦 Taşınabilir Sürüm (.zip)
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <span>🛡️ Tamamen Açık Kaynak</span>
+          <span>⚡ Windows 10 / 11 Uyumlu</span>
+          <span>🔒 AES-256 Şifreleme</span>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE APP MOCKUP -->
+      <div class="hero-right">
+        <div class="app-mockup" role="region" aria-label="Etkileşimli Uygulama Önizlemesi">
+          <div class="mock-header">
+            <div class="mock-brand">
+              <img src="../logo.png" alt="App Logo" class="mock-logo">
+              <span class="mock-title">Lol Account Switcher</span>
+            </div>
+            <div class="mock-hz-pill">
+              🖥️ 144Hz Aktif
+            </div>
+          </div>
+
+          <!-- MOCK ACCOUNT 1 (PRO GENERIC: FAKER) -->
+          <div class="mock-card-list">
+            <div class="mock-card active" data-id="1">
+              <div class="mock-avatar-wrap">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/profileicon/6542.png" alt="Faker Avatar" class="mock-avatar">
+                <span class="mock-lvl-badge">785</span>
+              </div>
+              <div class="mock-info">
+                <div class="mock-row-1">
+                  <span class="mock-acc-name">T1 Faker (Main)</span>
+                  <span class="mock-server-badge">KR</span>
+                </div>
+                <div class="mock-row-2">
+                  <span>Hide on bush#KR1</span>
+                  <span>•</span>
+                  <img src="../ranks/challenger.png" alt="Challenger Madalyası" class="mock-rank-medal">
+                  <span class="mock-rank-text">Challenger • 1.240 LP</span>
+                </div>
+              </div>
+              <button class="mock-switch-btn" aria-label="Faker profiline geç">Aktif ✓</button>
+            </div>
+
+            <!-- MOCK ACCOUNT 2 (PRO GENERIC: CAPS) -->
+            <div class="mock-card" data-id="2">
+              <div class="mock-avatar-wrap">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/profileicon/588.png" alt="Caps Avatar" class="mock-avatar">
+                <span class="mock-lvl-badge">412</span>
+              </div>
+              <div class="mock-info">
+                <div class="mock-row-1">
+                  <span class="mock-acc-name">Caps (Smurf)</span>
+                  <span class="mock-server-badge">EUW</span>
+                </div>
+                <div class="mock-row-2">
+                  <span>TheShackledOne#EUW</span>
+                  <span>•</span>
+                  <img src="../ranks/grandmaster.png" alt="Grandmaster Madalyası" class="mock-rank-medal">
+                  <span class="mock-rank-text">Grandmaster • 680 LP</span>
+                </div>
+              </div>
+              <button class="mock-switch-btn" aria-label="Caps profiline geç">Geçiş Yap ➔</button>
+            </div>
+
+            <!-- MOCK ACCOUNT 3 (LORE GENERIC: HEXTECH MASTER) -->
+            <div class="mock-card" data-id="3">
+              <div class="mock-avatar-wrap">
+                <img src="https://ddragon.leagueoflegends.com/cdn/14.20.1/img/profileicon/5012.png" alt="Hextech Avatar" class="mock-avatar">
+                <span class="mock-lvl-badge">256</span>
+              </div>
+              <div class="mock-info">
+                <div class="mock-row-1">
+                  <span class="mock-acc-name">Hextech Ustası</span>
+                  <span class="mock-server-badge">TR</span>
+                </div>
+                <div class="mock-row-2">
+                  <span>PiltoverEnforcer#TR1</span>
+                  <span>•</span>
+                  <img src="../ranks/master.png" alt="Master Madalyası" class="mock-rank-medal">
+                  <span class="mock-rank-text">Master • 215 LP</span>
+                </div>
+              </div>
+              <button class="mock-switch-btn" aria-label="Hextech Ustası profiline geç">Geçiş Yap ➔</button>
+            </div>
+          </div>
+
+          <!-- Etkileşimli Toast Simülasyonu -->
+          <div id="mockToast" class="mock-toast" role="status">
+            ⚡ Profil Aktifleştirildi!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES SECTION -->
+    <section id="features" class="features-section">
+      <div class="section-header">
+        <div class="section-tag">Yüksek Performans Mimarisi</div>
+        <h2 class="section-title">Rekabetçi Oyuncular İçin Tasarlandı</h2>
+        <p class="section-subtitle">
+          Proje Standartları ile garanti altına alınmış performans, hız ve güvenlik ilkeleri.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon-wrap">⚡</div>
+          <h3 class="feature-title">Saliseler İçinde Profil Değişimi</h3>
+          <p class="feature-desc">
+            Doğrudan oturum ve token geri yükleme protokolü sayesinde iki faktörlü doğrulama veya şifre yazma zahmeti olmadan anında hesap değiştirin.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🖥️</div>
+          <h3 class="feature-title">Çekirdek Win32 Hz & Güç Motoru</h3>
+          <p class="feature-desc">
+            Windows <code style="color: var(--hextech-cyan);">ChangeDisplaySettingsEx</code> ve <code style="color: var(--hextech-cyan);">PowerSetActiveScheme</code> API'leri ile harici konsol komutları olmadan anında 144Hz ve Nihai Güç moduna geçer.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🛡️</div>
+          <h3 class="feature-title">Riot API Anahtarsız Veri</h3>
+          <p class="feature-desc">
+            Herhangi bir başvuru, kota veya API anahtarına ihtiyaç duymadan doğrudan Riot ID ile güncel profil ikonu, seviye ve lig madalyalarını çeker.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">📁</div>
+          <h3 class="feature-title">7-Zip Ultra Yedekleme & Ayar Kilidi</h3>
+          <p class="feature-desc">
+            Otomatik dosya koruma kilitleri ile oyun güncellendiğinde veya istemci çöktüğünde oyun içi tuş atamalarınız ve ayarlarınız asla sıfırlanmaz.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🌓</div>
+          <h3 class="feature-title">Koyu Hextech & Açık Piltover Temaları</h3>
+          <p class="feature-desc">
+            Windows sistem temanızı otomatik algılar; yüksek kontrastlı Koyu Hextech ve rafine Açık Piltover renk paletleri ile gözü yormaz.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon-wrap">🔔</div>
+          <h3 class="feature-title">Sessiz Sistem Tepsisi & IPC Uyandırma</h3>
+          <p class="feature-desc">
+            Görev çubuğunda yer kaplamadan saat yanında sessizce çalışır; kısayoluna veya başlatıcıya tekrar tıklandığında anında öne gelir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONTROLLER VE ÖZELLİK KEŞFİ BÖLÜMÜ -->
+    <section id="controls" class="controls-section">
+      <div class="section-header">
+        <div class="section-tag">Etkileşimli Kontrol Rehberi</div>
+        <h2 class="section-title">Yerleşik Butonları ve Yetenekleri Keşfedin</h2>
+        <p class="section-subtitle">
+          Uygulamadaki her buton ve ayar seçeneği oyuncu konforunu ve sistem hızını maksimize etmek için özel olarak kodlandı.
+        </p>
+      </div>
+
+      <!-- GRUP 1: ANA EKRAN KONTROLLERİ -->
+      <div class="controls-group">
+        <div class="controls-group-header">
+          <span class="controls-group-icon">🎛️</span>
+          <h3 class="controls-group-title">Ana Ekran Araç Çubuğu ve Kart Kontrolleri</h3>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">+</span>
+              <span class="control-item-name">Otomatik Hesap Ekleme</span>
+            </div>
+            <p class="control-item-desc">
+              Riot Client açıkken artı butonuna bastığınızda hesabın adını, seviyesini, sunucusunu ve güncel derecesini hiçbir şey yazmanıza gerek kalmadan otomatik algılayıp kaydeder.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">144Hz</span>
+              <span class="control-item-name">Canlı Hz ve Güç Rozeti</span>
+            </div>
+            <p class="control-item-desc">
+              Monitörünüzün anlık yenileme hızını gösterir ve tek tıkla oyun hızı (örn. 144Hz/240Hz) ile masaüstü hızı (60Hz) ve Windows Güç Planı arasında doğrudan Win32 API ile geçiş yapar.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🔒</span>
+              <span class="control-item-name">CfgLock (Oyun Ayar Koruyucu)</span>
+            </div>
+            <p class="control-item-desc">
+              <code style="color: var(--hextech-cyan);">game.cfg</code> ve <code style="color: var(--hextech-cyan);">PersistedSettings.json</code> dosyalarını kilitler. İstemci güncellemelerinin tuş atamalarınızı sıfırlamasını engeller.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🛑</span>
+              <span class="control-item-name">LoL Kapat (Panik Butonu)</span>
+            </div>
+            <p class="control-item-desc">
+              League of Legends, Riot Client, Vanguard tepsi hizmetleri ve tüm eşlikçi uygulamaları tek tıkla sistemden tamamen ve temizce temizler.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🎮</span>
+              <span class="control-item-name">Hızlı LoL Başlatıcı</span>
+            </div>
+            <p class="control-item-desc">
+              Yavaş açılan masaüstü kısayollarını atlayarak doğrudan Riot Client Servislerini LoL parametreleriyle en hızlı şekilde ateşler.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">↕️</span>
+              <span class="control-item-name">Hesap Sıralama (Yukarı/Aşağı)</span>
+            </div>
+            <p class="control-item-desc">
+              Hesap kartlarını ok butonlarıyla yukarı veya aşağı kaydırarak en çok oynadığınız profilleri en üste dilediğiniz gibi yerleştirin.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">📋</span>
+              <span class="control-item-name">Tıkla-Kopyala Riot ID</span>
+            </div>
+            <p class="control-item-desc">
+              Kart üzerindeki sihirdar adı veya etiketine tıkladığınızda anında Windows panosuna kopyalar ve ekranda şık bir onay bildirimi gösterir.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🔍</span>
+              <span class="control-item-name">Porofessor Maç Geçmişi</span>
+            </div>
+            <p class="control-item-desc">
+              Hesabın avatarına veya lig madalyasına tıkladığınızda o hesabın Porofessor & League of Graphs detaylı istatistiklerini tarayıcınızda açar.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRUP 2: AYARLAR PANELİ KONTROLLERİ -->
+      <div class="controls-group">
+        <div class="controls-group-header">
+          <span class="controls-group-icon">⚙️</span>
+          <h3 class="controls-group-title">Ayarlar ve Tercihler Kontrol Merkezi</h3>
+        </div>
+
+        <div class="controls-grid">
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🚀</span>
+              <span class="control-item-name">Geçiş Otomasyonu</span>
+            </div>
+            <p class="control-item-desc">
+              Hesap geçişi yapıldığında eski istemciyi kapatma, oyunu otomatik başlatma veya Blitz/Porofessor eşlikçi uygulamalarını otomatik yeniden başlatma seçenekleri.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🖥️</span>
+              <span class="control-item-name">Özel Yenileme Hızları</span>
+            </div>
+            <p class="control-item-desc">
+              Hesap geçişinde uygulanacak oyun Hz değeri (60, 144, 240, 360 Hz) ve LoL kapatıldığında geri dönülecek masaüstü Hz değerini bağımsız yapılandırın.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">⚡</span>
+              <span class="control-item-name">Windows Güç Planı Profilleri</span>
+            </div>
+            <p class="control-item-desc">
+              Oyuna girerken "Nihai Performans" veya "Yüksek Performans", oyundan çıkınca "Dengeli" moda otomatik geçiş için sistem güç planlarını belirleyin.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">📜</span>
+              <span class="control-item-name">Geçiş Öncesi / Sonrası Betikler</span>
+            </div>
+            <p class="control-item-desc">
+              Hesap geçişi öncesinde, sonrasında veya LoL kapatılırken çalıştırılacak özel PowerShell, CLI veya `.bat` komutları tanımlayın.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">🔒</span>
+              <span class="control-item-name">E-Posta Gizlilik Maskelemesi</span>
+            </div>
+            <p class="control-item-desc">
+              Kayıtlı e-postaları asteriks ile maskeleyerek (<code style="color: var(--hextech-cyan);">k****@domain.com</code>) canlı yayınlarda ve ekran paylaşımlarında güvenliğinizi koruyun.
+            </p>
+          </div>
+
+          <div class="control-item">
+            <div class="control-item-top">
+              <span class="control-key-badge">👁️</span>
+              <span class="control-item-name">Araç Çubuğu Buton Yönetimi</span>
+            </div>
+            <p class="control-item-desc">
+              Üst başlık çubuğunda yer alan butonları (Wiki, Yama Notları, CfgLock, LoL Kapat) dilediğiniz gibi açıp kapatarak arayüzü sadeleştirin.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE & PROTOCOL -->
+    <section id="architecture" class="arch-section">
+      <div class="arch-container">
+        <div class="arch-specs">
+          <div class="section-tag">Kaputun Altında</div>
+          <h2 class="section-title" style="text-align: left;">Sıfır Yük: Safkan C# .NET 10</h2>
+          
+          <div class="spec-item">
+            <div class="spec-dot"></div>
+            <div class="spec-content">
+              <h4>Yerel Windows Mimarisi</h4>
+              <p>Electron veya Chromium ağırlığı yoktur; doğrudan safkan .NET 10 WPF ve Win32 API'leri ile çalışır.</p>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-dot"></div>
+            <div class="spec-content">
+              <h4>Yerel Medya & Çevrimdışı Kullanım</h4>
+              <p>Tüm 11 lig madalyası ve ses efektleri yerel medya klasöründe saklanır; internet olmasa dahi anında yüklenir.</p>
+            </div>
+          </div>
+
+          <div class="spec-item">
+            <div class="spec-dot"></div>
+            <div class="spec-content">
+              <h4>AES-256 & DPAPI Kriptografi</h4>
+              <p>Hesap verileriniz Windows Veri Koruma API'si (DPAPI) ve AES-256 ile yerel olarak şifrelenir, dışarıya sızdırılamaz.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-code-box">
+          <span class="code-comment">// LolAccountSwitcher - Doğrudan Win32 Optimizasyonu</span><br>
+          <span class="code-keyword">var</span> display = <span class="code-keyword">new</span> DisplayManager();<br>
+          display.SetRefreshRate(<span class="code-gold">144</span>); <span class="code-comment">// Direct Win32 API</span><br>
+          <br>
+          <span class="code-keyword">var</span> power = <span class="code-keyword">new</span> PowerManager();<br>
+          power.ApplyScheme(<span class="code-gold">"NihaiPerformans"</span>);<br>
+          <br>
+          <span class="code-keyword">var</span> session = <span class="code-keyword">await</span> RiotSession.RestoreAsync(targetProfile);<br>
+          <span class="code-comment">// Geçen Süre: 42ms • Sıfır Gecikme</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOAD CTA -->
+    <section class="cta-banner">
+      <h2 style="font-size: 2.2rem; margin-bottom: 12px;">LoL Deneyiminizi Bir Üst Seviyeye Taşıyın</h2>
+      <p style="color: var(--text-secondary); max-width: 650px; margin: 0 auto;">
+        Ücretsiz, açık kaynak ve sıfır harici bağımlılık. Windows için Lol Account Switcher'ı hemen edinin.
+      </p>
+
+      <div class="cta-buttons">
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases" class="btn-primary">
+          Kurulumu İndir (.exe)
+        </a>
+        <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+          GitHub'da İncele ★
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      Yayıncı: <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer"><strong>HaYTooL</strong></a> • 
+      Geliştirici: <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer"><strong>HaYTo</strong></a> • 
+      İletişim: <a href="mailto:korazhayto@gmail.com">korazhayto@gmail.com</a>
+    </div>
+
+    <div class="footer-links">
+      <a href="https://haytokoraz.github.io/" target="_blank" rel="noopener noreferrer">🌐 HaYTooL Portalı</a>
+      <a href="https://x.com/HaYTo" target="_blank" rel="noopener noreferrer">𝕏 (@HaYTo)</a>
+      <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher" target="_blank" rel="noopener noreferrer">GitHub Deposu</a>
+    </div>
+  </footer>
+
+  <script src="../script.js"></script>
+</body>
+</html>
