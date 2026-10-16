@@ -135,15 +135,15 @@ namespace LolAccountSwitcher
 
             menu.Items.Add(new ToolStripSeparator());
 
-            // 2.5 LoL'ü Aç
-            var itemLaunch = new ToolStripMenuItem(LocalizationManager.Get("LaunchLeague") ?? "⚔️ LoL'ü Aç", null, (s, e) =>
+            // 2.5 Riot Launcher'ı Aç
+            var itemLaunch = new ToolStripMenuItem(LocalizationManager.Get("LaunchLeague") ?? "⚔️ Riot Launcher'ı Aç", null, (s, e) =>
             {
                 _mainWindow.Dispatcher.Invoke(() => _mainWindow.TriggerLaunchLeague());
             });
             menu.Items.Add(itemLaunch);
 
-            // 3. LoL Kapat
-            var itemKill = new ToolStripMenuItem(LocalizationManager.Get("KillLeague") ?? "⛔ LoL Süreçlerini Kapat", null, (s, e) =>
+            // 3. Riot Servislerini Kapat
+            var itemKill = new ToolStripMenuItem(LocalizationManager.Get("KillLeague") ?? "🛑 Riot Servislerini Kapat", null, (s, e) =>
             {
                 _mainWindow.Dispatcher.Invoke(() => _mainWindow.TriggerKillLeague());
             });

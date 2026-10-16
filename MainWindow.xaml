@@ -66,7 +66,7 @@
                     </Border>
                     <TextBlock x:Name="TxtAppTitle" Text="Lol Account Switcher" Foreground="{DynamicResource BrushTextPrimary}" FontSize="15.5" FontWeight="Bold" VerticalAlignment="Center"/>
                     <Border Background="{DynamicResource BrushBgBadge}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="4" Margin="8,0,0,0" Padding="5,2" VerticalAlignment="Center">
-                        <TextBlock Text="v3.8" Foreground="{DynamicResource BrushTextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                        <TextBlock Text="v3.9" Foreground="{DynamicResource BrushTextMuted}" FontSize="10" FontWeight="SemiBold"/>
                     </Border>
                 </StackPanel>
 
@@ -357,15 +357,15 @@
                     <Button x:Name="BtnWiki" Content="📖 Wiki" Style="{StaticResource HexToolBtnStyle}" Padding="10,5" FontSize="11.5" Click="BtnWiki_Click"/>
                 </StackPanel>
 
-                <!-- Orta: LoL'ü Aç ve LoL'ü Kapat Butonları -->
+                <!-- Orta: Riot Launcher'ı Aç ve Riot Servislerini Kapat Butonları -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="BtnLaunchLeague" Style="{StaticResource HexToolBtnStyle}" Padding="12,5" Margin="0,0,8,0" Click="BtnLaunchLeague_Click">
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                             <Image Source="logo.png" Width="15" Height="15" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                            <TextBlock x:Name="TxtLaunchLeague" Text="LoL'ü Aç" FontWeight="Bold" FontSize="11.5" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TxtLaunchLeague" Text="Riot Launcher'ı Aç" FontWeight="Bold" FontSize="11.5" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
-                    <Button x:Name="BtnKillLeague" Content="🛑 LOL KAPAT" Style="{StaticResource HexDangerBtnStyle}" Padding="16,6" FontSize="12" Click="BtnKillLeague_Click"/>
+                    <Button x:Name="BtnKillLeague" Content="🛑 Riot Servislerini Kapat" Style="{StaticResource HexDangerBtnStyle}" Padding="16,6" FontSize="12" Click="BtnKillLeague_Click"/>
                 </StackPanel>
 
                 <!-- Sağ: HaYTooL Portal Bağlantısı -->

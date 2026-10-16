@@ -16,6 +16,54 @@ namespace LolAccountSwitcher
         private readonly DispatcherTimer _periodicStatsTimer = new();
         private bool _isExplicitExit = false;
 
+        // GLOBAL KISAYOL TUŞU (Ctrl + Shift + L) WIN32 ENTEGRASYONU
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        private const int GLOBAL_HOTKEY_ID = 9021;
+        private const uint MOD_CONTROL = 0x0002;
+        private const uint MOD_SHIFT = 0x0004;
+        private const uint VK_L = 0x4C; // 'L' tuşu
+        private IntPtr _hwnd = IntPtr.Zero;
+
+        protected override void OnSourceInitialized(EventArgs e)
+        {
+            base.OnSourceInitialized(e);
+            var helper = new System.Windows.Interop.WindowInteropHelper(this);
+            _hwnd = helper.Handle;
+            var source = System.Windows.Interop.HwndSource.FromHwnd(_hwnd);
+            source?.AddHook(HwndHook);
+            RegisterHotKey(_hwnd, GLOBAL_HOTKEY_ID, MOD_CONTROL | MOD_SHIFT, VK_L);
+        }
+
+        private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            const int WM_HOTKEY = 0x0312;
+            if (msg == WM_HOTKEY && wParam.ToInt32() == GLOBAL_HOTKEY_ID)
+            {
+                ActivateWindowFromAnywhere();
+                handled = true;
+            }
+            return IntPtr.Zero;
+        }
+
+        public void ActivateWindowFromAnywhere()
+        {
+            Show();
+            if (WindowState == WindowState.Minimized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            Activate();
+            Topmost = true;
+            Topmost = false;
+            Focus();
+            ShowInAppToast("Lol Account Switcher Aktif (Ctrl+Shift+L)", "⚡", 1800);
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -122,6 +170,7 @@ namespace LolAccountSwitcher
             BtnAppData.ToolTip = LocalizationManager.Get("AppDataTooltip");
 
             BtnKillLeague.Content = LocalizationManager.Get("KillLeague");
+            BtnKillLeague.ToolTip = LocalizationManager.Get("KillLeagueTooltip");
 
             if (TxtLaunchLeague != null)
             {
@@ -584,6 +633,10 @@ namespace LolAccountSwitcher
         public void ForceExitApp()
         {
             _isExplicitExit = true;
+            if (_hwnd != IntPtr.Zero)
+            {
+                UnregisterHotKey(_hwnd, GLOBAL_HOTKEY_ID);
+            }
             SaveWindowPosition();
             TrayService.Shutdown();
             Close();
@@ -818,6 +871,7 @@ namespace LolAccountSwitcher
             }
 
             // 1. ADIM: İsim ve Dizin bazlı süreçleri sonlandır
+            ShowInAppToast(LocalizationManager.Get("SwitchProgress1"), "🛑", 1600);
             bool closeClients = !string.Equals(ConfigManager.Get("General", "CloseLeagueOnSwitch", "true"), "false", StringComparison.OrdinalIgnoreCase);
             if (closeClients)
             {
@@ -833,6 +887,7 @@ namespace LolAccountSwitcher
             }
 
             // 2. ADIM: Profil Slotunu Geri Yükle ve Bütünlüğünü Doğrula
+            ShowInAppToast(LocalizationManager.Get("SwitchProgress2"), "📂", 1600);
             bool restored = RiotSessionService.RestoreProfileSlot(acc.Id, string.IsNullOrEmpty(riotProfilePath) ? null : riotProfilePath);
             if (!restored)
             {
@@ -843,6 +898,7 @@ namespace LolAccountSwitcher
             }
 
             // 3. ADIM: Güç Planını devreye al
+            ShowInAppToast(LocalizationManager.Get("SwitchProgress3"), "⚡", 1600);
             string switchGuidStr = ConfigManager.Get("General", "SwitchPowerPlanGuid", "").Trim();
             if (!string.IsNullOrEmpty(switchGuidStr) && Guid.TryParse(switchGuidStr, out Guid targetGuid))
             {
@@ -888,8 +944,8 @@ namespace LolAccountSwitcher
                 a.IsActive = string.Equals(a.Id, acc.Id, StringComparison.OrdinalIgnoreCase);
             }
 
-            string switchSuccessMsg = LocalizationManager.Get("ProfileRestoredSuccess", acc.Title);
-            ShowInAppToast(switchSuccessMsg, "⚡", 3200);
+            string switchSuccessMsg = LocalizationManager.Get("SwitchProgress4", acc.Title);
+            ShowInAppToast(switchSuccessMsg, "🚀", 3200);
             TrayService.ShowBalloonNotification(LocalizationManager.Get("AppTitle"), switchSuccessMsg);
         }
 

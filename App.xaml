@@ -362,5 +362,43 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <!-- ======================================================== -->
+        <!-- ÖZEL HEXTECH TOAST STİLİNDE TOOLTIP ŞABLONU              -->
+        <!-- ======================================================== -->
+        <Style TargetType="ToolTip">
+            <Setter Property="Background" Value="#F2091428"/>
+            <Setter Property="Foreground" Value="{DynamicResource BrushHextechGold}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BrushHextechGold}"/>
+            <Setter Property="BorderThickness" Value="1.5"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="14,9"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="HasDropShadow" Value="True"/>
+            <Setter Property="ToolTipService.InitialShowDelay" Value="150"/>
+            <Setter Property="ToolTipService.BetweenShowDelay" Value="100"/>
+            <Setter Property="ToolTipService.ShowDuration" Value="12000"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="12"
+                                Padding="{TemplateBinding Padding}"
+                                MaxWidth="440">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#C8AA6E" BlurRadius="16" ShadowDepth="0" Opacity="0.75"/>
+                            </Border.Effect>
+                            <ContentPresenter VerticalAlignment="Center" 
+                                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                                              TextBlock.FontSize="{TemplateBinding FontSize}"
+                                              TextBlock.FontWeight="{TemplateBinding FontWeight}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 </Application>
