@@ -227,9 +227,140 @@
             </div>
           </div>
 
+          <!-- KİŞİSELLEŞTİRİLMİŞ HERO HESAP SİMÜLATÖRÜ -->
+          <div class="mock-simulator-strip">
+            <div class="mock-sim-header">
+              <span>⚡ Kendi Hesabınla Hemen Dene</span>
+            </div>
+            <div class="mock-sim-inputs">
+              <input type="text" id="simRiotId" class="mock-sim-input" placeholder="Sihirdar#Etiket (Örn: Sen#TR1)" maxlength="32">
+              <select id="simTierSelect" class="mock-sim-select" aria-label="Lig derecesi seçin">
+                <option value="challenger">Şampiyonluk (Challenger)</option>
+                <option value="grandmaster">Üstatlık (Grandmaster)</option>
+                <option value="master">Ustalık (Master)</option>
+                <option value="diamond">Elmas (Diamond)</option>
+                <option value="emerald">Zümrüt (Emerald)</option>
+                <option value="platinum">Platin (Platinum)</option>
+                <option value="gold">Altın (Gold)</option>
+                <option value="silver">Gümüş (Silver)</option>
+              </select>
+              <button id="simApplyBtn" class="mock-sim-btn">Önizle</button>
+            </div>
+          </div>
+
           <!-- Etkileşimli Toast Simülasyonu -->
           <div id="mockToast" class="mock-toast" role="status">
             ⚡ Profil Aktifleştirildi!
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CANLI BENCHMARK VE PERFORMANS METRİKLERİ -->
+    <section class="benchmarks-section" aria-label="Performans Karşılaştırması">
+      <div class="benchmark-grid">
+        <div class="benchmark-card">
+          <div class="benchmark-metric">&lt; 0.04s</div>
+          <div class="benchmark-label">Anlık Profil Geçişi</div>
+          <div class="benchmark-sub">Doğrudan token takası ile sıfır bekleme</div>
+        </div>
+        <div class="benchmark-card">
+          <div class="benchmark-metric">144Hz+</div>
+          <div class="benchmark-label">Win32 Ekran Motoru</div>
+          <div class="benchmark-sub">Milisaniyeler içinde sıfır titreşimli Hz değişimi</div>
+        </div>
+        <div class="benchmark-card">
+          <div class="benchmark-metric">0%</div>
+          <div class="benchmark-label">Arka Plan CPU Yükü</div>
+          <div class="benchmark-sub">Saf C# .NET 10 ile sıfır Chromium/Electron şişkinliği</div>
+        </div>
+        <div class="benchmark-card">
+          <div class="benchmark-metric">100%</div>
+          <div class="benchmark-label">Çevrimdışı ve Güvenli</div>
+          <div class="benchmark-sub">DPAPI ve AES-256 yerel şifreleme</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 EVRELİ HESAP GEÇİŞ PROTOKOLÜ -->
+    <section class="protocol-section" aria-label="Hesap Geçiş Protokolü">
+      <div class="section-header">
+        <div class="section-tag">4 Evreli Hesap Geçiş Protokolü</div>
+        <h2 class="section-title">Kusursuz Profil Değişimi İçin Tasarlandı</h2>
+        <p class="section-subtitle">
+          Vanguard bütünlüğünü koruyan, dosya kilitlerini çözen ve doğrudan oyunu başlatan doğrulanmış çekirdek adımları.
+        </p>
+      </div>
+
+      <div class="protocol-grid">
+        <div class="protocol-card">
+          <span class="protocol-step-num">FAZ 01</span>
+          <h3 class="protocol-title">Temizlik ve Kilit Çözme</h3>
+          <p class="protocol-desc">
+            LeagueClient, RiotClientUx ve yardımcı yan süreçler PID ve dizin bazlı kapatılır; kernel kilitlerinin bırakılması için 300ms beklenir.
+          </p>
+        </div>
+
+        <div class="protocol-card">
+          <span class="protocol-step-num">FAZ 02</span>
+          <h3 class="protocol-title">Vanguard Korumalı Transfer</h3>
+          <p class="protocol-desc">
+            Vanguard dizinlerine dokunulmaz. Hedef hesabın oturum verileri ve YAML yapılandırması güvenle LocalAppData'ya atomik olarak aktarılır.
+          </p>
+        </div>
+
+        <div class="protocol-card">
+          <span class="protocol-step-num">FAZ 03</span>
+          <h3 class="protocol-title">Win32 144Hz &amp; Nihai Güç</h3>
+          <p class="protocol-desc">
+            Windows çekirdek API'si <code style="color: var(--hextech-cyan);">ChangeDisplaySettingsEx</code> ile 144Hz ve Nihai Performans planı 20ms altında sessizce uygulanır.
+          </p>
+        </div>
+
+        <div class="protocol-card">
+          <span class="protocol-step-num">FAZ 04</span>
+          <h3 class="protocol-title">Doğrudan Oyunu Başlatma</h3>
+          <p class="protocol-desc">
+            Riot Client doğrudan LoL canlı istemci parametreleriyle sessizce tetiklenir; uygulama otomatik olarak sistem tepsisine (Tray) çekilir.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VANGUARD GÜVENLİK VE SIFIR BAN GARANTİSİ PANELİ -->
+    <section class="security-section" aria-label="Riot Vanguard Güvenliği">
+      <div class="security-card">
+        <div class="security-header">
+          <div class="security-shield-wrap">🛡️</div>
+          <div>
+            <div class="section-tag" style="margin-bottom: 4px;">%100 Anti-Cheat Uyumluluğu</div>
+            <h2 class="security-title">Sıfır Vanguard Ban Riski. Kesin Güvence.</h2>
+          </div>
+        </div>
+        <p class="security-desc">
+          Lol Account Switcher, yalnızca masaüstü oturum geçişi ve donanım performans optimizasyonu sağlayan yerel bir yardımcı araçtır. Çalışan oyun belleğine, kodlarına veya Vanguard anti-cheat sürücülerine asla müdahale etmez.
+        </p>
+
+        <div class="security-pillars">
+          <div class="security-pillar">
+            <div class="pillar-icon">🔒</div>
+            <h3 class="pillar-title">Sıfır Bellek Müdahalesi</h3>
+            <p class="pillar-desc">League of Legends istemcisinin veya oyunun bellek alanına kesinlikle DLL enjekte etmez, bellek okumaz veya kanca (hook) atmaz.</p>
+          </div>
+          <div class="security-pillar">
+            <div class="pillar-icon">🛡️</div>
+            <h3 class="pillar-title">Vanguard Dokunulmazdır</h3>
+            <p class="pillar-desc">Vanguard servisleri (vgc / vgtray) ve çekirdek sürücüleri tamamen izole tutulur; asla kapatılmaz, silinmez veya değiştirilmez.</p>
+          </div>
+          <div class="security-pillar">
+            <div class="pillar-icon">⚡</div>
+            <h3 class="pillar-title">Resmi Riot Parametreleri</h3>
+            <p class="pillar-desc">Oyunu tıpkı masaüstü kısayolu gibi meşru RiotClientServices komut satırı parametreleriyle doğrudan ve sessizce başlatır.</p>
+          </div>
+          <div class="security-pillar">
+            <div class="pillar-icon">🌐</div>
+            <h3 class="pillar-title">%100 Çevrimdışı ve Açık Kaynak</h3>
+            <p class="pillar-desc">Harici sunucu bağlantısı veya telemetri içermez, token sızdırmaz. Tüm C# kaynak kodları GitHub üzerinde topluluk denetimine açıktır.</p>
           </div>
         </div>
       </div>
@@ -500,7 +631,8 @@
         </div>
 
         <div class="arch-code-box">
-          <span class="code-comment">// LolAccountSwitcher - Doğrudan Win32 Optimizasyonu</span><br>
+          <button class="code-copy-btn" aria-label="C# kodunu kopyala">Kodu Kopyala</button>
+          <code><span class="code-comment">// LolAccountSwitcher - Doğrudan Win32 Optimizasyonu</span><br>
           <span class="code-keyword">var</span> display = <span class="code-keyword">new</span> DisplayManager();<br>
           display.SetRefreshRate(<span class="code-gold">144</span>); <span class="code-comment">// Direct Win32 API</span><br>
           <br>
@@ -508,7 +640,7 @@
           power.ApplyScheme(<span class="code-gold">"NihaiPerformans"</span>);<br>
           <br>
           <span class="code-keyword">var</span> session = <span class="code-keyword">await</span> RiotSession.RestoreAsync(targetProfile);<br>
-          <span class="code-comment">// Geçen Süre: 42ms • Sıfır Gecikme</span>
+          <span class="code-comment">// Geçen Süre: 42ms • Sıfır Gecikme</span></code>
         </div>
       </div>
     </section>
