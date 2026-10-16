@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" alt="Lol Account Switcher Logo" width="96" height="96" style="border-radius: 50%;">
+  <img src="assets/logo.png" alt="Lol Account Switcher Logo" width="108" height="108" style="border-radius: 50%;">
 </p>
 
 <h1 align="center">Lol Account Switcher</h1>
@@ -10,17 +10,20 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/actions"><img src="https://img.shields.io/github/actions/workflow/status/HaYToKoRaZ/Lol-Account-Switcher/release.yml?style=flat-square&label=Build" alt="Build Status"></a>
-  <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases"><img src="https://img.shields.io/github/v/release/HaYToKoRaZ/Lol-Account-Switcher?style=flat-square&color=0AC8B9&label=Release" alt="Latest Release"></a>
-  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-0AC8B9?style=flat-square" alt="Platform">
-  <img src="https://img.shields.io/badge/.NET-10.0%20WPF-C8AA6E?style=flat-square" alt=".NET 10">
-  <a href="https://haytokoraz.github.io/Lol-Account-Switcher/"><img src="https://img.shields.io/badge/Website-Live%20Showcase-C8AA6E?style=flat-square" alt="Website"></a>
+  <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases/latest"><img src="https://img.shields.io/github/v/release/HaYToKoRaZ/Lol-Account-Switcher?style=flat-square&color=0AC8B9&label=Release" alt="Latest Release"></a>
+  <a href="https://github.com/HaYToKoRaZ/Lol-Account-Switcher/releases/latest"><img src="https://img.shields.io/github/downloads/HaYToKoRaZ/Lol-Account-Switcher/total?style=flat-square&color=C8AA6E&label=Downloads" alt="Total Downloads"></a>
+  <img src="assets/badges/platform.svg" alt="Platform: Windows 10 | 11">
+  <img src="assets/badges/dotnet.svg" alt=".NET 10.0 WPF">
+  <img src="assets/badges/offline.svg" alt="Architecture: Native Win32">
+  <a href="https://haytokoraz.github.io/Lol-Account-Switcher/"><img src="assets/badges/website.svg" alt="Website: Live Showcase"></a>
 </p>
 
 ---
 
 <p align="center">
-  <a href="#english">English</a> • <a href="#t%C3%BCrk%C3%A7e">Türkçe</a>
+  <a href="#english"><img src="assets/badges/flag-en.svg" width="20" height="14" valign="middle" alt="EN"> <strong>English</strong></a>
+  &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="#t%C3%BCrk%C3%A7e"><img src="assets/badges/flag-tr.svg" width="20" height="14" valign="middle" alt="TR"> <strong>Türkçe</strong></a>
 </p>
 
 ---

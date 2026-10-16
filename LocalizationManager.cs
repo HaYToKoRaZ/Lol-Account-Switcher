@@ -186,7 +186,10 @@ namespace LolAccountSwitcher
                 ["MoveAccountDown"] = "Aşağı Taşı ▼",
                 ["AccountMovedSuccess"] = "'{0}' sırası güncellendi ↕️",
                 ["SaveBtn"] = "Kaydet",
-                ["CancelBtn"] = "İptal"
+                ["CancelBtn"] = "İptal",
+                ["BtnFeedback"] = "💬 Geri Bildirim",
+                ["BtnFeedbackTooltip"] = "Hata Bildir veya Öneri Gönder (GitHub Issues)",
+                ["TrayFeedback"] = "💬 Geri Bildirim & Hata Bildir"
             },
             ["en"] = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
@@ -364,7 +367,10 @@ namespace LolAccountSwitcher
                 ["MoveAccountDown"] = "Move Down ▼",
                 ["AccountMovedSuccess"] = "'{0}' position updated ↕️",
                 ["SaveBtn"] = "Save",
-                ["CancelBtn"] = "Cancel"
+                ["CancelBtn"] = "Cancel",
+                ["BtnFeedback"] = "💬 Feedback",
+                ["BtnFeedbackTooltip"] = "Report Bug or Suggest Feature (GitHub Issues)",
+                ["TrayFeedback"] = "💬 Feedback & Bug Report"
             }
         };
 

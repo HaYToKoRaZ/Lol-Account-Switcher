@@ -333,16 +333,24 @@ namespace LolAccountSwitcher
                 writer.WriteLine("; ------------------------------------------------------------------------------");
                 writer.WriteLine("; ToolbarButtonsVisibility / Arayüz Buton & Rozet Görünürlüğü");
                 writer.WriteLine("; ------------------------------------------------------------------------------");
-                writer.WriteLine("; [TR] Ana ekran üst ve alt çubuklarındaki butonların görünürlüğünü belirler.");
-                writer.WriteLine(";      Değerler: true (Göster), false (Gizle)");
-                writer.WriteLine("; [EN] Controls visibility of buttons and badges on top and bottom toolbars.");
-                writer.WriteLine(";      Values: true (Show), false (Hide)");
+                writer.WriteLine("; [TR] Ana ekran araç çubuklarındaki butonların görünürlüğünü tek tek belirler.");
+                writer.WriteLine(";      Seçenekler: true (Göster), false (Gizle)");
+                writer.WriteLine("; [EN] Controls individual visibility of toolbar buttons and badges.");
+                writer.WriteLine(";      Options: true (Show), false (Hide)");
+                writer.WriteLine(";");
+                writer.WriteLine("; ShowHzBadge: Canlı monitör tazeleme hızı rozeti / Live monitor refresh rate badge");
                 writer.WriteLine($"ShowHzBadge={Get("General", "ShowHzBadge", "true")}");
+                writer.WriteLine("; ShowLangToggle: Üst çubuk dil değiştirici (TR/EN) / Top bar language toggle");
                 writer.WriteLine($"ShowLangToggle={Get("General", "ShowLangToggle", "true")}");
+                writer.WriteLine("; ShowThemeToggle: Koyu/Açık tema değiştirici / Dark/Light theme toggle");
                 writer.WriteLine($"ShowThemeToggle={Get("General", "ShowThemeToggle", "true")}");
+                writer.WriteLine("; ShowRefreshStats: Canlı rank & profil yenileme / Live rank and profile refresh");
                 writer.WriteLine($"ShowRefreshStats={Get("General", "ShowRefreshStats", "true")}");
+                writer.WriteLine("; ShowWiki: LoL Wiki hızlı bağlantı butonu / LoL Wiki quick link button");
                 writer.WriteLine($"ShowWiki={Get("General", "ShowWiki", "true")}");
+                writer.WriteLine("; ShowPatchNotes: LoL Yama Notları butonu / LoL Patch Notes button");
                 writer.WriteLine($"ShowPatchNotes={Get("General", "ShowPatchNotes", "true")}");
+                writer.WriteLine("; ShowAppData: Alt çubuk AppData klasör açıcı / Bottom bar AppData folder opener");
                 writer.WriteLine($"ShowAppData={Get("General", "ShowAppData", "false")}");
                 writer.WriteLine();
 
@@ -353,8 +361,11 @@ namespace LolAccountSwitcher
                 writer.WriteLine(";      Değişkenler: {TITLE}, {SUMMONER}, {SERVER}, {ID}");
                 writer.WriteLine("; [EN] External commands executed in background on profile switch or kill events.");
                 writer.WriteLine(";      Variables: {TITLE}, {SUMMONER}, {SERVER}, {ID}");
+                writer.WriteLine("; PreSwitchCommand: Hesap geçişinden önce çalışır / Runs before account switch");
                 writer.WriteLine($"PreSwitchCommand={Get("General", "PreSwitchCommand", "")}");
+                writer.WriteLine("; PostSwitchCommand: Hesap geçişinden sonra çalışır / Runs after account switch");
                 writer.WriteLine($"PostSwitchCommand={Get("General", "PostSwitchCommand", "")}");
+                writer.WriteLine("; KillLeagueCommand: 'LOL KAPAT' tıklandığında çalışır / Runs when 'KILL LEAGUE' is clicked");
                 writer.WriteLine($"KillLeagueCommand={Get("General", "KillLeagueCommand", "")}");
                 writer.WriteLine();
 
@@ -369,15 +380,14 @@ namespace LolAccountSwitcher
 
                 string windowLeft = Get("General", "WindowLeft", "");
                 string windowTop = Get("General", "WindowTop", "");
-                if (!string.IsNullOrEmpty(windowLeft) || !string.IsNullOrEmpty(windowTop))
-                {
-                    writer.WriteLine("; ------------------------------------------------------------------------------");
-                    writer.WriteLine("; WindowPosition / Pencere Konumu Hatırlama (Left, Top)");
-                    writer.WriteLine("; ------------------------------------------------------------------------------");
-                    if (!string.IsNullOrEmpty(windowLeft)) writer.WriteLine($"WindowLeft={windowLeft}");
-                    if (!string.IsNullOrEmpty(windowTop)) writer.WriteLine($"WindowTop={windowTop}");
-                    writer.WriteLine();
-                }
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; WindowPosition / Pencere Konumu Hatırlama (Left, Top)");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Uygulamanın en son kapatıldığı masaüstü piksel koordinatları.");
+                writer.WriteLine("; [EN] Desktop pixel coordinates of the last closed window position.");
+                writer.WriteLine($"WindowLeft={windowLeft}");
+                writer.WriteLine($"WindowTop={windowTop}");
+                writer.WriteLine();
             }
             catch { }
         }

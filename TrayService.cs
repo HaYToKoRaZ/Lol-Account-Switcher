@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -148,6 +149,17 @@ namespace LolAccountSwitcher
             });
             itemKill.Tag = "danger";
             menu.Items.Add(itemKill);
+
+            // 3.5 Geri Bildirim
+            var itemFeedback = new ToolStripMenuItem(LocalizationManager.Get("TrayFeedback") ?? "💬 Geri Bildirim", null, (s, e) =>
+            {
+                try
+                {
+                    Process.Start(new ProcessStartInfo("https://github.com/HaYToKoRaZ/Lol-Account-Switcher/issues") { UseShellExecute = true });
+                }
+                catch { }
+            });
+            menu.Items.Add(itemFeedback);
 
             menu.Items.Add(new ToolStripSeparator());
 
