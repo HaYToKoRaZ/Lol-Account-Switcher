@@ -263,9 +263,10 @@
   // PWA Service Worker Registration
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function () {
-      const isTR = window.location.pathname.endsWith('/tr/') || window.location.pathname.endsWith('/tr/index.html');
+      const isTR = window.location.pathname.includes('/tr');
       const swPath = isTR ? '../sw.js' : 'sw.js';
-      navigator.serviceWorker.register(swPath).catch(function () {});
+      const swScope = isTR ? '../' : './';
+      navigator.serviceWorker.register(swPath, { scope: swScope }).catch(function () {});
     });
   }
 
