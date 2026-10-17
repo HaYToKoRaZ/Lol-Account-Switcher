@@ -681,13 +681,18 @@
     }
 
     footer a {
-      color: var(--hextech-gold);
-      text-decoration: none;
+      color: var(--hextech-cyan);
+      text-decoration: underline;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 3px;
       font-weight: 600;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease;
     }
 
-    footer a:hover {
-      text-decoration: underline;
+    footer a:hover,
+    footer a:focus-visible {
+      color: var(--hextech-gold);
+      text-decoration-color: var(--hextech-gold);
     }
 
     @media (max-width: 640px) {

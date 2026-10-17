@@ -1364,16 +1364,42 @@ footer {
 
 footer a {
   color: var(--text-secondary);
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
-footer a:hover {
+.footer-meta {
+  color: var(--text-muted);
+}
+
+.footer-meta a {
+  color: var(--hextech-cyan);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+.footer-meta a:hover,
+.footer-meta a:focus-visible {
   color: var(--hextech-gold);
+  text-decoration-color: var(--hextech-gold);
 }
 
 .footer-links {
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.footer-links a {
+  text-decoration: none;
+}
+
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  color: var(--hextech-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* -------------------------------------------------------------
