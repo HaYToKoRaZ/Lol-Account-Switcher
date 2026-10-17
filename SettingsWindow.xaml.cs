@@ -62,6 +62,50 @@ namespace LolAccountSwitcher
                 string maskVal = ConfigManager.Get("General", "MaskEmailInUI", "true");
                 ChkMaskEmailInUI.IsChecked = !string.Equals(maskVal, "false", StringComparison.OrdinalIgnoreCase);
 
+                // AlwaysOnTop
+                string alwaysOnTopVal = ConfigManager.Get("General", "AlwaysOnTop", "false");
+                ChkAlwaysOnTop.IsChecked = string.Equals(alwaysOnTopVal, "true", StringComparison.OrdinalIgnoreCase);
+
+                // GlobalHotkey ComboBox Presets
+                CmbGlobalHotkey.Items.Clear();
+                string[] hotkeyPresets = new[]
+                {
+                    "Ctrl + Shift + L",
+                    "Ctrl + Alt + L",
+                    "Alt + Shift + L",
+                    "Ctrl + Shift + S",
+                    "Ctrl + Shift + A",
+                    "Ctrl + Shift + Space",
+                    "Ctrl + Alt + Space",
+                    "F9",
+                    "F10",
+                    "F11",
+                    "Devre Dışı"
+                };
+
+                string currentHotkey = ConfigManager.Get("General", "GlobalHotkey", "Ctrl + Shift + L");
+                bool hotkeyFound = false;
+
+                foreach (var preset in hotkeyPresets)
+                {
+                    CmbGlobalHotkey.Items.Add(preset);
+                    if (string.Equals(preset, currentHotkey, StringComparison.OrdinalIgnoreCase))
+                    {
+                        CmbGlobalHotkey.SelectedItem = preset;
+                        hotkeyFound = true;
+                    }
+                }
+
+                if (!hotkeyFound && !string.IsNullOrWhiteSpace(currentHotkey))
+                {
+                    CmbGlobalHotkey.Items.Insert(0, currentHotkey);
+                    CmbGlobalHotkey.SelectedItem = currentHotkey;
+                }
+                else if (CmbGlobalHotkey.SelectedIndex < 0)
+                {
+                    CmbGlobalHotkey.SelectedIndex = 0;
+                }
+
                 // ShowAppDataButton
                 string showAppDataVal = ConfigManager.Get("General", "ShowAppDataButton", "false");
                 ChkShowAppData.IsChecked = string.Equals(showAppDataVal, "true", StringComparison.OrdinalIgnoreCase);
@@ -262,6 +306,23 @@ namespace LolAccountSwitcher
                 {
                     acc.RefreshLocalization();
                 }
+            }
+        }
+
+        private void ChkAlwaysOnTop_Changed(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            ConfigManager.Set("General", "AlwaysOnTop", ChkAlwaysOnTop.IsChecked == true ? "true" : "false");
+            _main?.UpdateAlwaysOnTop();
+        }
+
+        private void CmbGlobalHotkey_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isLoadingConfig) return;
+            if (CmbGlobalHotkey.SelectedItem is string selectedHotkey)
+            {
+                ConfigManager.Set("General", "GlobalHotkey", selectedHotkey);
+                _main?.RegisterConfiguredHotKey();
             }
         }
 
@@ -509,6 +570,12 @@ namespace LolAccountSwitcher
             TxtMinimizeToTraySub.Text = LocalizationManager.Get("MinimizeToTrayOptionDesc");
             if (TxtMaskEmailHeader != null) TxtMaskEmailHeader.Text = LocalizationManager.Get("MaskEmailOption");
             if (TxtMaskEmailSub != null) TxtMaskEmailSub.Text = LocalizationManager.Get("MaskEmailOptionDesc");
+
+            if (TxtAlwaysOnTopHeader != null) TxtAlwaysOnTopHeader.Text = LocalizationManager.Get("AlwaysOnTopHeader");
+            if (TxtAlwaysOnTopSub != null) TxtAlwaysOnTopSub.Text = LocalizationManager.Get("AlwaysOnTopSub");
+
+            if (TxtGlobalHotkeyHeader != null) TxtGlobalHotkeyHeader.Text = LocalizationManager.Get("GlobalHotkeyHeader");
+            if (TxtGlobalHotkeySub != null) TxtGlobalHotkeySub.Text = LocalizationManager.Get("GlobalHotkeySub");
 
             if (TxtShowHzBadgeHeader != null) TxtShowHzBadgeHeader.Text = LocalizationManager.Get("ShowHzBadgeOption");
             if (TxtShowHzBadgeSub != null) TxtShowHzBadgeSub.Text = LocalizationManager.Get("ShowHzBadgeOptionDesc");

@@ -24,10 +24,12 @@ namespace LolAccountSwitcher
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private const int GLOBAL_HOTKEY_ID = 9021;
+        private const uint MOD_ALT = 0x0001;
         private const uint MOD_CONTROL = 0x0002;
         private const uint MOD_SHIFT = 0x0004;
-        private const uint VK_L = 0x4C; // 'L' tuşu
+        private const uint MOD_WIN = 0x0008;
         private IntPtr _hwnd = IntPtr.Zero;
+        private bool _isHotkeyRegistered = false;
 
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -36,7 +38,114 @@ namespace LolAccountSwitcher
             _hwnd = helper.Handle;
             var source = System.Windows.Interop.HwndSource.FromHwnd(_hwnd);
             source?.AddHook(HwndHook);
-            RegisterHotKey(_hwnd, GLOBAL_HOTKEY_ID, MOD_CONTROL | MOD_SHIFT, VK_L);
+
+            UpdateAlwaysOnTop();
+            RegisterConfiguredHotKey();
+        }
+
+        public void UpdateAlwaysOnTop()
+        {
+            bool alwaysOnTop = ConfigManager.GetBool("General", "AlwaysOnTop", false);
+            Topmost = alwaysOnTop;
+        }
+
+        public bool RegisterConfiguredHotKey()
+        {
+            if (_hwnd == IntPtr.Zero) return false;
+
+            if (_isHotkeyRegistered)
+            {
+                UnregisterHotKey(_hwnd, GLOBAL_HOTKEY_ID);
+                _isHotkeyRegistered = false;
+            }
+
+            string hotkeyStr = ConfigManager.Get("General", "GlobalHotkey", "Ctrl + Shift + L");
+            if (string.IsNullOrWhiteSpace(hotkeyStr) || 
+                hotkeyStr.Equals("None", StringComparison.OrdinalIgnoreCase) || 
+                hotkeyStr.Equals("Devre Dışı", StringComparison.OrdinalIgnoreCase) ||
+                hotkeyStr.Equals("Disabled", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            if (TryParseHotkey(hotkeyStr, out uint modifiers, out uint vk))
+            {
+                _isHotkeyRegistered = RegisterHotKey(_hwnd, GLOBAL_HOTKEY_ID, modifiers, vk);
+                return _isHotkeyRegistered;
+            }
+
+            return false;
+        }
+
+        public static bool TryParseHotkey(string hotkeyStr, out uint modifiers, out uint vk)
+        {
+            modifiers = 0;
+            vk = 0;
+            if (string.IsNullOrWhiteSpace(hotkeyStr)) return false;
+
+            string[] parts = hotkeyStr.Split(new[] { '+', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string keyPart = "";
+
+            foreach (var rawPart in parts)
+            {
+                string part = rawPart.Trim();
+                if (part.Equals("Ctrl", StringComparison.OrdinalIgnoreCase) || part.Equals("Control", StringComparison.OrdinalIgnoreCase))
+                    modifiers |= MOD_CONTROL;
+                else if (part.Equals("Shift", StringComparison.OrdinalIgnoreCase))
+                    modifiers |= MOD_SHIFT;
+                else if (part.Equals("Alt", StringComparison.OrdinalIgnoreCase))
+                    modifiers |= MOD_ALT;
+                else if (part.Equals("Win", StringComparison.OrdinalIgnoreCase) || part.Equals("Windows", StringComparison.OrdinalIgnoreCase))
+                    modifiers |= MOD_WIN;
+                else
+                    keyPart = part;
+            }
+
+            if (string.IsNullOrEmpty(keyPart)) return false;
+
+            // Harfler (A-Z)
+            if (keyPart.Length == 1 && char.IsLetter(keyPart[0]))
+            {
+                vk = (uint)char.ToUpperInvariant(keyPart[0]);
+                return true;
+            }
+
+            // Sayılar (0-9)
+            if (keyPart.Length == 1 && char.IsDigit(keyPart[0]))
+            {
+                vk = (uint)keyPart[0];
+                return true;
+            }
+
+            // Fonksiyon tuşları (F1 - F12)
+            if (keyPart.StartsWith("F", StringComparison.OrdinalIgnoreCase) && 
+                int.TryParse(keyPart.Substring(1), out int fNum) && fNum >= 1 && fNum <= 12)
+            {
+                vk = (uint)(0x70 + (fNum - 1)); // VK_F1 = 0x70
+                return true;
+            }
+
+            // Space / Boşluk
+            if (keyPart.Equals("Space", StringComparison.OrdinalIgnoreCase) || keyPart.Equals("Boşluk", StringComparison.OrdinalIgnoreCase))
+            {
+                vk = 0x20;
+                return true;
+            }
+
+            // Tab
+            if (keyPart.Equals("Tab", StringComparison.OrdinalIgnoreCase))
+            {
+                vk = 0x09;
+                return true;
+            }
+
+            if (Enum.TryParse<System.Windows.Forms.Keys>(keyPart, true, out var parsedKey))
+            {
+                vk = (uint)parsedKey;
+                return true;
+            }
+
+            return false;
         }
 
         private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -58,10 +167,22 @@ namespace LolAccountSwitcher
                 WindowState = WindowState.Normal;
             }
             Activate();
-            Topmost = true;
-            Topmost = false;
+
+            bool alwaysOnTop = ConfigManager.GetBool("General", "AlwaysOnTop", false);
+            if (alwaysOnTop)
+            {
+                Topmost = true;
+            }
+            else
+            {
+                Topmost = true;
+                Topmost = false;
+            }
+
             Focus();
-            ShowInAppToast("Lol Account Switcher Aktif (Ctrl+Shift+L)", "⚡", 1800);
+            string hotkeyDisplay = ConfigManager.Get("General", "GlobalHotkey", "Ctrl + Shift + L");
+            string toastMsg = string.Format(LocalizationManager.Get("HotkeySuccessToast") ?? "Lol Account Switcher Aktif ({0})", hotkeyDisplay);
+            ShowInAppToast(toastMsg, "⚡", 1800);
         }
 
         public MainWindow()

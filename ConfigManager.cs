@@ -218,6 +218,32 @@ namespace LolAccountSwitcher
                 writer.WriteLine($"MaskEmailInUI={maskEmailInUiVal}");
                 writer.WriteLine();
 
+                string alwaysOnTopVal = Get("General", "AlwaysOnTop", "false");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; AlwaysOnTop / Pencereyi Her Zaman Üstte Tut");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Uygulamanın diğer tüm pencerelerin üzerinde en üstte kalmasını sağlar.");
+                writer.WriteLine(";      Seçenekler: true (Açık), false (Kapalı)");
+                writer.WriteLine(";      Varsayılan Değer: false");
+                writer.WriteLine("; [EN] Keeps the application window always on top of other windows.");
+                writer.WriteLine(";      Options: true (Enabled), false (Disabled)");
+                writer.WriteLine(";      Default Value: false");
+                writer.WriteLine($"AlwaysOnTop={alwaysOnTopVal}");
+                writer.WriteLine();
+
+                string globalHotkeyVal = Get("General", "GlobalHotkey", "Ctrl + Shift + L");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; GlobalHotkey / Global Çağırma Kısayol Tuşu");
+                writer.WriteLine("; ------------------------------------------------------------------------------");
+                writer.WriteLine("; [TR] Uygulamayı her yerden anında ekrana getiren global Windows kısayolu.");
+                writer.WriteLine(";      Örnekler: Ctrl + Shift + L, Ctrl + Alt + L, Alt + Shift + L, F9, F10, None");
+                writer.WriteLine(";      Varsayılan Değer: Ctrl + Shift + L");
+                writer.WriteLine("; [EN] Global Windows hotkey to bring the application window to front from anywhere.");
+                writer.WriteLine(";      Examples: Ctrl + Shift + L, Ctrl + Alt + L, Alt + Shift + L, F9, F10, None");
+                writer.WriteLine(";      Default Value: Ctrl + Shift + L");
+                writer.WriteLine($"GlobalHotkey={globalHotkeyVal}");
+                writer.WriteLine();
+
                 writer.WriteLine("; ------------------------------------------------------------------------------");
                 writer.WriteLine("; CloseLeagueOnSwitch / Geçişte İstemci Kapatma");
                 writer.WriteLine("; ------------------------------------------------------------------------------");
@@ -400,6 +426,8 @@ namespace LolAccountSwitcher
             Set("General", "PlayStartupSound", "true");
             Set("General", "MinimizeToTray", "true");
             Set("General", "MaskEmailInUI", "true");
+            Set("General", "AlwaysOnTop", "false");
+            Set("General", "GlobalHotkey", "Ctrl + Shift + L");
             Set("General", "CloseLeagueOnSwitch", "true");
             Set("General", "AutoLaunchGameOnSwitch", "true");
             Set("General", "LaunchCompanionAppOnSwitch", "false");
