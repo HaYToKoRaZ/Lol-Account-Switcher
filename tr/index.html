@@ -53,8 +53,28 @@
   <link rel="manifest" href="../site.webmanifest">
   <meta name="theme-color" content="#070C14">
 
-  <!-- High-Speed Google Fonts with display:optional (Zero Layout Shift) -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional">
+  <!-- Critical Above-The-Fold Layout Lock (Zero CLS Guarantee) -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    header { position: sticky; top: 0; z-index: 1000; width: 100%; height: 68px; }
+    .navbar { height: 68px; padding: 0 6%; display: flex; justify-content: space-between; align-items: center; background: rgba(5, 9, 17, 0.88); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid #162E49; }
+    .nav-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; flex-shrink: 0; }
+    .nav-logo { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #C8AA6E; object-fit: cover; flex-shrink: 0; }
+    .nav-title { font-size: 1.22rem; font-weight: 800; white-space: nowrap; }
+    .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+    .theme-toggle-btn { width: 38px; height: 38px; border-radius: 8px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+    .hero { max-width: 1340px; margin: 0 auto; padding: 3.5rem 6% 3rem; }
+    @media (max-width: 640px) {
+      header { height: 64px; }
+      .navbar { height: 64px; padding: 0 4%; }
+      .nav-links { display: none !important; }
+      .nav-title { font-size: 1.05rem; }
+    }
+    @media (min-width: 981px) {
+      .hero { padding: 5rem 6% 4rem; }
+    }
+  </style>
+
   <!-- Master Application Stylesheet (Zero FOUC & Zero Layout Shift) -->
   <link rel="preload" href="../style.css" as="style">
   <link rel="stylesheet" href="../style.css">
@@ -188,7 +208,7 @@
           <div class="mock-card-list">
             <div class="mock-card active" data-id="1">
               <div class="mock-avatar-wrap">
-                <img src="../avatars/avatar-1.webp" alt="Faker Avatar" class="mock-avatar" width="48" height="48" loading="lazy" onerror="this.src='../avatars/avatar-1.png'">
+                <img src="../avatars/avatar-1.webp" alt="Faker Avatar" class="mock-avatar" width="48" height="48" onerror="this.src='../avatars/avatar-1.png'">
                 <span class="mock-lvl-badge">785</span>
               </div>
               <div class="mock-info">
@@ -199,7 +219,7 @@
                 <div class="mock-row-2">
                   <span>Hide on bush#KR1</span>
                   <span>•</span>
-                  <img src="../ranks/challenger.webp" alt="Challenger Madalyası" class="mock-rank-medal" width="18" height="18" loading="lazy" onerror="this.src='../ranks/challenger.png'">
+                  <img src="../ranks/challenger.webp" alt="Challenger Madalyası" class="mock-rank-medal" width="18" height="18" onerror="this.src='../ranks/challenger.png'">
                   <span class="mock-rank-text">Challenger • 1.240 LP</span>
                 </div>
               </div>
@@ -209,7 +229,7 @@
             <!-- MOCK ACCOUNT 2 (PRO GENERIC: CAPS) -->
             <div class="mock-card" data-id="2">
               <div class="mock-avatar-wrap">
-                <img src="../avatars/avatar-2.webp" alt="Caps Avatar" class="mock-avatar" width="48" height="48" loading="lazy" onerror="this.src='../avatars/avatar-2.png'">
+                <img src="../avatars/avatar-2.webp" alt="Caps Avatar" class="mock-avatar" width="48" height="48" onerror="this.src='../avatars/avatar-2.png'">
                 <span class="mock-lvl-badge">412</span>
               </div>
               <div class="mock-info">
@@ -220,7 +240,7 @@
                 <div class="mock-row-2">
                   <span>TheShackledOne#EUW</span>
                   <span>•</span>
-                  <img src="../ranks/grandmaster.webp" alt="Grandmaster Madalyası" class="mock-rank-medal" width="18" height="18" loading="lazy" onerror="this.src='../ranks/grandmaster.png'">
+                  <img src="../ranks/grandmaster.webp" alt="Grandmaster Madalyası" class="mock-rank-medal" width="18" height="18" onerror="this.src='../ranks/grandmaster.png'">
                   <span class="mock-rank-text">Grandmaster • 680 LP</span>
                 </div>
               </div>
@@ -230,7 +250,7 @@
             <!-- MOCK ACCOUNT 3 (LORE GENERIC: HEXTECH MASTER) -->
             <div class="mock-card" data-id="3">
               <div class="mock-avatar-wrap">
-                <img src="../avatars/avatar-3.webp" alt="Hextech Avatar" class="mock-avatar" width="48" height="48" loading="lazy" onerror="this.src='../avatars/avatar-3.png'">
+                <img src="../avatars/avatar-3.webp" alt="Hextech Avatar" class="mock-avatar" width="48" height="48" onerror="this.src='../avatars/avatar-3.png'">
                 <span class="mock-lvl-badge">256</span>
               </div>
               <div class="mock-info">
@@ -241,7 +261,7 @@
                 <div class="mock-row-2">
                   <span>PiltoverEnforcer#TR1</span>
                   <span>•</span>
-                  <img src="../ranks/master.webp" alt="Master Madalyası" class="mock-rank-medal" width="18" height="18" loading="lazy" onerror="this.src='../ranks/master.png'">
+                  <img src="../ranks/master.webp" alt="Master Madalyası" class="mock-rank-medal" width="18" height="18" onerror="this.src='../ranks/master.png'">
                   <span class="mock-rank-text">Master • 215 LP</span>
                 </div>
               </div>
