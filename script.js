@@ -225,7 +225,10 @@
       const rankPathPrefix = isRoot ? '../ranks/' : 'ranks/';
 
       if (rankMedal) {
-        rankMedal.src = `${rankPathPrefix}${tier}.png`;
+        rankMedal.src = `${rankPathPrefix}${tier}.webp`;
+        rankMedal.onerror = function () {
+          this.src = `${rankPathPrefix}${tier}.png`;
+        };
         rankMedal.alt = `${tierCap} Medal`;
       }
       if (rankText) {
@@ -254,6 +257,15 @@
         e.preventDefault();
         applyPersonalizedMockup();
       }
+    });
+  }
+
+  // PWA Service Worker Registration
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      const isTR = window.location.pathname.endsWith('/tr/') || window.location.pathname.endsWith('/tr/index.html');
+      const swPath = isTR ? '../sw.js' : 'sw.js';
+      navigator.serviceWorker.register(swPath).catch(function () {});
     });
   }
 

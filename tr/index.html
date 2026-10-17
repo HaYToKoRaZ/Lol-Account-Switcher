@@ -45,6 +45,16 @@
   <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
   <link rel="manifest" href="../site.webmanifest">
   <meta name="theme-color" content="#070C14">
+
+  <!-- Google Fonts Preconnect & Asynchronous Non-blocking Load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap">
+  </noscript>
+  <link rel="preload" href="../style.css" as="style">
   <link rel="stylesheet" href="../style.css">
 
   <!-- Schema.org SoftwareApplication JSON-LD -->
@@ -81,7 +91,7 @@
   <header>
     <nav class="navbar" aria-label="Ana Menü">
       <a href="./" class="nav-brand">
-        <img src="../logo.png" alt="Lol Account Switcher Logo" class="nav-logo" width="38" height="38">
+        <img src="../logo.webp" alt="Lol Account Switcher Logo" class="nav-logo" width="38" height="38" onerror="this.src='../logo.png'">
         <span class="nav-title">Lol Account Switcher</span>
       </a>
 
@@ -164,7 +174,7 @@
         <div class="app-mockup" role="region" aria-label="Etkileşimli Uygulama Önizlemesi">
           <div class="mock-header">
             <div class="mock-brand">
-              <img src="../logo.png" alt="App Logo" class="mock-logo">
+              <img src="../logo.webp" alt="App Logo" class="mock-logo" width="26" height="26" onerror="this.src='../logo.png'">
               <span class="mock-title">Lol Account Switcher</span>
             </div>
             <div class="mock-hz-pill">
@@ -176,7 +186,7 @@
           <div class="mock-card-list">
             <div class="mock-card active" data-id="1">
               <div class="mock-avatar-wrap">
-                <img src="../avatars/avatar-1.png" alt="Faker Avatar" class="mock-avatar" width="48" height="48">
+                <img src="../avatars/avatar-1.webp" alt="Faker Avatar" class="mock-avatar" width="48" height="48" loading="lazy" onerror="this.src='../avatars/avatar-1.png'">
                 <span class="mock-lvl-badge">785</span>
               </div>
               <div class="mock-info">
@@ -187,7 +197,7 @@
                 <div class="mock-row-2">
                   <span>Hide on bush#KR1</span>
                   <span>•</span>
-                  <img src="../ranks/challenger.png" alt="Challenger Madalyası" class="mock-rank-medal">
+                  <img src="../ranks/challenger.webp" alt="Challenger Madalyası" class="mock-rank-medal" width="18" height="18" loading="lazy" onerror="this.src='../ranks/challenger.png'">
                   <span class="mock-rank-text">Challenger • 1.240 LP</span>
                 </div>
               </div>
@@ -197,7 +207,7 @@
             <!-- MOCK ACCOUNT 2 (PRO GENERIC: CAPS) -->
             <div class="mock-card" data-id="2">
               <div class="mock-avatar-wrap">
-                <img src="../avatars/avatar-2.png" alt="Caps Avatar" class="mock-avatar" width="48" height="48">
+                <img src="../avatars/avatar-2.webp" alt="Caps Avatar" class="mock-avatar" width="48" height="48" loading="lazy" onerror="this.src='../avatars/avatar-2.png'">
                 <span class="mock-lvl-badge">412</span>
               </div>
               <div class="mock-info">
@@ -208,7 +218,7 @@
                 <div class="mock-row-2">
                   <span>TheShackledOne#EUW</span>
                   <span>•</span>
-                  <img src="../ranks/grandmaster.png" alt="Grandmaster Madalyası" class="mock-rank-medal">
+                  <img src="../ranks/grandmaster.webp" alt="Grandmaster Madalyası" class="mock-rank-medal" width="18" height="18" loading="lazy" onerror="this.src='../ranks/grandmaster.png'">
                   <span class="mock-rank-text">Grandmaster • 680 LP</span>
                 </div>
               </div>
@@ -218,7 +228,7 @@
             <!-- MOCK ACCOUNT 3 (LORE GENERIC: HEXTECH MASTER) -->
             <div class="mock-card" data-id="3">
               <div class="mock-avatar-wrap">
-                <img src="../avatars/avatar-3.png" alt="Hextech Avatar" class="mock-avatar" width="48" height="48">
+                <img src="../avatars/avatar-3.webp" alt="Hextech Avatar" class="mock-avatar" width="48" height="48" loading="lazy" onerror="this.src='../avatars/avatar-3.png'">
                 <span class="mock-lvl-badge">256</span>
               </div>
               <div class="mock-info">
@@ -229,7 +239,7 @@
                 <div class="mock-row-2">
                   <span>PiltoverEnforcer#TR1</span>
                   <span>•</span>
-                  <img src="../ranks/master.png" alt="Master Madalyası" class="mock-rank-medal">
+                  <img src="../ranks/master.webp" alt="Master Madalyası" class="mock-rank-medal" width="18" height="18" loading="lazy" onerror="this.src='../ranks/master.png'">
                   <span class="mock-rank-text">Master • 215 LP</span>
                 </div>
               </div>
