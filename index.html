@@ -3,6 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Critical Network Preconnects (Fonts CDN & API) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="image" href="logo.webp" type="image/webp">
   <title>Lol Account Switcher - Fast LoL Profile Switcher</title>
   <meta name="description" content="Seamless Riot &amp; League of Legends profile switcher with direct Win32 144Hz display and power plan optimization. Free, open-source, and 100% offline.">
   <meta name="author" content="HaYTo">
@@ -46,9 +51,7 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#070C14">
 
-  <!-- Google Fonts Preconnect & Asynchronous Non-blocking Load -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Asynchronous Non-blocking Google Fonts Load -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
   <noscript>
@@ -736,6 +739,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
