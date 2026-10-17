@@ -4,9 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Critical Network Preconnects (Fonts CDN & API) -->
+  <!-- Critical Network Preconnects & Font Preloads -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtqUYLknw.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7W0Q5nw.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" as="image" href="../logo-38.webp" type="image/webp">
   <title>Lol Account Switcher - Hızlı LoL Profil Değiştirici</title>
   <meta name="description" content="League of Legends ve Riot Games hesapları arasında anında geçiş yapın. 144Hz ekran ve güç planı optimizasyonu. Ücretsiz, açık kaynak ve %100 yerel.">
@@ -51,15 +53,15 @@
   <link rel="manifest" href="../site.webmanifest">
   <meta name="theme-color" content="#070C14">
 
-  <!-- Asynchronous Non-blocking Google Fonts Load -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" media="print" onload="this.media='all'">
+  <!-- Zero-CLS Asynchronous Google Fonts Load -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional">
   </noscript>
-  <!-- Critical Above-the-Fold CSS Inlining (Zero Render-Blocking) -->
+  <!-- Critical Above-the-Fold CSS Inlining (Zero Render-Blocking & Zero CLS) -->
   <style>
-    :root{--font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--font-display:'Outfit','Inter',sans-serif;--bg-deep:#050911;--bg-surface:#091322;--bg-card:#0D1A2E;--bg-card-hover:#12243D;--bg-badge:#142842;--bg-avatar:#07101B;--border-subtle:#162E49;--border-card:#1C3959;--text-primary:#F0E6D2;--text-secondary:#B9CAD8;--text-muted:#7E93A7;--hextech-gold:#C8AA6E;--hextech-gold-glow:rgba(200,170,110,0.35);--hextech-cyan:#0AC8B9;--hextech-cyan-subtle:rgba(10,200,185,0.12);--nav-bg:rgba(5,9,17,0.88);--hero-glow:radial-gradient(circle at 50% 15%,rgba(10,200,185,0.16) 0%,rgba(200,170,110,0.08) 35%,transparent 70%)}
+    :root{--font-body:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--font-display:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--bg-deep:#050911;--bg-surface:#091322;--bg-card:#0D1A2E;--bg-card-hover:#12243D;--bg-badge:#142842;--bg-avatar:#07101B;--border-subtle:#162E49;--border-card:#1C3959;--text-primary:#F0E6D2;--text-secondary:#B9CAD8;--text-muted:#7E93A7;--hextech-gold:#C8AA6E;--hextech-gold-glow:rgba(200,170,110,0.35);--hextech-cyan:#0AC8B9;--hextech-cyan-subtle:rgba(10,200,185,0.12);--nav-bg:rgba(5,9,17,0.88);--hero-glow:radial-gradient(circle at 50% 15%,rgba(10,200,185,0.16) 0%,rgba(200,170,110,0.08) 35%,transparent 70%)}
     *{box-sizing:border-box;margin:0;padding:0}
     body{font-family:var(--font-body);background-color:var(--bg-deep);color:var(--text-primary);line-height:1.6;min-height:100vh;overflow-x:hidden;position:relative;-webkit-font-smoothing:antialiased}
     body::before{content:'';position:absolute;top:0;left:0;right:0;height:980px;background:var(--hero-glow);pointer-events:none;z-index:0}
@@ -72,11 +74,12 @@
     .nav-links{display:flex;align-items:center;gap:24px}
     .nav-links a{font-size:0.94rem;font-weight:500;color:var(--text-secondary)}
     .nav-actions{display:flex;align-items:center;gap:12px}
+    .theme-toggle-btn{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
     .hero{position:relative;z-index:1;display:grid;grid-template-columns:1.12fr 0.88fr;align-items:center;gap:48px;max-width:1340px;margin:0 auto;padding:5rem 6% 4rem}
     .hero-left{display:flex;flex-direction:column;gap:22px}
     .hero-tag{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;padding:6px 16px;border-radius:24px;background:var(--hextech-cyan-subtle);border:1px solid var(--hextech-cyan);color:var(--hextech-cyan);font-size:0.84rem;font-weight:700}
-    .hero-title{font-size:clamp(2.4rem,4.4vw,3.8rem);font-weight:900;line-height:1.1;color:var(--text-primary)}
-    .hero-desc{font-size:1.12rem;line-height:1.7;color:var(--text-secondary);max-width:640px}
+    .hero-title{font-size:clamp(2.4rem,4.4vw,3.8rem);font-weight:900;line-height:1.15;color:var(--text-primary);text-wrap:balance}
+    .hero-desc{font-size:1.12rem;line-height:1.7;color:var(--text-secondary);max-width:640px;text-wrap:pretty}
     .hero-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-top:8px}
     .btn-primary{display:inline-flex;align-items:center;gap:12px;padding:14px 28px;border-radius:8px;background:linear-gradient(135deg,var(--hextech-cyan) 0%,#079C90 100%);color:#032120;font-weight:800;font-size:1rem;border:1px solid rgba(255,255,255,0.35);cursor:pointer}
     .btn-secondary{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:8px;background:var(--bg-card);color:var(--text-primary);font-weight:700;font-size:1rem;border:1px solid var(--border-subtle);cursor:pointer}
