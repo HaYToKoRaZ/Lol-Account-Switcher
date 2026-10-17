@@ -13,6 +13,8 @@ const STATIC_ASSETS = [
   'style.css',
   'script.js',
   'logo.webp',
+  'logo-38.webp',
+  'logo-26.webp',
   'logo.png',
   'favicon.ico',
   'app.ico',
