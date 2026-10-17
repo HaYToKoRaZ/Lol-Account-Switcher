@@ -53,12 +53,8 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#070C14">
 
-  <!-- Zero-CLS Asynchronous Google Fonts Load -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional">
-  </noscript>
+  <!-- High-Speed Google Fonts with display:optional (Zero Layout Shift) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=optional">
   <!-- Master Application Stylesheet (Zero FOUC & Zero Layout Shift) -->
   <link rel="preload" href="style.css" as="style">
   <link rel="stylesheet" href="style.css">
