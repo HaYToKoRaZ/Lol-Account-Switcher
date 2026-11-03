@@ -18,10 +18,7 @@ namespace LolAccountSwitcher
             "RiotClientUxRender",
             "RiotClientCrashHandler",
             "Valorant",
-            "VALORANT-Win64-Shipping",
-            "Blitz",
-            "BlitzUpdater",
-            "BlitzApp"
+            "VALORANT-Win64-Shipping"
         };
 
         public static async Task TerminateLeagueProcessesAsync(string? customRiotGamesPath = null)
@@ -36,10 +33,13 @@ namespace LolAccountSwitcher
                     {
                         try 
                         { 
-                            p.Kill(); 
+                            p.Kill(entireProcessTree: true); 
                             p.WaitForExit(1000); 
                         } 
-                        catch { }
+                        catch 
+                        {
+                            try { p.Kill(); } catch { }
+                        }
                     }
                 }
                 catch { }
@@ -73,10 +73,13 @@ namespace LolAccountSwitcher
                             {
                                 try 
                                 { 
-                                    p.Kill(); 
+                                    p.Kill(entireProcessTree: true); 
                                     p.WaitForExit(1000); 
                                 } 
-                                catch { }
+                                catch 
+                                {
+                                    try { p.Kill(); } catch { }
+                                }
                             }
                         }
                         catch { }

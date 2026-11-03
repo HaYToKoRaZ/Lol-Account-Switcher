@@ -29,7 +29,7 @@ namespace LolAccountSwitcher
             HttpClient.Timeout = TimeSpan.FromSeconds(8);
         }
 
-        public static async Task<SummonerStatsResult?> FetchStatsAsync(string summonerInput, string server)
+        public static async Task<SummonerStatsResult?> FetchStatsAsync(string summonerInput, string server, bool forceRenew = false)
         {
             if (string.IsNullOrWhiteSpace(summonerInput))
                 return null;
@@ -61,51 +61,86 @@ namespace LolAccountSwitcher
 
                 var first = dataArray[0];
 
-                string gameName = first.TryGetProperty("game_name", out var gn) ? (gn.GetString() ?? "") : "";
-                string tagLine = first.TryGetProperty("tagline", out var tl) ? (tl.GetString() ?? "") : "";
-                int level = first.TryGetProperty("level", out var lv) && lv.TryGetInt32(out int parsedLv) ? parsedLv : 0;
-                string? profileImageUrl = first.TryGetProperty("profile_image_url", out var pi) ? pi.GetString() : null;
-                string? inGameName = first.TryGetProperty("name", out var nProp) ? nProp.GetString() : null;
-
-                string rank = "Unranked";
-                string tier = "UNRANKED";
-                string? tierImageUrl = null;
-
-                if (first.TryGetProperty("solo_tier_info", out var soloTier) && soloTier.ValueKind == JsonValueKind.Object)
+                // Eğer canlı yenileme (forceRenew) istenmişse ve PUUID mevcutsa OP.GG sunucularına yenileme sinyali gönder
+                if (forceRenew && first.TryGetProperty("puuid", out var puuidProp) && !string.IsNullOrWhiteSpace(puuidProp.GetString()))
                 {
-                    tier = soloTier.TryGetProperty("tier", out var tProp) ? (tProp.GetString() ?? "UNRANKED") : "UNRANKED";
-                    int division = soloTier.TryGetProperty("division", out var dProp) && dProp.TryGetInt32(out int div) ? div : 0;
-                    int lp = soloTier.TryGetProperty("lp", out var lpProp) && lpProp.TryGetInt32(out int parsedLp) ? parsedLp : 0;
-                    tierImageUrl = soloTier.TryGetProperty("tier_image_url", out var tiProp) ? tiProp.GetString() : null;
+                    string puuid = puuidProp.GetString()!;
+                    try
+                    {
+                        string renewUrl = $"https://lol-api-summoner.op.gg/api/v3/{region}/summoners/{puuid}/renewal";
+                        
+                        // OP.GG renewal: 200 = başlatıldı, 202 = tamamlandı / zaten güncel. Kısa aralıkla sorgula (maks ~6 sn)
+                        for (int poll = 0; poll < 8; poll++)
+                        {
+                            using var renewResp = await HttpClient.PostAsync(renewUrl, null);
+                            if ((int)renewResp.StatusCode == 202) break;
+                            await Task.Delay(700);
+                        }
 
-                    rank = FormatRank(tier, division, lp);
+                        // 202 geldiğinde veri hazır; ek bekleme olmadan taze profili çek
+                        using var refreshedResp = await HttpClient.GetAsync(requestUrl);
+                        if (refreshedResp.IsSuccessStatusCode)
+                        {
+                            string refreshedJson = await refreshedResp.Content.ReadAsStringAsync();
+                            using var refDoc = JsonDocument.Parse(refreshedJson);
+                            if (refDoc.RootElement.TryGetProperty("data", out var refArray) && refArray.GetArrayLength() > 0)
+                            {
+                                return ParseStatsResult(refArray[0], region);
+                            }
+                        }
+                    }
+                    catch { }
                 }
 
-                string encodedName = Uri.EscapeDataString(gameName);
-                string encodedTag = Uri.EscapeDataString(tagLine);
-
-                // League of Graphs ve Porofessor profil bağlantıları
-                string logUrl = $"https://www.leagueofgraphs.com/tr/summoner/{region}/{encodedName}-{encodedTag}";
-                string poroUrl = $"https://porofessor.gg/tr/live/{region}/{encodedName}-{encodedTag}";
-
-                return new SummonerStatsResult
-                {
-                    GameName = gameName,
-                    TagLine = tagLine,
-                    Level = level,
-                    Rank = rank,
-                    Tier = tier,
-                    ProfileImageUrl = profileImageUrl,
-                    TierImageUrl = tierImageUrl,
-                    InGameName = inGameName,
-                    ProfileUrl = logUrl,
-                    LiveUrl = poroUrl
-                };
+                return ParseStatsResult(first, region);
             }
             catch
             {
                 return null;
             }
+        }
+
+        private static SummonerStatsResult ParseStatsResult(JsonElement first, string region)
+        {
+            string gameName = first.TryGetProperty("game_name", out var gn) ? (gn.GetString() ?? "") : "";
+            string tagLine = first.TryGetProperty("tagline", out var tl) ? (tl.GetString() ?? "") : "";
+            int level = first.TryGetProperty("level", out var lv) && lv.TryGetInt32(out int parsedLv) ? parsedLv : 0;
+            string? profileImageUrl = first.TryGetProperty("profile_image_url", out var pi) ? pi.GetString() : null;
+            string? inGameName = first.TryGetProperty("name", out var nProp) ? nProp.GetString() : null;
+
+            string rank = "Unranked";
+            string tier = "UNRANKED";
+            string? tierImageUrl = null;
+
+            if (first.TryGetProperty("solo_tier_info", out var soloTier) && soloTier.ValueKind == JsonValueKind.Object)
+            {
+                tier = soloTier.TryGetProperty("tier", out var tProp) ? (tProp.GetString() ?? "UNRANKED") : "UNRANKED";
+                int division = soloTier.TryGetProperty("division", out var dProp) && dProp.TryGetInt32(out int div) ? div : 0;
+                int lp = soloTier.TryGetProperty("lp", out var lpProp) && lpProp.TryGetInt32(out int parsedLp) ? parsedLp : 0;
+                tierImageUrl = soloTier.TryGetProperty("tier_image_url", out var tiProp) ? tiProp.GetString() : null;
+
+                rank = FormatRank(tier, division, lp);
+            }
+
+            string encodedName = Uri.EscapeDataString(gameName);
+            string encodedTag = Uri.EscapeDataString(tagLine);
+
+            string logUrl = $"https://www.leagueofgraphs.com/tr/summoner/{region}/{encodedName}-{encodedTag}";
+            string poroUrl = $"https://porofessor.gg/tr/live/{region}/{encodedName}-{encodedTag}";
+
+            return new SummonerStatsResult
+            {
+                GameName = gameName,
+                TagLine = tagLine,
+                Level = level,
+                Rank = rank,
+                Tier = tier,
+                ProfileImageUrl = profileImageUrl,
+                TierImageUrl = tierImageUrl,
+                InGameName = inGameName,
+                ProfileUrl = logUrl,
+                LiveUrl = poroUrl
+            };
         }
 
         private static string NormalizeServer(string server)

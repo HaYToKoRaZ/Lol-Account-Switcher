@@ -86,6 +86,15 @@ namespace LolAccountSwitcher
             {
                 return val;
             }
+
+            // Geriye dönük uyumluluk: Eğer General anahtarı yanlışlıkla CustomScripts altında kalmışsa kurtar
+            if (section.Equals("General", StringComparison.OrdinalIgnoreCase) &&
+                Data.TryGetValue("CustomScripts", out var legacySec) &&
+                legacySec.TryGetValue(key, out var legacyVal))
+            {
+                return legacyVal;
+            }
+
             return defaultValue;
         }
 
@@ -389,10 +398,13 @@ namespace LolAccountSwitcher
                 writer.WriteLine(";      Variables: {TITLE}, {SUMMONER}, {SERVER}, {ID}");
                 writer.WriteLine("; PreSwitchCommand: Hesap geçişinden önce çalışır / Runs before account switch");
                 writer.WriteLine($"PreSwitchCommand={Get("General", "PreSwitchCommand", "")}");
+                writer.WriteLine($"PreSwitchArgs={Get("General", "PreSwitchArgs", "")}");
                 writer.WriteLine("; PostSwitchCommand: Hesap geçişinden sonra çalışır / Runs after account switch");
                 writer.WriteLine($"PostSwitchCommand={Get("General", "PostSwitchCommand", "")}");
+                writer.WriteLine($"PostSwitchArgs={Get("General", "PostSwitchArgs", "")}");
                 writer.WriteLine("; KillLeagueCommand: 'LOL KAPAT' tıklandığında çalışır / Runs when 'KILL LEAGUE' is clicked");
                 writer.WriteLine($"KillLeagueCommand={Get("General", "KillLeagueCommand", "")}");
+                writer.WriteLine($"KillLeagueArgs={Get("General", "KillLeagueArgs", "")}");
                 writer.WriteLine();
 
                 string activeAccId = Get("General", "ActiveAccountId", "");
@@ -413,6 +425,14 @@ namespace LolAccountSwitcher
                 writer.WriteLine("; [EN] Desktop pixel coordinates of the last closed window position.");
                 writer.WriteLine($"WindowLeft={windowLeft}");
                 writer.WriteLine($"WindowTop={windowTop}");
+                writer.WriteLine();
+
+                writer.WriteLine("; ==============================================================================");
+                writer.WriteLine("; [CustomScripts] / Çoklu Özel Komut Yapılandırması (Base64)");
+                writer.WriteLine("; ==============================================================================");
+                string commandsJson = Get("CustomScripts", "CommandsJson", "");
+                writer.WriteLine("[CustomScripts]");
+                writer.WriteLine($"CommandsJson={commandsJson}");
                 writer.WriteLine();
             }
             catch { }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace LolAccountSwitcher
 {
@@ -125,6 +126,28 @@ namespace LolAccountSwitcher
         }
 
         /// <summary>
+        /// Önceki oturumun soket ve Chromium singleton mutex kilitlerinin Windows tarafından
+        /// tamamen serbest bırakılmasını bekleyerek yardımcı uygulamayı asenkron olarak başlatır.
+        /// </summary>
+        public static async Task<bool> LaunchCompanionAppAsync(string? customPath = null, int delayMs = 1200)
+        {
+            if (delayMs > 0)
+            {
+                await Task.Delay(delayMs);
+            }
+
+            bool launched = LaunchCompanionApp(customPath);
+            if (!launched)
+            {
+                // Kısa bir bekleme sonrası 1 kez yeniden dene
+                await Task.Delay(800);
+                launched = LaunchCompanionApp(customPath);
+            }
+
+            return launched;
+        }
+
+        /// <summary>
         /// Belirtilen veya sistemde açık olan tüm League yardımcı uygulamalarını (Blitz, Porofessor, Mobalytics, OP.GG vb.) güvenle kapatır.
         /// </summary>
         public static void TerminateCompanionApp(string? customPath = null)
@@ -133,6 +156,14 @@ namespace LolAccountSwitcher
             {
                 "Blitz",
                 "Blitz App",
+                "BlitzApp",
+                "BlitzUpdater",
+                "blitz-delta-updater",
+                "blitz_deadlock",
+                "safe_x64_injector",
+                "safe_x86_injector",
+                "game-shim",
+                "PinManager",
                 "Porofessor",
                 "Overwolf",
                 "OverwolfLauncher",
@@ -146,11 +177,18 @@ namespace LolAccountSwitcher
                 "SenpAI"
             };
 
-            if (!string.IsNullOrEmpty(customPath))
+            string resolvedPath = customPath?.Trim() ?? "";
+            if (string.IsNullOrEmpty(resolvedPath) || !File.Exists(resolvedPath))
+            {
+                var detected = DetectCompanionApp();
+                resolvedPath = detected?.ExecutablePath ?? "";
+            }
+
+            if (!string.IsNullOrEmpty(resolvedPath))
             {
                 try
                 {
-                    string customName = Path.GetFileNameWithoutExtension(customPath);
+                    string customName = Path.GetFileNameWithoutExtension(resolvedPath);
                     if (!string.IsNullOrEmpty(customName))
                     {
                         targetProcesses.Add(customName);
@@ -159,6 +197,7 @@ namespace LolAccountSwitcher
                 catch { }
             }
 
+            // 1. İsim bazlı tüm süreç ağacını sonlandırma
             foreach (var procName in targetProcesses)
             {
                 try
@@ -168,10 +207,49 @@ namespace LolAccountSwitcher
                     {
                         try
                         {
-                            p.Kill();
+                            p.Kill(entireProcessTree: true);
                             p.WaitForExit(800);
                         }
-                        catch { }
+                        catch
+                        {
+                            try { p.Kill(); } catch { }
+                        }
+                    }
+                }
+                catch { }
+            }
+
+            // 2. Dizin bazlı tarama (Yardımcı uygulamanın kurulu olduğu klasördeki tüm alt süreçler)
+            if (!string.IsNullOrEmpty(resolvedPath))
+            {
+                try
+                {
+                    string? dir = Path.GetDirectoryName(resolvedPath);
+                    if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+                    {
+                        var allProcs = Process.GetProcesses();
+                        foreach (var p in allProcs)
+                        {
+                            try
+                            {
+                                string? filePath = null;
+                                try { filePath = p.MainModule?.FileName; } catch { }
+
+                                if (!string.IsNullOrEmpty(filePath) && filePath.StartsWith(dir, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    try
+                                    {
+                                        p.Kill(entireProcessTree: true);
+                                        p.WaitForExit(800);
+                                    }
+                                    catch
+                                    {
+                                        try { p.Kill(); } catch { }
+                                    }
+                                }
+                            }
+                            catch { }
+                        }
                     }
                 }
                 catch { }

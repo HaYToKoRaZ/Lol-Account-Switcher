@@ -438,49 +438,74 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- KART 6: ÖZEL KOMUT & BETİK OTOMASYONU (CLI / CMD / EXE) -->
+                    <!-- KART 6: ÇOKLU ÖZEL KOMUT & BETİK OTOMASYONU (DİNAMİK LİSTE & + BUTONU) -->
                     <Border Background="{DynamicResource BrushBgCard}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="8" Padding="13,10">
                         <StackPanel>
-                            <TextBlock x:Name="TxtCustomScriptHeader" Text="💻 Özel Komut &amp; Betik Çalıştırma" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" Margin="0,0,0,7"/>
-
-                            <!-- 1. Hesap Geçişi Öncesi Komut -->
-                            <TextBlock x:Name="TxtPreSwitchCommandLabel" Text="Hesap Geçişi Öncesi Komut / .exe:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
-                            <Grid Margin="0,0,0,5">
+                            <Grid Margin="0,0,0,8">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox x:Name="TxtPreSwitchCommand" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtPreSwitchCommand_TextChanged"/>
-                                <Button x:Name="BtnBrowsePreSwitch" Grid.Column="1" Content="📁 Seç" ToolTip="Dosya veya Betik Seç (.exe, .bat, .cmd, .ps1)" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnBrowsePreSwitch_Click"/>
-                                <Button x:Name="BtnTestPreSwitch" Grid.Column="2" Content="▶ Test" ToolTip="Komutu Arka Planda Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnTestPreSwitch_Click"/>
+                                <TextBlock x:Name="TxtCustomScriptHeader" Grid.Column="0" Text="💻 Çoklu Özel Komut &amp; CLI Betikleri" Foreground="{DynamicResource BrushHextechGold}" FontWeight="Bold" FontSize="13" VerticalAlignment="Center"/>
+                                <Button x:Name="BtnAddNewCommand" Grid.Column="1" Content="➕ Yeni Komut Ekle" Style="{StaticResource HexAutoAddBtnStyle}" Padding="8,3" FontSize="10.5" FontWeight="Bold" Click="BtnAddNewCommand_Click"/>
                             </Grid>
+                            <TextBlock x:Name="TxtCustomScriptSub" Text="Hesap değiştiğinde veya LoL kapatıldığında sırayla çalıştırılacak sınırsız komut (.exe, .bat, .cmd, .ps1, CLI) tanımlayabilirsiniz:" Foreground="{DynamicResource BrushTextMuted}" FontSize="10.5" TextWrapping="Wrap" Margin="0,0,0,8"/>
 
-                            <!-- 2. Hesap Geçişi Sonrası Komut -->
-                            <TextBlock x:Name="TxtPostSwitchCommandLabel" Text="Hesap Geçişi Sonrası Komut / .exe:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
-                            <Grid Margin="0,0,0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox x:Name="TxtPostSwitchCommand" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtPostSwitchCommand_TextChanged"/>
-                                <Button x:Name="BtnBrowsePostSwitch" Grid.Column="1" Content="📁 Seç" ToolTip="Dosya veya Betik Seç (.exe, .bat, .cmd, .ps1)" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnBrowsePostSwitch_Click"/>
-                                <Button x:Name="BtnTestPostSwitch" Grid.Column="2" Content="▶ Test" ToolTip="Komutu Arka Planda Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnTestPostSwitch_Click"/>
-                            </Grid>
+                            <!-- Dinamik Komut Kartları Listesi -->
+                            <ItemsControl x:Name="ItemsCommands">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource BrushBgAvatar}" BorderBrush="{DynamicResource BrushBorderSubtle}" BorderThickness="1" CornerRadius="6" Padding="8,7" Margin="0,0,0,7">
+                                            <StackPanel>
+                                                <!-- Satır 1: İsim + Tetikleme Zamanı + Aktif/Pasif + Sil -->
+                                                <Grid Margin="0,0,0,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushHextechCyanGlow}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="4,2" FontSize="10.5" FontWeight="SemiBold" ToolTip="Komut Başlığı / Açıklaması"/>
+                                                    
+                                                    <ComboBox Grid.Column="1" SelectedIndex="{Binding TimingIndex, Mode=TwoWay}" Width="150" Margin="6,0,0,0" FontSize="10" >
+                                                        <ComboBoxItem Content="⚡ Geçiş Sonrası"/>
+                                                        <ComboBoxItem Content="🛑 Geçiş Öncesi"/>
+                                                        <ComboBoxItem Content="🚪 LoL Kapat"/>
+                                                    </ComboBox>
 
-                            <!-- 3. LoL Kapat Komutu -->
-                            <TextBlock x:Name="TxtKillLeagueCommandLabel" Text="LoL Kapat Komutu / .exe:" Foreground="{DynamicResource BrushTextPrimary}" FontSize="11.5" FontWeight="SemiBold" Margin="0,0,0,2"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBox x:Name="TxtKillLeagueCommand" Grid.Column="0" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="5,3" FontSize="10.5" Margin="0,0,4,0" TextChanged="TxtKillLeagueCommand_TextChanged"/>
-                                <Button x:Name="BtnBrowseKillLeagueCommand" Grid.Column="1" Content="📁 Seç" ToolTip="Dosya veya Betik Seç (.exe, .bat, .cmd, .ps1)" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Margin="0,0,4,0" Click="BtnBrowseKillLeagueCommand_Click"/>
-                                <Button x:Name="BtnTestKillLeagueCommand" Grid.Column="2" Content="▶ Test" ToolTip="Komutu Arka Planda Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10.5" Click="BtnTestKillLeagueCommand_Click"/>
-                            </Grid>
+                                                    <CheckBox Grid.Column="2" IsChecked="{Binding IsEnabled, Mode=TwoWay}" VerticalAlignment="Center" Margin="8,0,0,0" ToolTip="Aktif / Devre Dışı">
+                                                        <TextBlock Text="Aktif" FontSize="10" Foreground="{DynamicResource BrushTextPrimary}"/>
+                                                    </CheckBox>
+
+                                                    <Button Grid.Column="3" Content="🗑️" ToolTip="Bu Komutu Sil" Style="{StaticResource HexDangerBtnStyle}" Width="22" Height="22" Padding="0" Margin="8,0,0,0" Tag="{Binding}" Click="BtnDeleteCommand_Click"/>
+                                                </Grid>
+
+                                                <!-- Satır 2: Dosya Yolu / Komut + Dosya Seç + Test -->
+                                                <Grid Margin="0,0,0,4">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBox Text="{Binding Command, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="4,2" FontSize="10" ToolTip="Çalıştırılacak dosya yolu veya CLI komutu (.exe, .bat, .cmd, .ps1)"/>
+                                                    <Button Grid.Column="1" Content="📁 Seç" ToolTip="Dosya Seç" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10" Margin="4,0,4,0" Tag="{Binding}" Click="BtnBrowseCommandRow_Click"/>
+                                                    <Button Grid.Column="2" Content="▶ Test" ToolTip="Bu Komutu Şimdi Test Et" Style="{StaticResource HexToolBtnStyle}" Padding="6,2" FontSize="10" Tag="{Binding}" Click="BtnTestCommandRow_Click"/>
+                                                </Grid>
+
+                                                <!-- Satır 3: Başlatma Seçenekleri (Args) -->
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="↳ Seçenekler (Args):" Foreground="{DynamicResource BrushTextMuted}" FontSize="9.5" VerticalAlignment="Center" Margin="2,0,6,0"/>
+                                                    <TextBox Grid.Column="1" Text="{Binding Args, UpdateSourceTrigger=PropertyChanged}" Background="{DynamicResource BrushBgCard}" Foreground="{DynamicResource BrushTextPrimary}" BorderBrush="{DynamicResource BrushBorderSubtle}" Padding="4,1" FontSize="9.5" ToolTip="Parametreler (Örn: --silent, toff, {account}, {summoner})"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </StackPanel>
                     </Border>
                 </StackPanel>

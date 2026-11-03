@@ -172,6 +172,13 @@ namespace LolAccountSwitcher
             menu.Items.Add(itemExit);
 
             _notifyIcon.ContextMenuStrip = menu;
+
+            // Windows Görev Çubuğu (Taskbar) JumpList'i de anlık olarak güncelle
+            try
+            {
+                JumpListService.UpdateJumpList(_mainWindow.Accounts);
+            }
+            catch { }
         }
 
         public static void ShowBalloonNotification(string title, string message)

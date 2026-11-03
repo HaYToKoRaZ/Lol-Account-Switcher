@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Pipes;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
@@ -14,6 +15,7 @@ namespace LolAccountSwitcher
         private static volatile bool _keepListening = true;
         private const string MutexName = "Local\\LolAccountSwitcher_SingleInstance_Mutex_2026";
         private const string EventName = "Local\\LolAccountSwitcher_Wakeup_Event_2026";
+        private const string PipeName = "LolAccountSwitcher_Ipc_Pipe_2026";
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -35,11 +37,111 @@ namespace LolAccountSwitcher
 
             if (!isNewInstance)
             {
-                BringExistingInstanceToFront();
+                // Zaten çalışan bir kopya var. Komut satırı argümanı varsa IPC Named Pipe ile ilet
+                if (e.Args != null && e.Args.Length > 0)
+                {
+                    bool sent = SendArgumentsToRunningInstance(string.Join(" ", e.Args));
+                    if (!sent)
+                    {
+                        BringExistingInstanceToFront();
+                    }
+                }
+                else
+                {
+                    BringExistingInstanceToFront();
+                }
+
                 Shutdown();
                 return;
             }
 
+            // IPC Named Pipe dinleyicisini başlat (JumpList ve dış komutlar için)
+            StartIpcServer();
+
+            // Wakeup event dinleyicisini başlat (Pencereyi öne getirmek için)
+            StartWakeupListener();
+
+            try
+            {
+                base.OnStartup(e);
+
+                // 1. Yapılandırma dosyasını (config.ini) yükle
+                ConfigManager.Load();
+
+                // 2. Dil tercihini (TR / EN) yükle
+                LocalizationManager.Initialize();
+
+                // 3. Tema tercihini (Sistem / Koyu / Açık) yükle ve uygula
+                ThemeManager.InitializeTheme();
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup_error.log"), ex.ToString());
+                MessageBox.Show(ex.ToString(), "Startup Error");
+            }
+        }
+
+        private static bool SendArgumentsToRunningInstance(string commandLine)
+        {
+            try
+            {
+                using var client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out);
+                client.Connect(600);
+                using var writer = new StreamWriter(client) { AutoFlush = true };
+                writer.WriteLine(commandLine);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static void StartIpcServer()
+        {
+            var ipcThread = new Thread(() =>
+            {
+                while (_keepListening)
+                {
+                    try
+                    {
+                        using var server = new NamedPipeServerStream(
+                            PipeName,
+                            PipeDirection.In,
+                            1,
+                            PipeTransmissionMode.Byte,
+                            PipeOptions.Asynchronous);
+
+                        var connectTask = server.WaitForConnectionAsync();
+                        connectTask.Wait();
+
+                        if (!_keepListening) break;
+
+                        using var reader = new StreamReader(server);
+                        string? line = reader.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(line))
+                        {
+                            Current?.Dispatcher?.Invoke(() =>
+                            {
+                                HandleCommandLine(line);
+                            });
+                        }
+                    }
+                    catch
+                    {
+                        if (!_keepListening) break;
+                        Thread.Sleep(50);
+                    }
+                }
+            })
+            {
+                IsBackground = true
+            };
+            ipcThread.Start();
+        }
+
+        private static void StartWakeupListener()
+        {
             try
             {
                 _wakeupEvent = new EventWaitHandle(false, EventResetMode.AutoReset, EventName);
@@ -67,25 +169,57 @@ namespace LolAccountSwitcher
                 listenerThread.Start();
             }
             catch { }
+        }
 
+        public static void HandleCommandLine(string commandLine)
+        {
             try
             {
-                base.OnStartup(e);
+                if (string.IsNullOrWhiteSpace(commandLine)) return;
 
-                // 1. Yapılandırma dosyasını (config.ini) yükle
-                ConfigManager.Load();
+                var mainWin = Current?.MainWindow as MainWindow;
 
-                // 2. Dil tercihini (TR / EN) yükle
-                LocalizationManager.Initialize();
+                if (commandLine.IndexOf("--kill-riot", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    mainWin?.Dispatcher?.Invoke(() =>
+                    {
+                        mainWin.TriggerKillLeague();
+                    });
+                    return;
+                }
 
-                // 3. Tema tercihini (Sistem / Koyu / Açık) yükle ve uygula
-                ThemeManager.InitializeTheme();
+                if (commandLine.IndexOf("--launch-riot", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    mainWin?.Dispatcher?.Invoke(() =>
+                    {
+                        mainWin.TriggerLaunchLeague();
+                    });
+                    return;
+                }
+
+                const string switchKey = "--switch-account";
+                int idx = commandLine.IndexOf(switchKey, StringComparison.OrdinalIgnoreCase);
+                if (idx >= 0)
+                {
+                    string accountId = commandLine.Substring(idx + switchKey.Length).Trim();
+                    accountId = accountId.Trim('"', '\'');
+                    if (!string.IsNullOrWhiteSpace(accountId))
+                    {
+                        mainWin?.Dispatcher?.Invoke(() =>
+                        {
+                            mainWin.SwitchToAccountById(accountId);
+                        });
+                        return;
+                    }
+                }
+
+                // Tanınmayan komut veya boş tıklama durumunda pencereyi öne getir
+                mainWin?.Dispatcher?.Invoke(() =>
+                {
+                    TrayService.ShowMainWindow();
+                });
             }
-            catch (Exception ex)
-            {
-                File.WriteAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "startup_error.log"), ex.ToString());
-                MessageBox.Show(ex.ToString(), "Startup Error");
-            }
+            catch { }
         }
 
         private static void BringExistingInstanceToFront()
@@ -130,6 +264,15 @@ namespace LolAccountSwitcher
                 _keepListening = false;
                 _wakeupEvent?.Set();
                 _wakeupEvent?.Dispose();
+
+                // Wake up any blocked NamedPipeServerStream
+                try
+                {
+                    using var client = new NamedPipeClientStream(".", PipeName, PipeDirection.Out);
+                    client.Connect(50);
+                }
+                catch { }
+
                 _singleInstanceMutex?.ReleaseMutex();
                 _singleInstanceMutex?.Dispose();
             }

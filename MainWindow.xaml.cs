@@ -219,7 +219,7 @@ namespace LolAccountSwitcher
             bool autoRefresh = !string.Equals(ConfigManager.Get("General", "AutoRefreshStats", "true"), "false", StringComparison.OrdinalIgnoreCase);
             if (autoRefresh)
             {
-                _ = RefreshAllStatsAsync();
+                _ = RefreshAllStatsAsync(forceRenew: true);
             }
 
             // Uygulama açık kaldığı sürece her 30 dakikada bir otomatik yenile
@@ -423,13 +423,14 @@ namespace LolAccountSwitcher
             catch { }
         }
 
-        public async Task RefreshAllStatsAsync()
+        public async Task RefreshAllStatsAsync(bool forceRenew = false)
         {
-            foreach (var acc in Accounts)
+            // Tüm hesaplar paralel yenilenir (sıralı bekleme yok)
+            var tasks = Accounts.Select(async acc =>
             {
                 try
                 {
-                    var result = await LolStatsService.FetchStatsAsync(acc.SummonerName, acc.Server);
+                    var result = await LolStatsService.FetchStatsAsync(acc.SummonerName, acc.Server, forceRenew);
                     if (result != null)
                     {
                         acc.Rank = result.Rank;
@@ -442,15 +443,17 @@ namespace LolAccountSwitcher
                     }
                 }
                 catch { }
-            }
+            }).ToList();
+
+            await Task.WhenAll(tasks);
             AccountStorage.SaveAccounts(Accounts);
             TrayService.RebuildMenu();
         }
-
         private async void BtnRefreshStats_Click(object sender, RoutedEventArgs e)
         {
             BtnRefreshStats.IsEnabled = false;
-            await RefreshAllStatsAsync();
+            ShowInAppToast(LocalizationManager.CurrentLanguage == "tr" ? "Hesaplar yenileniyor..." : "Refreshing accounts...", "🔄", 4500);
+            await RefreshAllStatsAsync(forceRenew: true);
             BtnRefreshStats.IsEnabled = true;
             ShowInAppToast(LocalizationManager.Get("StatsRefreshCompleted"), "🔄", 2200);
         }
@@ -986,9 +989,10 @@ namespace LolAccountSwitcher
 
             // 0. ADIM: Hesap Geçişi Öncesi Özel Komut / .exe / CLI Çalıştır
             string preSwitchCmd = ConfigManager.Get("General", "PreSwitchCommand", "").Trim();
+            string preSwitchArgs = ConfigManager.Get("General", "PreSwitchArgs", "").Trim();
             if (!string.IsNullOrEmpty(preSwitchCmd))
             {
-                await CustomScriptService.ExecuteCommandAsync(preSwitchCmd, acc);
+                await CustomScriptService.ExecuteCommandAsync(preSwitchCmd, preSwitchArgs, acc);
             }
 
             // 1. ADIM: İsim ve Dizin bazlı süreçleri sonlandır
@@ -1046,7 +1050,7 @@ namespace LolAccountSwitcher
             // 6. ADIM: Yardımcı Uygulamayı Başlat
             if (launchCompanion)
             {
-                CompanionAppService.LaunchCompanionApp(string.IsNullOrEmpty(companionPath) ? null : companionPath);
+                _ = CompanionAppService.LaunchCompanionAppAsync(string.IsNullOrEmpty(companionPath) ? null : companionPath, delayMs: 1400);
             }
 
             // 7. ADIM: Bildirim Sesini Çal
@@ -1054,9 +1058,10 @@ namespace LolAccountSwitcher
 
             // 8. ADIM: Hesap Geçişi Sonrası Özel Komut / .exe / CLI Çalıştır
             string postSwitchCmd = ConfigManager.Get("General", "PostSwitchCommand", "").Trim();
+            string postSwitchArgs = ConfigManager.Get("General", "PostSwitchArgs", "").Trim();
             if (!string.IsNullOrEmpty(postSwitchCmd))
             {
-                await CustomScriptService.ExecuteCommandAsync(postSwitchCmd, acc);
+                await CustomScriptService.ExecuteCommandAsync(postSwitchCmd, postSwitchArgs, acc);
             }
             // 9. ADIM: Aktif Hesabı İşaretle ve INI Yapılandırmasına Kaydet
             ConfigManager.Set("General", "ActiveAccountId", acc.Id);
@@ -1064,6 +1069,8 @@ namespace LolAccountSwitcher
             {
                 a.IsActive = string.Equals(a.Id, acc.Id, StringComparison.OrdinalIgnoreCase);
             }
+
+            TrayService.RebuildMenu();
 
             string switchSuccessMsg = LocalizationManager.Get("SwitchProgress4", acc.Title);
             ShowInAppToast(switchSuccessMsg, "🚀", 3200);
@@ -1197,9 +1204,10 @@ namespace LolAccountSwitcher
 
             // 0. ADIM: LoL Kapat Sırasında Özel Komut / .exe / CLI Çalıştır
             string killCmd = ConfigManager.Get("General", "KillLeagueCommand", "").Trim();
+            string killArgs = ConfigManager.Get("General", "KillLeagueArgs", "").Trim();
             if (!string.IsNullOrEmpty(killCmd))
             {
-                await CustomScriptService.ExecuteCommandAsync(killCmd);
+                await CustomScriptService.ExecuteCommandAsync(killCmd, killArgs);
             }
 
             // 1. Ayarlanan LoL Kapat Güç Planını devreye al (PowerManager - Win32 API)

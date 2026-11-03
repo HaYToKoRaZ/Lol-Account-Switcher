@@ -1,3 +1,4 @@
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ namespace LolAccountSwitcher
 {
     public partial class SettingsWindow : Window
     {
+        private System.Collections.ObjectModel.ObservableCollection<CustomCommandItem> _commandItems = new();
         private MainWindow _main;
 
         private bool _isLoadingConfig = true;
@@ -255,10 +257,14 @@ namespace LolAccountSwitcher
                 }
                 TxtCompanionAppPath.Text = savedCompanionPath;
 
-                // 4. Özel Komut & Betik Çalıştırma (CLI / CMD / Exe)
-                TxtPreSwitchCommand.Text = ConfigManager.Get("General", "PreSwitchCommand", "").Trim();
-                TxtPostSwitchCommand.Text = ConfigManager.Get("General", "PostSwitchCommand", "").Trim();
-                TxtKillLeagueCommand.Text = ConfigManager.Get("General", "KillLeagueCommand", "").Trim();
+                // 4. Çoklu Özel Komut & Betik Çalıştırma (CLI / CMD / Exe)
+                _commandItems.Clear();
+                var loadedCmds = CustomScriptService.LoadCommands();
+                foreach (var cmd in loadedCmds)
+                {
+                    _commandItems.Add(cmd);
+                }
+                ItemsCommands.ItemsSource = _commandItems;
             }
             finally
             {
@@ -491,6 +497,12 @@ namespace LolAccountSwitcher
             string path = TxtCompanionAppPath.Text.Trim();
             ConfigManager.Set("General", "CompanionAppPath", path);
             ConfigManager.Set("General", "BlitzPath", path);
+            if (!string.IsNullOrEmpty(path) && File.Exists(path) && ChkLaunchCompanionApp.IsChecked != true)
+            {
+                ChkLaunchCompanionApp.IsChecked = true;
+                ConfigManager.Set("General", "LaunchCompanionAppOnSwitch", "true");
+                ConfigManager.Set("General", "LaunchBlitzOnSwitch", "true");
+            }
         }
 
         private void BtnDetectCompanionAppPath_Click(object sender, RoutedEventArgs e)
@@ -501,6 +513,12 @@ namespace LolAccountSwitcher
                 TxtCompanionAppPath.Text = detected.ExecutablePath;
                 ConfigManager.Set("General", "CompanionAppPath", detected.ExecutablePath);
                 ConfigManager.Set("General", "BlitzPath", detected.ExecutablePath);
+                if (ChkLaunchCompanionApp.IsChecked != true)
+                {
+                    ChkLaunchCompanionApp.IsChecked = true;
+                    ConfigManager.Set("General", "LaunchCompanionAppOnSwitch", "true");
+                    ConfigManager.Set("General", "LaunchBlitzOnSwitch", "true");
+                }
                 MessageBox.Show(LocalizationManager.Get("CompanionAppDetectedSuccess", detected.Name, detected.ExecutablePath), LocalizationManager.Get("AppTitle"), MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -513,8 +531,8 @@ namespace LolAccountSwitcher
         {
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
-                Title = "Yardımcı Uygulama (.exe) Seçin",
-                Filter = "Uygulama Dosyaları (*.exe)|*.exe|Tüm Dosyalar (*.*)|*.*"
+                Title = "Yardimci Uygulama (.exe) Se�in",
+                Filter = "Uygulama Dosyalari (*.exe)|*.exe|T�m Dosyalar (*.*)|*.*"
             };
 
             if (dialog.ShowDialog() == true && !string.IsNullOrEmpty(dialog.FileName))
@@ -522,6 +540,12 @@ namespace LolAccountSwitcher
                 TxtCompanionAppPath.Text = dialog.FileName;
                 ConfigManager.Set("General", "CompanionAppPath", dialog.FileName);
                 ConfigManager.Set("General", "BlitzPath", dialog.FileName);
+                if (ChkLaunchCompanionApp.IsChecked != true)
+                {
+                    ChkLaunchCompanionApp.IsChecked = true;
+                    ConfigManager.Set("General", "LaunchCompanionAppOnSwitch", "true");
+                    ConfigManager.Set("General", "LaunchBlitzOnSwitch", "true");
+                }
             }
         }
 
@@ -618,12 +642,8 @@ namespace LolAccountSwitcher
             BtnBrowseCompanionAppPath.Content = LocalizationManager.Get("BrowsePathBtn");
 
             TxtCustomScriptHeader.Text = LocalizationManager.Get("CustomScriptHeader");
-            TxtPreSwitchCommandLabel.Text = LocalizationManager.Get("PreSwitchCommandLabel");
-            TxtPreSwitchCommand.ToolTip = LocalizationManager.Get("PreSwitchCommandTooltip");
-            TxtPostSwitchCommandLabel.Text = LocalizationManager.Get("PostSwitchCommandLabel");
-            TxtPostSwitchCommand.ToolTip = LocalizationManager.Get("PostSwitchCommandTooltip");
-            TxtKillLeagueCommandLabel.Text = LocalizationManager.Get("KillLeagueCommandLabel");
-            TxtKillLeagueCommand.ToolTip = LocalizationManager.Get("KillLeagueCommandTooltip");
+            if (TxtCustomScriptHeader != null) TxtCustomScriptHeader.Text = LocalizationManager.Get("CustomScriptHeader");
+            if (BtnAddNewCommand != null) BtnAddNewCommand.Content = LocalizationManager.CurrentLanguage == "tr" ? "➕ Yeni Komut Ekle" : "➕ Add New Command";
 
             if (CmbSwitchPowerPlan.Items.Count > 0 && CmbSwitchPowerPlan.Items[0] is ComboBoxItem firstSwitch)
             {
@@ -692,77 +712,74 @@ namespace LolAccountSwitcher
             }
         }
 
-        private void TxtPreSwitchCommand_TextChanged(object sender, TextChangedEventArgs e)
+        private void BtnAddNewCommand_Click(object sender, RoutedEventArgs e)
         {
-            if (_isLoadingConfig) return;
-            ConfigManager.Set("General", "PreSwitchCommand", TxtPreSwitchCommand.Text.Trim());
-        }
-
-        private void TxtPostSwitchCommand_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_isLoadingConfig) return;
-            ConfigManager.Set("General", "PostSwitchCommand", TxtPostSwitchCommand.Text.Trim());
-        }
-
-        private void TxtKillLeagueCommand_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (_isLoadingConfig) return;
-            ConfigManager.Set("General", "KillLeagueCommand", TxtKillLeagueCommand.Text.Trim());
-        }
-
-        private void BtnBrowsePreSwitch_Click(object sender, RoutedEventArgs e)
-        {
-            BrowseCommandFile(TxtPreSwitchCommand);
-        }
-
-        private void BtnBrowsePostSwitch_Click(object sender, RoutedEventArgs e)
-        {
-            BrowseCommandFile(TxtPostSwitchCommand);
-        }
-
-        private void BtnBrowseKillLeagueCommand_Click(object sender, RoutedEventArgs e)
-        {
-            BrowseCommandFile(TxtKillLeagueCommand);
-        }
-
-        private void BrowseCommandFile(TextBox targetBox)
-        {
-            var dialog = new Microsoft.Win32.OpenFileDialog
+            var newItem = new CustomCommandItem
             {
-                Title = "Çalıştırılacak Dosya veya Betiği Seçin",
-                Filter = "Çalıştırılabilir Dosyalar (*.exe;*.bat;*.cmd;*.ps1)|*.exe;*.bat;*.cmd;*.ps1|Tüm Dosyalar (*.*)|*.*"
+                Name = LocalizationManager.CurrentLanguage == "tr" ? $"Özel Komut #{_commandItems.Count + 1}" : $"Custom Command #{_commandItems.Count + 1}",
+                Command = "",
+                Args = "",
+                Timing = ScriptTriggerTiming.PostSwitch,
+                IsEnabled = true
             };
+            _commandItems.Add(newItem);
+            CustomScriptService.SaveCommands(_commandItems.ToList());
+        }
 
-            if (dialog.ShowDialog() == true && !string.IsNullOrEmpty(dialog.FileName))
+        private void BtnDeleteCommand_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement elem && elem.Tag is CustomCommandItem item)
             {
-                targetBox.Text = dialog.FileName;
+                _commandItems.Remove(item);
+                CustomScriptService.SaveCommands(_commandItems.ToList());
             }
         }
 
-        private async void BtnTestPreSwitch_Click(object sender, RoutedEventArgs e)
+        private void BtnBrowseCommandRow_Click(object sender, RoutedEventArgs e)
         {
-            await TestCommandAsync(TxtPreSwitchCommand.Text);
-        }
-
-        private async void BtnTestPostSwitch_Click(object sender, RoutedEventArgs e)
-        {
-            await TestCommandAsync(TxtPostSwitchCommand.Text);
-        }
-
-        private async void BtnTestKillLeagueCommand_Click(object sender, RoutedEventArgs e)
-        {
-            await TestCommandAsync(TxtKillLeagueCommand.Text);
-        }
-
-        private async Task TestCommandAsync(string cmd)
-        {
-            if (string.IsNullOrWhiteSpace(cmd))
+            if (sender is FrameworkElement elem && elem.Tag is CustomCommandItem item)
             {
-                MessageBox.Show(LocalizationManager.Get("CommandTestEmpty"), LocalizationManager.Get("AppTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                var dialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    Title = "Çalıştırılacak Dosya veya Betiği Seçin",
+                    Filter = "Çalıştırılabilir Dosyalar (*.exe;*.bat;*.cmd;*.ps1)|*.exe;*.bat;*.cmd;*.ps1|Tüm Dosyalar (*.*)|*.*"
+                };
+
+                if (dialog.ShowDialog() == true && !string.IsNullOrEmpty(dialog.FileName))
+                {
+                    item.Command = dialog.FileName;
+                    if (string.IsNullOrWhiteSpace(item.Name) || item.Name.StartsWith("Yeni") || item.Name.StartsWith("Custom") || item.Name.StartsWith("Özel"))
+                    {
+                        item.Name = System.IO.Path.GetFileNameWithoutExtension(dialog.FileName);
+                    }
+                    CustomScriptService.SaveCommands(_commandItems.ToList());
+                }
             }
-            await CustomScriptService.ExecuteCommandAsync(cmd);
-            TrayService.ShowBalloonNotification(LocalizationManager.Get("AppTitle"), LocalizationManager.Get("CommandTestSuccess"));
+        }
+
+        private async void BtnTestCommandRow_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement elem && elem.Tag is CustomCommandItem item)
+            {
+                if (string.IsNullOrWhiteSpace(item.Command))
+                {
+                    MessageBox.Show(LocalizationManager.Get("CommandTestEmpty"), LocalizationManager.Get("AppTitle"), MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                CustomScriptService.SaveCommands(_commandItems.ToList());
+                await CustomScriptService.ExecuteCommandAsync(item.Command, item.Args);
+                TrayService.ShowBalloonNotification(LocalizationManager.Get("AppTitle"), LocalizationManager.Get("CommandTestSuccess"));
+            }
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            // Pencere kapatılırken tüm komutları kalıcı kaydet
+            if (_commandItems != null)
+            {
+                CustomScriptService.SaveCommands(_commandItems.ToList());
+            }
         }
     }
 }

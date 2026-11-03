@@ -158,6 +158,8 @@ namespace LolAccountSwitcher
                 ["PostSwitchCommandTooltip"] = "Hesap geçişi başarıyla tamamlandıktan hemen sonra çalıştırılır",
                 ["KillLeagueCommandLabel"] = "LoL Kapat Komutu / .exe:",
                 ["KillLeagueCommandTooltip"] = "LoL Kapat butonuna basıldığında istemciler kapatılırken çalıştırılır",
+                ["LaunchArgsLabel"] = "↳ Başlatma Seçenekleri:",
+                ["LaunchArgsTooltip"] = "Uygulama veya betik çalıştırılırken iletilecek parametreler (Örn: toff, --silent, {account})",
                 ["CommandTestSuccess"] = "Komut arka planda başarıyla tetiklendi! 🚀",
                 ["CommandTestEmpty"] = "Lütfen test etmek için önce bir komut veya dosya yolu yazın!",
                 ["CardHeaderAppearance"] = "🎨 Görünüm, Dil & Sistem Tepsisi",
@@ -200,7 +202,14 @@ namespace LolAccountSwitcher
                 ["CancelBtn"] = "İptal",
                 ["BtnFeedback"] = "💬 Geri Bildirim",
                 ["BtnFeedbackTooltip"] = "Hata Bildir veya Öneri Gönder (GitHub Issues)",
-                ["TrayFeedback"] = "💬 Geri Bildirim & Hata Bildir"
+                ["TrayFeedback"] = "💬 Geri Bildirim & Hata Bildir",
+                ["JumpListCategoryActions"] = "⚡ Hızlı Eylemler",
+                ["JumpListCategoryAccounts"] = "👥 Kayıtlı Profiller",
+                ["JumpListKillLeague"] = "🛑 Riot Servislerini Kapat",
+                ["JumpListKillLeagueDesc"] = "Tüm LoL ve Riot istemcilerini güvenle kapatır",
+                ["JumpListLaunchLeague"] = "⚔️ Riot Launcher'ı Aç",
+                ["JumpListLaunchLeagueDesc"] = "Riot Games & LoL istemcisini başlatır",
+                ["JumpListSwitchAccountDesc"] = "{0} hesabına anında geçiş yap"
             },
             ["en"] = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
@@ -350,6 +359,8 @@ namespace LolAccountSwitcher
                 ["PostSwitchCommandTooltip"] = "Runs immediately after account switch completes",
                 ["KillLeagueCommandLabel"] = "Kill League Command / .exe:",
                 ["KillLeagueCommandTooltip"] = "Runs when Kill League button is clicked",
+                ["LaunchArgsLabel"] = "↳ Launch Options:",
+                ["LaunchArgsTooltip"] = "Command-line arguments or parameters (e.g. toff, --silent, {account})",
                 ["CommandTestSuccess"] = "Command was triggered in background successfully! 🚀",
                 ["CommandTestEmpty"] = "Please enter a command or file path first to test!",
                 ["CardHeaderAppearance"] = "🎨 Appearance, Language & System Tray",
@@ -392,7 +403,14 @@ namespace LolAccountSwitcher
                 ["CancelBtn"] = "Cancel",
                 ["BtnFeedback"] = "💬 Feedback",
                 ["BtnFeedbackTooltip"] = "Report Bug or Suggest Feature (GitHub Issues)",
-                ["TrayFeedback"] = "💬 Feedback & Bug Report"
+                ["TrayFeedback"] = "💬 Feedback & Bug Report",
+                ["JumpListCategoryActions"] = "⚡ Quick Actions",
+                ["JumpListCategoryAccounts"] = "👥 Saved Profiles",
+                ["JumpListKillLeague"] = "🛑 Close Riot Services",
+                ["JumpListKillLeagueDesc"] = "Cleanly terminates all League and Riot processes",
+                ["JumpListLaunchLeague"] = "⚔️ Launch Riot Launcher",
+                ["JumpListLaunchLeagueDesc"] = "Starts Riot Games & League client",
+                ["JumpListSwitchAccountDesc"] = "Quick switch to {0} profile"
             }
         };
 
