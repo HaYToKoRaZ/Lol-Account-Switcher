@@ -4,7 +4,7 @@
    Strategy: Cache-First for static assets, Stale-While-Revalidate for pages
    ============================================================================== */
 
-const CACHE_NAME = 'las-cache-v4.1';
+const CACHE_NAME = 'las-cache-v4.9';
 const STATIC_ASSETS = [
   './',
   'index.html',
