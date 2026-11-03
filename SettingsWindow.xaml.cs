@@ -16,6 +16,16 @@ namespace LolAccountSwitcher
         public SettingsWindow(MainWindow main)
         {
             InitializeComponent();
+            try
+            {
+                var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                if (ver != null && TxtSettingsVersion != null)
+                {
+                    TxtSettingsVersion.Text = $"v{ver.Major}.{ver.Minor}";
+                }
+            }
+            catch { }
+
             _main = main;
             Owner = main;
 

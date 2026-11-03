@@ -188,6 +188,7 @@ namespace LolAccountSwitcher
         public MainWindow()
         {
             InitializeComponent();
+            ApplyDynamicVersion();
             LoadAccounts();
             ItemsAccounts.ItemsSource = Accounts;
             Accounts.CollectionChanged += (s, e) => TrayService.RebuildMenu();
@@ -232,6 +233,19 @@ namespace LolAccountSwitcher
 
             // Uygulama açılış hoş geldin sesini pencere yüklendiğinde çal (ayara bağlı, %50 kısık sesle)
             Loaded += (s, e) => SoundService.PlayStartupSound(0.50);
+        }
+
+        private void ApplyDynamicVersion()
+        {
+            try
+            {
+                var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                if (ver != null && TxtAppVersion != null)
+                {
+                    TxtAppVersion.Text = $"v{ver.Major}.{ver.Minor}";
+                }
+            }
+            catch { }
         }
 
         public void LoadAccounts()
