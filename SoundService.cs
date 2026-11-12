@@ -12,8 +12,9 @@ namespace LolAccountSwitcher
     /// </summary>
     public static class SoundService
     {
-        [DllImport("winmm.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        private static extern bool PlaySound(string pszSound, IntPtr hmod, uint fdwSound);
+        [DllImport("winmm.dll", EntryPoint = "PlaySoundW", SetLastError = true, CharSet = CharSet.Unicode)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool PlaySound([MarshalAs(UnmanagedType.LPWStr)] string pszSound, IntPtr hmod, uint fdwSound);
 
         private const uint SND_ASYNC = 0x0001;
         private const uint SND_NODEFAULT = 0x0002;

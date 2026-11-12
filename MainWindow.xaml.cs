@@ -17,10 +17,12 @@ namespace LolAccountSwitcher
         private bool _isExplicitExit = false;
 
         // GLOBAL KISAYOL TUŞU (Ctrl + Shift + L) WIN32 ENTEGRASYONU
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        [return: System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.Bool)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private const int GLOBAL_HOTKEY_ID = 9021;
@@ -781,7 +783,7 @@ namespace LolAccountSwitcher
             System.Windows.Application.Current.Shutdown();
         }
 
-        public async void SwitchToAccountById(string accId)
+        public async Task SwitchToAccountById(string accId)
         {
             var acc = Accounts.FirstOrDefault(a => a.Id == accId);
             if (acc != null)
@@ -793,6 +795,42 @@ namespace LolAccountSwitcher
         public void TriggerKillLeague()
         {
             BtnKillLeague_Click(this, new RoutedEventArgs());
+        }
+
+        public async Task KillLeagueAndExitAppAsync()
+        {
+            try
+            {
+                string riotGamesPath = ConfigManager.Get("General", "RiotGamesPath", "");
+                await ProcessTerminator.TerminateLeagueProcessesAsync(string.IsNullOrEmpty(riotGamesPath) ? null : riotGamesPath);
+
+                string companionPath = ConfigManager.Get("General", "CompanionAppPath", ConfigManager.Get("General", "BlitzPath", ""));
+                CompanionAppService.TerminateCompanionApp(string.IsNullOrEmpty(companionPath) ? null : companionPath);
+
+                string killCmd = ConfigManager.Get("General", "KillLeagueCommand", "").Trim();
+                string killArgs = ConfigManager.Get("General", "KillLeagueArgs", "").Trim();
+                if (!string.IsNullOrEmpty(killCmd))
+                {
+                    await CustomScriptService.ExecuteCommandAsync(killCmd, killArgs);
+                }
+
+                string killGuidStr = ConfigManager.Get("General", "KillLeaguePowerPlanGuid", "").Trim();
+                if (!string.IsNullOrEmpty(killGuidStr) && Guid.TryParse(killGuidStr, out Guid killGuid))
+                {
+                    PowerManager.SetActiveScheme(killGuid);
+                }
+
+                string killHzStr = ConfigManager.Get("General", "KillLeagueRefreshRate", "60").Trim();
+                if (int.TryParse(killHzStr, out int killHz) && killHz > 0)
+                {
+                    DisplayManager.SetRefreshRate(killHz);
+                }
+            }
+            catch { }
+            finally
+            {
+                ForceExitApp();
+            }
         }
 
         public void TriggerLaunchLeague()

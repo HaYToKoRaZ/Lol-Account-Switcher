@@ -64,7 +64,9 @@ namespace LolAccountSwitcher
                 }
 
                 _notifyIcon.Icon = appIcon ?? SystemIcons.Application;
-                _notifyIcon.Text = "Lol Account Switcher v3.2";
+                var asmVersion = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+                string verStr = asmVersion != null ? $"v{asmVersion.Major}.{asmVersion.Minor}" : "v5.0";
+                _notifyIcon.Text = $"Lol Account Switcher {verStr}";
                 _notifyIcon.Visible = true;
 
                 _notifyIcon.DoubleClick += (s, e) => ShowMainWindow();
@@ -121,7 +123,7 @@ namespace LolAccountSwitcher
                     string accId = acc.Id;
                     var accItem = new ToolStripMenuItem($"   • {label}", null, (s, e) =>
                     {
-                        _mainWindow.Dispatcher.Invoke(() => _mainWindow.SwitchToAccountById(accId));
+                        _mainWindow.Dispatcher.InvokeAsync(async () => await _mainWindow.SwitchToAccountById(accId));
                     });
                     menu.Items.Add(accItem);
                 }
@@ -149,6 +151,14 @@ namespace LolAccountSwitcher
             });
             itemKill.Tag = "danger";
             menu.Items.Add(itemKill);
+
+            // 3.1 Riot Servislerini & Uygulamayı Kapat
+            var itemKillAndExit = new ToolStripMenuItem(LocalizationManager.Get("TrayKillLeagueAndExit") ?? "🛑 Riot Servislerini & Uygulamayı Kapat", null, (s, e) =>
+            {
+                _mainWindow.Dispatcher.InvokeAsync(async () => await _mainWindow.KillLeagueAndExitAppAsync());
+            });
+            itemKillAndExit.Tag = "danger";
+            menu.Items.Add(itemKillAndExit);
 
             // 3.5 Geri Bildirim
             var itemFeedback = new ToolStripMenuItem(LocalizationManager.Get("TrayFeedback") ?? "💬 Geri Bildirim", null, (s, e) =>

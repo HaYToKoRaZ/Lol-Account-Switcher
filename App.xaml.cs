@@ -13,6 +13,7 @@ namespace LolAccountSwitcher
         private static Mutex? _singleInstanceMutex;
         private static EventWaitHandle? _wakeupEvent;
         private static volatile bool _keepListening = true;
+        private static readonly CancellationTokenSource _ipcCancelSource = new();
         private const string MutexName = "Local\\LolAccountSwitcher_SingleInstance_Mutex_2026";
         private const string EventName = "Local\\LolAccountSwitcher_Wakeup_Event_2026";
         private const string PipeName = "LolAccountSwitcher_Ipc_Pipe_2026";
@@ -22,6 +23,7 @@ namespace LolAccountSwitcher
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll")]
@@ -99,9 +101,10 @@ namespace LolAccountSwitcher
 
         private static void StartIpcServer()
         {
-            var ipcThread = new Thread(() =>
+            Task.Run(async () =>
             {
-                while (_keepListening)
+                var token = _ipcCancelSource.Token;
+                while (_keepListening && !token.IsCancellationRequested)
                 {
                     try
                     {
@@ -112,32 +115,31 @@ namespace LolAccountSwitcher
                             PipeTransmissionMode.Byte,
                             PipeOptions.Asynchronous);
 
-                        var connectTask = server.WaitForConnectionAsync();
-                        connectTask.Wait();
+                        await server.WaitForConnectionAsync(token).ConfigureAwait(false);
 
-                        if (!_keepListening) break;
+                        if (!_keepListening || token.IsCancellationRequested) break;
 
                         using var reader = new StreamReader(server);
-                        string? line = reader.ReadLine();
+                        string? line = await reader.ReadLineAsync(token).ConfigureAwait(false);
                         if (!string.IsNullOrWhiteSpace(line))
                         {
-                            Current?.Dispatcher?.Invoke(() =>
+                            Current?.Dispatcher?.InvokeAsync(() =>
                             {
                                 HandleCommandLine(line);
                             });
                         }
                     }
+                    catch (OperationCanceledException)
+                    {
+                        break;
+                    }
                     catch
                     {
-                        if (!_keepListening) break;
-                        Thread.Sleep(50);
+                        if (!_keepListening || token.IsCancellationRequested) break;
+                        try { await Task.Delay(50, token).ConfigureAwait(false); } catch { break; }
                     }
                 }
-            })
-            {
-                IsBackground = true
-            };
-            ipcThread.Start();
+            });
         }
 
         private static void StartWakeupListener()
@@ -205,9 +207,9 @@ namespace LolAccountSwitcher
                     accountId = accountId.Trim('"', '\'');
                     if (!string.IsNullOrWhiteSpace(accountId))
                     {
-                        mainWin?.Dispatcher?.Invoke(() =>
+                        mainWin?.Dispatcher?.InvokeAsync(async () =>
                         {
-                            mainWin.SwitchToAccountById(accountId);
+                            await mainWin.SwitchToAccountById(accountId);
                         });
                         return;
                     }
@@ -262,6 +264,7 @@ namespace LolAccountSwitcher
             try
             {
                 _keepListening = false;
+                _ipcCancelSource.Cancel();
                 _wakeupEvent?.Set();
                 _wakeupEvent?.Dispose();
 

@@ -48,10 +48,10 @@ namespace LolAccountSwitcher
         private const int DISP_CHANGE_SUCCESSFUL = 0;
         private const int DM_DISPLAYFREQUENCY = 0x400000;
 
-        [DllImport("user32.dll")]
-        private static extern int EnumDisplaySettings(string? deviceName, int modeNum, ref DEVMODE devMode);
+        [DllImport("user32.dll", EntryPoint = "EnumDisplaySettingsW", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern int EnumDisplaySettings([MarshalAs(UnmanagedType.LPWStr)] string? deviceName, int modeNum, ref DEVMODE devMode);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", EntryPoint = "ChangeDisplaySettingsW", SetLastError = true, CharSet = CharSet.Unicode)]
         private static extern int ChangeDisplaySettings(ref DEVMODE devMode, int flags);
 
         public static int GetCurrentRefreshRate()
